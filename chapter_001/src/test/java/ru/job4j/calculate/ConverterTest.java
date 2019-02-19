@@ -18,4 +18,18 @@ public class ConverterTest {
         int result = converter.rubleToEuro(75);
         assertThat(result, is(1));
     }
+	
+	@Test
+    public void when1EuroToRublThen75() {
+        Converter converter = new Converter();
+        int result = converter.euroToRuble(1);
+        assertThat(result, is(75));
+    }
+	
+	@Test
+    public void when1DollarToRublThen66() {
+        Converter converter = new Converter();
+        int result = converter.dollarToRuble(1);
+        assertThat(result, is(66));
+    }
 }
