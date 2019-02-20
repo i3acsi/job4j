@@ -14,9 +14,10 @@ public class Factorial {
 * @return factorial.
 */
 	public int calc(int value) {
-		if (value == 0) {
-			return 1;
+		int result = 1;
+		for (int i = value; i >= 0; i--) {
+		result = (i > 0) ? result * i : result * 1;
 		}
-		return value * calc(value - 1);
+		return result;
     }
 }
