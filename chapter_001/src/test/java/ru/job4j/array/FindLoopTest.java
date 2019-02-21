@@ -12,4 +12,10 @@ public class FindLoopTest {
         FindLoop testLoop = new FindLoop();
         assertThat(testLoop.indexOf(new int[]{4, 5, 8, 12, 0, -1}, 5), is(1));
     }
+
+    @Test
+    public void whenArrayHasNoElement() {
+        FindLoop testLoop = new FindLoop();
+        assertThat(testLoop.indexOf(new int[]{4, 5, 8, 12, 0, -1}, 77), is(-1));
+    }
 }
