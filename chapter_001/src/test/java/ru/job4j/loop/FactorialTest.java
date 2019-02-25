@@ -15,14 +15,13 @@ import static org.junit.Assert.assertThat;
 public class FactorialTest {
     @Test
     public void whenCalculateFactorialForFiveThenOneHundreedTwenty() {
-		Factorial f5 = new Factorial();
-		assertThat(f5.calc(5), is(120));
-        //напишите здесь тест, проверяющий, что факториал для числа 5 равен 120.
+        Factorial f5 = new Factorial();
+        assertThat(f5.calc(5), is(120));
     }
 
     @Test
     public void whenCalculateFactorialForZeroThenOne() {
-       	Factorial f0 = new Factorial();
-		assertThat(f0.calc(0), is(1));
+        Factorial f0 = new Factorial();
+        assertThat(f0.calc(0), is(1));
     }
 }

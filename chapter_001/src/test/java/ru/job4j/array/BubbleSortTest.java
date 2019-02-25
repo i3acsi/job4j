@@ -10,6 +10,6 @@ public class BubbleSortTest {
         BubbleSort test = new BubbleSort();
         int[] data = new int[] {10, -5, 0, 17, 9, -8, 1};
         int[] expected = new int[] {-8, -5, 0, 1, 9, 10, 17};
-        assertThat(test.sortedArr(data), is(expected));
+        assertThat(test.sort(data), is(expected));
     }
 }

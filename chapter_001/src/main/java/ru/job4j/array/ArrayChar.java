@@ -4,10 +4,10 @@ package ru.job4j.array;
  * Обертка над строкой.
  */
 public class ArrayChar {
-    private char[] data;
+    private char[] word;
 
     public ArrayChar(String line) {
-        this.data = line.toCharArray();
+        this.word = line.toCharArray();
     }
 
     /**
@@ -16,10 +16,9 @@ public class ArrayChar {
      * @return если слово начинается с префикса
      */
     public boolean startWith(String prefix) {
-        char[] value = prefix.toCharArray();
-        // проверить. что массив data имеет первые элементы одинаковые с value
+        char[] pref = prefix.toCharArray();
         for (int i = 0; i < prefix.length(); i++) {
-            if (data[i] != value[i]) {
+            if (word[i] != pref[i]) {
                 return false;
             }
         }

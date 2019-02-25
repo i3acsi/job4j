@@ -12,12 +12,12 @@ public class Board {
     /**
      * Method paint.
      *
-     * @param width ширина.
+     * @param width  ширина.
      * @param height высота.
-	 * @return chessmateBoard.
+     * @return chessmateBoard.
      */
     public String paint(int width, int height) {
-		String ln = System.lineSeparator();
+        String ln = System.lineSeparator();
         StringBuilder result = new StringBuilder();
         boolean isX = true;
         for (int i = 0; i < height; i++) {

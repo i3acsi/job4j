@@ -3,25 +3,25 @@ package ru.job4j.array;
 import java.util.Arrays;
 
 public class ArrayDuplicate {
-    public String[] remove(String[] array) {
+    public String[] remove(String[] words) {
         int count = 0;
-        String temp;
-        int length = array.length;
+        String compare;
+        int length = words.length;
         for (int i = 0; i < length; i++) {
-            temp = array[i];
-            if (temp == null) {
+            compare = words[i];
+            if (compare == null) {
                 continue;
             }
             for (int j = 1 + i; j < length; j++) {
-                if (array[j] == temp) {
-                    array[j] = array[length - 1 - count];
-                    array[length - 1 - count] = null;
+                if (words[j] == compare) {
+                    words[j] = words[length - 1 - count];
+                    words[length - 1 - count] = null;
                     j--;
                     count++;
                 }
             }
         }
-        System.out.println(count);
-        return Arrays.copyOf(array, length - count);
+        return Arrays.copyOf(words,length - count);
     }
+
 }
