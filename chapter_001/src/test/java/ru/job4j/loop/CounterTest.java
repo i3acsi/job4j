@@ -15,8 +15,7 @@ import static org.junit.Assert.assertThat;
 public class CounterTest {
     @Test
     public void whenSumEvenNumbersFromOneToTenThenThirty() {
-		Counter c = new Counter();
+        Counter c = new Counter();
         assertThat(c.add(1, 10), is(30));
-		//напишите здесь тест, проверяющий, что сумма чётных чисел от 1 до 10 при вызове метода counter.add будет равна 30.
     }
 }

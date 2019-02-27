@@ -3,11 +3,12 @@ package ru.job4j.loop;
 import java.util.function.BiPredicate;
 
 /**
-* Paint  piramid.
-* @author Vasiliy Gasevskiy
-* @since 20.02.2019
-* @version 1
-*/
+ * Paint  piramid.
+ *
+ * @author Vasiliy Gasevskiy
+ * @version 1
+ * @since 20.02.2019
+ */
 public class Paint {
     public String rightTrl(int height) {
         return this.loopBy(
