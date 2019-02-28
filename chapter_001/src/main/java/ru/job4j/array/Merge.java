@@ -10,7 +10,7 @@ package ru.job4j.array;
 public class Merge {
 
     /**
-     * Method main
+     * Method add
      *
      * @param a - first array.
      * @param b - second array
