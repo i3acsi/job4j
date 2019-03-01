@@ -14,7 +14,7 @@ public class Tracker {
     /**
      * Массив для хранение заявок.
      */
-    private final Item[] items = new Item[100];
+    private Item[] items = new Item[100];
 
     /**
      * Указатель ячейки для новой заявки.
@@ -83,8 +83,24 @@ public class Tracker {
      * @return boolean.
      */
     public boolean replace(String id, Item item) {
-        Item item1 = new Item(item.getTask(), item.getDesk());
-        findById(id);
+
+        findById(id).setNull();
+        findById(id).setTask(item.getTask());
+        findById(id).setDescription(item.getDesk());
+        findById(id).setDateCreation(item.getDateCreation());
+        findById(id).setComments(item.getComments());
+        return (findById(id).equals(item));
+    }
+
+    public boolean delete(String id) {
+        Item[] newItems = new Item[items.length - 1];
+        int i = 0
+        for (; i < items.length; i++) {
+            if (items[j].getId().equals(id)) {
+                break;
+            }
+        }
+        items = System.arraycopy();
         return true;
     }
 
@@ -92,6 +108,8 @@ public class Tracker {
         Tracker tracker = new Tracker();
         tracker.add(new Item("task1", "desc1"));
         tracker.add(new Item("task2", "desc2"));
+        tracker.add(new Item("task3", "desc3"));
+        Item item1 = new Item("Kucha", "mala");
         for (Item item : tracker.findAll()) {
             System.out.println(item.getTask() + " " + item.getId());
         }
@@ -105,10 +123,61 @@ class Item {
     private String comments;
     private String id;
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) this.getDateCreation();
+        result = prime * result + this.getTask().hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Item other = (Item) obj;
+        return (this.getTask().equals(other.getTask())
+                & this.getDesk().equals(other.getDesk())
+                & this.getDateCreation() == other.getDateCreation()
+                & this.getComments().equals(other.getComments())
+                & this.getId().equals(other.getId())
+        );
+    }
+
     public Item(String task, String desc) {
         this.task = task;
         this.description = desc;
         this.dateCreation = (new Date()).getTime();
+    }
+
+    public Item(Item item) {
+        this.task = item.task;
+        this.description = item.description;
+        this.dateCreation = (new Date().getTime());
+    }
+
+    public Item setNull() {
+        return null;
+    }
+
+    public void setTask(String task) {
+        this.task = task;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDateCreation(long dateCreation) {
+        this.dateCreation = dateCreation;
     }
 
     public void setId(String id) {
