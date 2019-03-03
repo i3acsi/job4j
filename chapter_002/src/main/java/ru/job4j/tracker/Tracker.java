@@ -83,7 +83,6 @@ public class Tracker {
      * @return boolean.
      */
     public boolean replace(String id, Item item) {
-
         findById(id).setNull();
         findById(id).setTask(item.getTask());
         findById(id).setDescription(item.getDesk());
@@ -93,27 +92,45 @@ public class Tracker {
     }
 
     public boolean delete(String id) {
-        Item[] newItems = new Item[items.length - 1];
-        int i = 0
-        for (; i < items.length; i++) {
-            if (items[j].getId().equals(id)) {
-                break;
+        int length = this.position;
+        Item temp = new Item(items[length - 1]);
+        Item[] newItems = new Item[length - 1];
+        int j = 0;
+        for (int i = 0; i < length; i++) {
+            if (items[i].getId().equals(id)) {
+                continue;
             }
+            newItems[j++] = items[i];
         }
-        items = System.arraycopy();
-        return true;
+        items = newItems;
+        this.position--;
+        return (items[items.length - 1].equals(temp));
     }
 
-    public static void main(String[] args) {
-        Tracker tracker = new Tracker();
-        tracker.add(new Item("task1", "desc1"));
-        tracker.add(new Item("task2", "desc2"));
-        tracker.add(new Item("task3", "desc3"));
-        Item item1 = new Item("Kucha", "mala");
-        for (Item item : tracker.findAll()) {
-            System.out.println(item.getTask() + " " + item.getId());
+    public Item[] findByName(String key) {
+        Item[] result = new Item[this.position];
+        int count = 0;
+        for (int i = 0; i < this.position; i++) {
+            if (items[i].getTask().equals(key)) {
+                result[count++] = items[i];
+            }
         }
+        return Arrays.copyOf(result, count);
     }
+
+
+
+//    public static void main(String[] args) {
+//        Tracker tracker = new Tracker();
+//        tracker.add(new Item("task1", "desc1"));
+//        tracker.add(new Item("task2", "desc2"));
+//        tracker.add(new Item("task3", "desc3"));
+//        Item item1 = new Item("Kucha", "mala");
+//        for (Item item : tracker.findAll()) {
+//            System.out.println(item.getTask() + " " + item.getId());
+//        }
+//        System.out.println(tracker.position);
+//    }
 }
 
 class Item {
@@ -144,11 +161,14 @@ class Item {
             return false;
         }
         Item other = (Item) obj;
+//        System.out.println("1" + this.getTask().equals(other.getTask()) + " " + this.getTask());
+//        System.out.println("2" + this.getDesk().equals(other.getDesk()) + " " + this.getTask());
+//        System.out.println("3" + (this.getDateCreation() == other.getDateCreation()) + " " + this.getTask());
+//        System.out.println("4" + this.getId().equals(other.getId()) + " " + this.getTask());
         return (this.getTask().equals(other.getTask())
-                & this.getDesk().equals(other.getDesk())
-                & this.getDateCreation() == other.getDateCreation()
-                & this.getComments().equals(other.getComments())
-                & this.getId().equals(other.getId())
+                && this.getDesk().equals(other.getDesk())
+                && this.getDateCreation() == other.getDateCreation()
+                && this.getId().equals(other.getId())
         );
     }
 
@@ -156,12 +176,15 @@ class Item {
         this.task = task;
         this.description = desc;
         this.dateCreation = (new Date()).getTime();
+        this.comments = "$$";
     }
 
     public Item(Item item) {
-        this.task = item.task;
-        this.description = item.description;
-        this.dateCreation = (new Date().getTime());
+        this.task = item.getTask();
+        this.description = item.getDesk();
+        this.dateCreation = item.dateCreation;
+        this.id = item.getId();
+        this.comments = item.getComments();
     }
 
     public Item setNull() {
