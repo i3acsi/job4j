@@ -70,8 +70,8 @@ public class Logic {
         int[][] table = this.convert();
         for (int i = 0; i < table.length; i++) {
             if (table[0][i] == 1) {
-                for (int j = 0; j < table.length; j++) {
-                    if (table[j][i] != 1) {
+                for (int[] aTable : table) {
+                    if (aTable[i] != 1) {
                         return false;
                     }
                 }
