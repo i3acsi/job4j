@@ -1,7 +1,7 @@
 package ru.job4j.array;
 
 /**
- * Merge two increaseing arrays into the one.
+ * Merge two increasing arrays into the one.
  *
  * @author Vasiliy Gasevskiy
  * @version 2
@@ -17,7 +17,7 @@ public class Merge {
      * @return c - result array
      */
 
-    public static int[] add(int[] a, int[] b) {
+    public int[] add(int[] a, int[] b) {
         if (a == null || b == null) {
             return (a == null) ? b : a;
         }

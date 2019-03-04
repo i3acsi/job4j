@@ -29,7 +29,7 @@ public class MergeTest {
     }
 
     /**
-     * Test merge of two arrays with one last element.
+     * Test merge of two arrays with same last element.
      */
     @Test
     public void whenMergeThenTrue2() {
@@ -63,6 +63,18 @@ public class MergeTest {
         int[] b = new int[0];
         int[] c = test.add(a, b);
         assertThat(c, is(a));
+    }
+
+    /**
+     * Test merge of two arrays, both of which are null
+     */
+    @Test
+    public void whenMergeTwoNullArray() {
+        Merge test = new Merge();
+        int[] a = null;
+        int[] b = null;
+        int[] c = test.add(a, b);
+        assertThat((c == null), is(true));
     }
 }
 
