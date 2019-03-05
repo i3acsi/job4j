@@ -21,10 +21,10 @@ public class MergeTest {
     @Test
     public void whenMergeThenTrue() {
         Merge test = new Merge();
-        int[] first = new int[]{1, 3, 5, 67, 122, 889};
-        int[] second = new int[]{-10, -8, -2, 0, 2, 23, 44, 221};
+        int[] first = {1, 3, 5, 67, 122, 889};
+        int[] second = {-10, -8, -2, 0, 2, 23, 44, 221};
         int[] result = test.add(first, second);
-        int[] expected = new int[]{-10, -8, -2, 0, 1, 2, 3, 5, 23, 44, 67, 122, 221, 889};
+        int[] expected = {-10, -8, -2, 0, 1, 2, 3, 5, 23, 44, 67, 122, 221, 889};
         assertThat(result, is(expected));
     }
 
@@ -34,10 +34,10 @@ public class MergeTest {
     @Test
     public void whenMergeThenTrue2() {
         Merge test = new Merge();
-        int[] first = new int[]{1, 3, 5, 67, 122, 889};
-        int[] second = new int[]{-10, -8, -2, 0, 2, 889};
+        int[] first = {1, 3, 5, 67, 122, 889};
+        int[] second = {-10, -8, -2, 0, 2, 889};
         int[] result = test.add(first, second);
-        int[] expected = new int[]{-10, -8, -2, 0, 1, 2, 3, 5, 67, 122, 889, 889};
+        int[] expected = {-10, -8, -2, 0, 1, 2, 3, 5, 67, 122, 889, 889};
         assertThat(result, is(expected));
     }
 
@@ -47,7 +47,7 @@ public class MergeTest {
     @Test
     public void whenMergeWithNull() {
         Merge test = new Merge();
-        int[] first = new int[]{1, 3, 5, 67, 122, 889};
+        int[] first = {1, 3, 5, 67, 122, 889};
         int[] second = null;
         int[] result = test.add(first, second);
         assertThat(result, is(first));
@@ -59,7 +59,7 @@ public class MergeTest {
     @Test
     public void whenMergeWithEmptyArray() {
         Merge test = new Merge();
-        int[] first = new int[]{-9, 2, 0, 17, 22, 29};
+        int[] first = {-9, 2, 0, 17, 22, 29};
         int[] second = new int[0];
         int[] result = test.add(first, second);
         assertThat(result, is(first));
