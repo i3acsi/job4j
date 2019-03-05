@@ -35,9 +35,10 @@ public class TrackerTest {
         Tracker tracker = new Tracker();
         Item previous = new Item("test1", "testDescription");
         tracker.add(previous);
+        String id = previous.getId();
         Item next = new Item("test2", "testDescription2");
-        next.setId(previous.getId());
-        tracker.replace(previous.getId(), next);
+        next.setId(id);
+        tracker.replace(id, next);
         assertThat(tracker.findById(previous.getId()).getTask(), is("test2"));
     }
 
@@ -48,15 +49,13 @@ public class TrackerTest {
     @Test
     public void whenFindByNameThenReturnArrayOfItems() {
         Tracker tracker = new Tracker();
-        Item item1 = new Item("test1", "testDescription");
-        Item item2 = new Item("test1", "testDescription");
+        Item[] ex = {
+                tracker.add(new Item("test1", "testDescription")),
+                tracker.add(new Item("test1", "testDescription"))
+        };
         Item item3 = new Item("test2", "testDescription");
-        tracker.add(item1);
-        tracker.add(item2);
         tracker.add(item3);
-        assertThat(tracker.findByName("test1")[0], is(item1));
-        assertThat(tracker.findByName("test1")[1], is(item2));
-        assertThat(tracker.findByName("test1").length, is(2));
+        assertThat(tracker.findByName("test1"), is(ex));
     }
 
     /**
@@ -154,7 +153,7 @@ public class TrackerTest {
         tracker.add(item1);
         tracker.add(item2);
         tracker.add(item3);
-        String id = item3.getId();
+        String id = item2 .getId();
         tracker.delete(id);
         assertThat((tracker.findById(id) == null), is(true));
     }
