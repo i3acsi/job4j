@@ -60,7 +60,7 @@ public class Tracker {
      *
      * @return Item[].
      */
-    Item[] findAll() {
+    public Item[] findAll() {
         return Arrays.copyOf(items, position);
     }
 
@@ -70,7 +70,7 @@ public class Tracker {
      *
      * @return Item.
      */
-    Item findById(String id) {
+    public Item findById(String id) {
         for (Item item : items) {
             if (item != null && item.getId().equals(id)) {
                 return item;
@@ -85,7 +85,7 @@ public class Tracker {
      *
      * @return boolean.
      */
-    boolean replace(String id, Item item) {
+    public boolean replace(String id, Item item) {
         boolean result = false;
         for (int i = 0; i < items.length; i++) {
             if (items[i] != null && items[i].getId().equals(id)) {
@@ -103,7 +103,7 @@ public class Tracker {
      *
      * @return boolean.
      */
-    boolean delete(String id) {
+    public boolean delete(String id) {
         boolean result = false;
         int length = items.length;
         for (int i = 0; i < length; i++) {
@@ -124,7 +124,7 @@ public class Tracker {
      *
      * @return Item[].
      */
-    Item[] findByName(String key) {
+    public Item[] findByName(String key) {
         Item[] result = new Item[this.position];
         int count = 0;
         for (int i = 0; i < this.position; i++) {

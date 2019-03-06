@@ -187,4 +187,12 @@ class Item {
     String getId() {
         return this.id;
     }
+
+    String show() {
+        return "Task: " + this.task
+                + ". Description: " + this.description
+                + ". ID: " + this.id
+                + ". Date: " + (new Date(this.dateCreation).toString())
+                + ". Comments: " + this.comments;
+    }
 }
