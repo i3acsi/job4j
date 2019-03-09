@@ -1,28 +1,62 @@
 package ru.job4j.tracker;
 
 public class StartUI {
-    private final String ln = System.lineSeparator();
     /**
      * Константа меню для добавления новой заявки.
      */
     private static final String ADD = "0";
 
     /**
+     * Константа меню для отображения в консоли всех существующих заявок.
+     */
+    private static final String SHOW = "1";
+
+    /**
+     * Константа меню для редактирования заявки.
+     */
+    private static final String EDIT = "2";
+
+    /**
+     * Константа меню для удаления заявки.
+     */
+    private static final String DELETE = "3";
+
+    /**
+     * Константа меню для поиска заявки по ID.
+     */
+    private static final String FIND_BY_ID = "4";
+
+    /**
+     * Константа меню для поиска заявок по названию.
+     */
+    private static final String FIND_BY_NAME = "5";
+
+    /**
+     * Константа меню для добавления комментария к заявке.
+     */
+    private static final String COMMENT = "6";
+
+    /**
      * Константа для выхода из цикла.
      */
-    private static final String EXIT = "6";
+    private static final String EXIT = "7";
+    /**
+     * Универсальный разделитель строк.
+     */
+    private final String ln = System.lineSeparator();
+
     /**
      * Получение данных от пользователя.
      */
     private final Input input;
 
     /**
-     * Хранилище заявок.
+     * Создание хранилища для заявок.
      */
-    private final Tracker tracker;
+    private final  Tracker tracker;
 
     /**
-     * Конструтор инициализирующий поля.
+     * Конструктор с инициалицацией полей.
      * @param input ввод данных.
      * @param tracker хранилище заявок.
      */
@@ -34,13 +68,35 @@ public class StartUI {
     /**
      * Основой цикл программы.
      */
-    public void init() {
+    private void init() {
         boolean exit = false;
         while (!exit) {
             this.showMenu();
+            String answer = this.input.ask("Введите пункт меню ");
+            if (answer.equals(ADD)) {
+                this.createItem();
+            } else if (answer.equals(SHOW)) {
+                this.show();
+            } else if (answer.equals(EDIT)) {
+                this.edit();
+            } else  if (answer.equals(DELETE)) {
+                this.delete();
+            } else  if (answer.equals(FIND_BY_ID)) {
+                this.findById();
+            } else  if (answer.equals(FIND_BY_NAME)) {
+                this.findByName();
+            } else  if (answer.equals(COMMENT)) {
+                this.comment();
+            } else if (answer.equals(EXIT)) {
+                exit = true;
+            }
         }
+
     }
 
+    /**
+     * Метод выводящий на экран основное меню.
+     */
     private void showMenu() {
         System.out.println("0. Add new Item"
                 + ln + "1. Show all items"
@@ -52,54 +108,131 @@ public class StartUI {
                 + ln + "7. Exit Program"
         );
     }
-    public static void main(String[] args) {
 
-        ConsoleInput consoleInput = new ConsoleInput();
-        Tracker tracker = new Tracker();
+    /**
+     * Метод для добавления новой заявки..
+     */
+    private void createItem() {
+        System.out.println("----------Добавление новой заявки----------");
+        String task = this.input.ask("Введите название заявки ");
+        String desc = this.input.ask("Введите описание заявки ");
+        System.out.println("-------------------------------------------");
+        Item temp = new Item(task, desc);
+        this.tracker.add(temp);
+        System.out.println("Заявка добавлена." + temp.show());
+    }
 
-        boolean exit = true;
-        while (exit) {
-
-            String answer = consoleInput.ask("Select");
-            if (answer.equals("0")) {
-                String task = consoleInput.ask("Task");
-                String desc = consoleInput.ask("Description");
-                tracker.add(new Item(task, desc));
+    /**
+     * Метод для отображения в консоли всех существующих заявок.
+     */
+    private void show() {
+        Item[] temp = this.tracker.findAll();
+        if (temp.length != 0) {
+            System.out.println("----------Все существующие заявки---------");
+            for (Item item : this.tracker.findAll()) {
+                System.out.println(item.show());
             }
-            if (answer.equals("1")) {
-                for (Item item: tracker.findAll()) {
-                    System.out.println(item.show());
-                }
-            }
-            if (answer.equals("2")) {
-                String id = consoleInput.ask("id");
-                String task = consoleInput.ask("Task");
-                String desc = consoleInput.ask("Description");
-                tracker.replace(id, new Item(task, desc));
-            }
-            if (answer.equals("3")) {
-                String id = consoleInput.ask("id");
-                tracker.delete(id);
-            }
-            if (answer.equals("4")) {
-                String id = consoleInput.ask("id");
-                System.out.println(tracker.findById(id).show());
-            }
-            if (answer.equals("5")) {
-                String task = consoleInput.ask("Task?");
-                for (Item item: tracker.findByName(task)) {
-                    System.out.println(item.show());
-                }
-            }
-            if (answer.equals("6")) {
-                String id = consoleInput.ask("id");
-                String comment = consoleInput.ask("comment")
-                tracker.findById(id).setComments(comment);
-            }
-            if (answer.equals("7")) {
-                exit = false;
-            }
+            System.out.println("------------------------------------------");
+        } else {
+            System.out.println("----------------Заявок нет----------------");
         }
+    }
+
+    /**
+     * Метод для редактирования заявки.
+     */
+    private void edit() {
+        System.out.println("----------Редактирование заявки----------");
+        String id = this.input.ask("Введите id редактируемой заявки ");
+        Item temp = tracker.findById(id);
+        if (temp != null) {
+            String task = this.input.ask("Введите новое название заявки ");
+            String desc = this.input.ask("Введите новое описание заявки ");
+            String newComment = null;
+            if (!temp.getComments().equals("")) {
+                newComment = this.input.ask("Введите новый коииентарий к заявке ");
+            }
+            System.out.println("------------------------------------------");
+            Item item = new Item(task, desc);
+            tracker.replace(id, item);
+            if (newComment != null) {
+                this.tracker.findById(id).setComments(newComment);
+            }
+            System.out.print("Заявка отредактированна." + temp.show());
+        } else {
+            System.out.println("---------Заявка не найдена---------");
+        }
+    }
+
+    /**
+     * Метод для удаления заявки.
+     */
+    private void delete() {
+        System.out.println("----------Удаление заявки----------");
+        String id = this.input.ask("Введите id удаляемой заявки ");
+        Item temp = tracker.findById(id);
+        if (temp != null) {
+            this.tracker.delete(id);
+            System.out.printf("-------Заявка с ID %s удалена------" + ln, id);
+        } else {
+            System.out.println("---------Заявка не найдена---------");
+        }
+    }
+
+    /**
+     * Метод для поиска заявки по ID.
+     */
+    private void findById() {
+        System.out.println("----------Поиск заявки по ID----------");
+        String id = this.input.ask("Введите id искомой заявки ");
+        Item temp = tracker.findById(id);
+        if (temp != null) {
+            System.out.println("Найдена заявка " + temp.show());
+        } else {
+            System.out.println("---------Заявка не найдена---------");
+        }
+    }
+
+    /**
+     * Метод для поиска заявок по названию.
+     */
+    private void findByName() {
+        System.out.println("----------Поиск заявок по названию----------");
+        String task = this.input.ask("Введите название заявки для поиска ");
+        Item[] temp = tracker.findByName(task);
+        if (temp.length != 0) {
+            System.out.println("Найденные заявки: ");
+            for (Item item : temp) {
+                System.out.println(item.show());
+            }
+        } else {
+            System.out.println("---Заявок с таким названием не найдено---");
+        }
+    }
+
+    /**
+     * Метод для добавления комментария к заявке.
+     */
+     private void comment() {
+         System.out.println("----------Комментарий к заявке по ID----------");
+         String id = this.input.ask("Введите id комментируемой заявки ");
+         Item temp = tracker.findById(id);
+         String comment = null;
+         if (temp != null) {
+             comment = this.input.ask("Введите комментарий к заявке ");
+             temp.setComments(comment);
+             System.out.println("Комментакрий добавлен: " + temp.show());
+         } else {
+             System.out.println("-----Заявки с таким ID не существует-----");
+         }
+     }
+
+    /**
+     * Запуск программы.
+     * @param args
+     */
+    public static void main(String[] args) {
+        new StartUI(new ConsoleInput(), new Tracker()).init();
     }
 }
 

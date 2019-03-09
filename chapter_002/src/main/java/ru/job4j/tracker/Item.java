@@ -84,7 +84,7 @@ class Item {
         this.task = task;
         this.description = desc;
         this.dateCreation = (new Date()).getTime();
-        this.comments = " ";
+        this.comments = "";
     }
 
     /**
