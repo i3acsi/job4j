@@ -1,7 +1,6 @@
 package ru.job4j.tracker;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Random;
 
 import static java.lang.Thread.sleep;
@@ -13,7 +12,7 @@ import static java.lang.Thread.sleep;
  * @version $Id$
  * @since 0.1
  */
-public class Tracker {
+class Tracker {
     /**
      * Массив для хранение заявок.
      */

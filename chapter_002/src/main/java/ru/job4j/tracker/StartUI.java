@@ -53,7 +53,7 @@ public class StartUI {
     /**
      * Создание хранилища для заявок.
      */
-    private final  Tracker tracker;
+    private final Tracker tracker;
 
     /**
      * Конструктор с инициалицацией полей.
