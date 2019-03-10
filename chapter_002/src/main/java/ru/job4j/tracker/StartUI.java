@@ -129,7 +129,7 @@ public class StartUI {
         Item[] temp = this.tracker.findAll();
         if (temp.length != 0) {
             System.out.println("----------Все существующие заявки---------");
-            for (Item item : this.tracker.findAll()) {
+            for (Item item : temp) {
                 System.out.println(item.show());
             }
             System.out.println("------------------------------------------");
@@ -156,7 +156,7 @@ public class StartUI {
             Item item = new Item(task, desc);
             tracker.replace(id, item);
             if (newComment != null) {
-                this.tracker.findById(id).setComments(newComment);
+               temp.setComments(newComment);
             }
             System.out.print("Заявка отредактированна." + temp.show());
         } else {
@@ -170,9 +170,7 @@ public class StartUI {
     private void delete() {
         System.out.println("----------Удаление заявки----------");
         String id = this.input.ask("Введите id удаляемой заявки ");
-        Item temp = tracker.findById(id);
-        if (temp != null) {
-            this.tracker.delete(id);
+        if (this.tracker.delete(id)) {
             System.out.printf("-------Заявка с ID %s удалена------" + ln, id);
         } else {
             System.out.println("---------Заявка не найдена---------");
