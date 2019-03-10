@@ -68,27 +68,36 @@ public class StartUI {
     /**
      * Основой цикл программы.
      */
-    private void init() {
+    void init() {
         boolean exit = false;
         while (!exit) {
             this.showMenu();
             String answer = this.input.ask("Введите пункт меню ");
-            if (answer.equals(ADD)) {
-                this.createItem();
-            } else if (answer.equals(SHOW)) {
-                this.show();
-            } else if (answer.equals(EDIT)) {
-                this.edit();
-            } else  if (answer.equals(DELETE)) {
-                this.delete();
-            } else  if (answer.equals(FIND_BY_ID)) {
-                this.findById();
-            } else  if (answer.equals(FIND_BY_NAME)) {
-                this.findByName();
-            } else  if (answer.equals(COMMENT)) {
-                this.comment();
-            } else if (answer.equals(EXIT)) {
-                exit = true;
+            switch (answer) {
+                case ADD:
+                    this.createItem();
+                    break;
+                case SHOW:
+                    this.show();
+                    break;
+                case EDIT:
+                    this.edit();
+                    break;
+                case DELETE:
+                    this.delete();
+                    break;
+                case FIND_BY_ID:
+                    this.findById();
+                    break;
+                case FIND_BY_NAME:
+                    this.findByName();
+                    break;
+                case COMMENT:
+                    this.comment();
+                    break;
+                case EXIT:
+                    exit = true;
+                    break;
             }
         }
 
