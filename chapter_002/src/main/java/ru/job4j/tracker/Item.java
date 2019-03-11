@@ -90,7 +90,7 @@ class Item {
     /**
      * Конструктор - создание нового объекта на основе уже существующего.
      */
-    Item(Item item) {
+    public Item(Item item) {
         this.task = item.getTask();
         this.description = item.getDesk();
         this.dateCreation = item.dateCreation;
@@ -103,7 +103,7 @@ class Item {
      *
      * @param task - название задачи.
      */
-    void setTask(String task) {
+    public void setTask(String task) {
         this.task = task;
     }
 
@@ -112,7 +112,7 @@ class Item {
      *
      * @param description - описание задачи.
      */
-    void setDescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -121,7 +121,7 @@ class Item {
      *
      * @param dateCreation - время создания задачи.
      */
-    void setDateCreation(long dateCreation) {
+    public void setDateCreation(long dateCreation) {
         this.dateCreation = dateCreation;
     }
 
@@ -130,7 +130,7 @@ class Item {
      *
      * @param id - id задачи.
      */
-    void setId(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -139,7 +139,7 @@ class Item {
      *
      * @param comment - название задачи.
      */
-    void setComments(String comment) {
+    public void setComments(String comment) {
         this.comments = comment;
     }
 
@@ -148,7 +148,7 @@ class Item {
      *
      * @return task - возвращает название задачи.
      */
-    String getTask() {
+    public String getTask() {
         return this.task;
     }
 
@@ -157,7 +157,7 @@ class Item {
      *
      * @return description - возвращает описание задачи.
      */
-    String getDesk() {
+    public String getDesk() {
         return this.description;
     }
 
@@ -166,7 +166,7 @@ class Item {
      *
      * @return dateCreation - возвращает время создания задачи.
      */
-    long getDateCreation() {
+    public long getDateCreation() {
         return this.dateCreation;
     }
 
@@ -175,7 +175,7 @@ class Item {
      *
      * @return comments - возвращает комментарии к задаче.
      */
-    String getComments() {
+    public String getComments() {
         return this.comments;
     }
 
@@ -184,11 +184,11 @@ class Item {
      *
      * @return id - возвращает id задачи.
      */
-    String getId() {
+    public String getId() {
         return this.id;
     }
 
-    String show() {
+    public String show() {
         return "Task: " + this.task
                 + ". Description: " + this.description
                 + ". ID: " + this.id

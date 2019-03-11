@@ -33,7 +33,7 @@ class Tracker {
      *
      * @param item новая заявка
      */
-    Item add(Item item) {
+    public Item add(Item item) {
         item.setId(this.generateId());
         this.items[this.position++] = item;
         return  item;
