@@ -98,6 +98,9 @@ public class StartUI {
                 case EXIT:
                     exit = true;
                     break;
+                default:
+                    exit = true;
+                    break;
             }
         }
 
