@@ -4,9 +4,17 @@ package ru.job4j.tracker;
  * Класс для отображения в консоли всех существующих заявок.
  */
 public class FindAll implements UserAction {
+    private int key;
+    private String info;
+
+    public FindAll(int key, String info) {
+        this.key = key;
+        this.info = info;
+    }
+
     @Override
 	public int key() {
-	    return 2;
+	    return key;
 	}
 	
 	@Override
@@ -25,6 +33,6 @@ public class FindAll implements UserAction {
 	
     @Override
     public String info() {
-        return "Find all items.";
+        return info;
     }
  }

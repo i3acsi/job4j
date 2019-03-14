@@ -42,14 +42,14 @@ public class MenuTracker {
      * Метод заполняет массив.
      */
     public void fillActions() {
-        this.actions.add(new AddItem());
-        this.actions.add(new FindAll());
-        this.actions.add(new Edit());
-        this.actions.add(new Delete());
-        this.actions.add(new FindById());
-        this.actions.add(new FindByName());
-		this.actions.add(new Comment());
-        this.actions.add(new Exit());
+        this.actions.add(new AddItem(0, "Add new Item."));
+        this.actions.add(new FindAll(1, "Find all items."));
+        this.actions.add(new Edit(2, "Edit Item."));
+        this.actions.add(new Delete(3, "Delete Item."));
+        this.actions.add(new FindById(4, "Find Item by ID."));
+        this.actions.add(new FindByName(5, "Find Items by Name."));
+		this.actions.add(new Comment(6, "Comment."));
+        this.actions.add(new Exit(7, "Exit."));
     }
 
     /**
@@ -67,7 +67,7 @@ public class MenuTracker {
     public void show() {
         for (UserAction action : this.actions) {
             if (action != null) {
-                System.out.printf("%d. %s%s",action.key(), action.info(), System.lineSeparator());
+                System.out.printf("%d. %s%s", action.key(), action.info(), System.lineSeparator());
             }
         }
     }

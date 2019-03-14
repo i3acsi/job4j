@@ -4,9 +4,16 @@ package ru.job4j.tracker;
  * Класс для добавления комментария к заявке.
  */
 public class Comment implements UserAction {
+    private int key;
+    private String info;
+
+    public Comment(int key, String info) {
+        this.key = key;
+        this.info = info;
+    }
     @Override
 	public int key() {
-	    return 6;
+	    return key;
 	}
 	
 	@Override
@@ -26,6 +33,6 @@ public class Comment implements UserAction {
 	
 	@Override
     public String info() {
-        return "Comment.";
+        return info;
     }
 }

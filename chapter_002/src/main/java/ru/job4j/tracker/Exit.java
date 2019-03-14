@@ -4,9 +4,16 @@ package ru.job4j.tracker;
  * Класс для добавления комментария к заявке.
  */
 public class Exit implements UserAction {
+    private int key;
+    private String info;
+
+    public Exit(int key, String info) {
+        this.key = key;
+        this.info = info;
+    }
     @Override
 	public int key() {
-	    return 7;
+	    return key;
 	}
 	
 	@Override
@@ -15,6 +22,6 @@ public class Exit implements UserAction {
 	
 	@Override
     public String info() {
-        return "Exit.";
+        return info;
     }
 }

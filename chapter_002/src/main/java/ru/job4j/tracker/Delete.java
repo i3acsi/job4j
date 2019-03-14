@@ -5,10 +5,17 @@ package ru.job4j.tracker;
  */
 public class Delete implements UserAction {
 	private final String ln = System.lineSeparator();
+    private int key;
+    private String info;
+
+    public Delete(int key, String info) {
+        this.key = key;
+        this.info = info;
+    }
 	 
     @Override
 	public int key() {
-	    return 3;
+	    return key;
 	}
 	
 	@Override
@@ -24,6 +31,6 @@ public class Delete implements UserAction {
 	
 	@Override
     public String info() {
-        return "Delete Item.";
+        return info;
     }
 }

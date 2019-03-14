@@ -4,9 +4,16 @@ package ru.job4j.tracker;
  * Класс для поиска заявки по ID.
  */
 public class FindById implements UserAction {
+    private int key;
+    private String info;
+
+    public FindById(int key, String info) {
+        this.key = key;
+        this.info = info;
+    }
     @Override
 	public int key() {
-	    return 4;
+	    return key;
 	}
 	
 	@Override
@@ -23,6 +30,6 @@ public class FindById implements UserAction {
 	
 	@Override
     public String info() {
-        return "Find Item by ID.";
+        return info;
     }
 }

@@ -20,14 +20,14 @@ import static org.junit.Assert.assertThat;
 
 public class StartUITest {
     private final String ln = System.lineSeparator();
-    private final String menu = ("0. Add new Item" + ln
-            + "1. Show all items" + ln
-            + "2. Edit item" + ln
-            + "3. Delete item" + ln
-            + "4. Find item by Id" + ln
-            + "5. Find items by name" + ln
-            + "6. Add comment" + ln
-            + "7. Exit Program" + ln);
+    private final String menu = ("0. Add new Item." + ln
+            + "1. Find all items." + ln
+            + "2. Edit Item." + ln
+            + "3. Delete Item." + ln
+            + "4. Find Item by ID." + ln
+            + "5. Find Items by Name." + ln
+            + "6. Comment." + ln
+            + "7. Exit." + ln);
     private final Tracker tracker = new Tracker();
     private final Item item = tracker.add(new Item("test name", "desc"));
     private final Item item2 = tracker.add(new Item("test name 2", "desc2"));
@@ -53,7 +53,7 @@ public class StartUITest {
      */
     @Test
     public void whenFindByIDThenItemShown() {
-        Input input = new StubInput(new String[]{"4", id, "7"});
+        Input input = new StubInput(new String[]{"4", id, "y"});
         new StartUI(input, tracker).init();
         assertThat(this.out.toString(),
                 is(
@@ -61,7 +61,7 @@ public class StartUITest {
                                 .append(menu)
                                 .append("----------Поиск заявки по ID----------" + ln)
                                 .append("Найдена заявка " + item.show() + ln)
-                                .append(menu)
+                                //.append(menu)
                                 .toString()
                 )
         );
@@ -77,7 +77,7 @@ public class StartUITest {
                 tracker.add(new Item("testEx", "testDescription")),
                 tracker.add(new Item("testEx", "testDescription"))
         };
-        Input input = new StubInput(new String[]{"5", "testEx", "7"});
+        Input input = new StubInput(new String[]{"5", "testEx", "y"});
         new StartUI(input, tracker).init();
         assertThat(this.out.toString(),
                 is(
@@ -87,7 +87,7 @@ public class StartUITest {
                                 .append("Найденные заявки: " + ln)
                                 .append(ex[0].show() + ln)
                                 .append(ex[1].show() + ln)
-                                .append(menu)
+                                //.append(menu)
                                 .toString()
                 )
         );
@@ -99,7 +99,7 @@ public class StartUITest {
      */
     @Test
     public void whenShowThenAllItemsShown() {
-        Input input = new StubInput(new String[]{"1", "7"});
+        Input input = new StubInput(new String[]{"1", "y"});
         new StartUI(input, tracker).init();
         assertThat(
                 this.out.toString(),
@@ -111,7 +111,7 @@ public class StartUITest {
                                 .append(item2.show() + ln)
                                 .append(item3.show() + ln)
                                 .append("------------------------------------------" + ln)
-                                .append(menu)
+                               // .append(menu)
                                 .toString()
                 )
         );
@@ -122,7 +122,7 @@ public class StartUITest {
      */
     @Test
     public void whenUserAddItemThenTrackerHasNewItemWithSameName() {
-        Input input = new StubInput(new String[]{"0", "test name", "desc", "7"});
+        Input input = new StubInput(new String[]{"0", "test name", "desc", "y"});
         new StartUI(input, tracker).init();
         assertThat(tracker.findAll()[3].getTask(), is("test name"));
     }
@@ -133,7 +133,7 @@ public class StartUITest {
      */
     @Test
     public void whenUpdateThenTrackerHasUpdatedValue() {
-        Input input = new StubInput(new String[]{"2", id, "test replace", "заменили заявку", "7"});
+        Input input = new StubInput(new String[]{"2", id, "test replace", "заменили заявку", "y"});
         new StartUI(input, tracker).init();
         assertThat(tracker.findById(id).getTask(), is("test replace"));
     }
@@ -143,7 +143,7 @@ public class StartUITest {
      */
     @Test
     public void whenDeleteThenTrackerHasNoValue() {
-        Input input = new StubInput(new String[]{"3", id, "7"});
+        Input input = new StubInput(new String[]{"3", id, "y"});
         new StartUI(input, tracker).init();
         assertThat(tracker.findAll().length, is(2));
     }
@@ -153,7 +153,7 @@ public class StartUITest {
      */
     @Test
     public void whenFindByIdThenTrackerHasItem() {
-        Input input = new StubInput(new String[]{"6", id, "comment", "7"});
+        Input input = new StubInput(new String[]{"6", id, "comment", "y"});
         new StartUI(input, tracker).init();
         assertThat(tracker.findById(id).getComments(), is("comment"));
     }

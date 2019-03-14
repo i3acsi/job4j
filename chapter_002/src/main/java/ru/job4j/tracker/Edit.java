@@ -4,9 +4,16 @@ package ru.job4j.tracker;
  * Класс для редактирования заявки.
  */
 public class Edit implements UserAction {
+    private int key;
+    private String info;
+
+    public Edit(int key, String info) {
+        this.key = key;
+        this.info = info;
+    }
     @Override
 	public int key() {
-	    return 3;
+	    return key;
 	}
 	
 	@Override
@@ -35,6 +42,6 @@ public class Edit implements UserAction {
 	
     @Override
     public String info() {
-        return "Edit Item.";
+        return info;
     }
 }

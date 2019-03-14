@@ -4,9 +4,17 @@ package ru.job4j.tracker;
  * Класс для добавления новой заявки.
  */
 public class AddItem implements UserAction {
+    private int key;
+    private String info;
+
+    public AddItem(int key, String info) {
+        this.key = key;
+        this.info = info;
+    }
+
     @Override
 	public int key() {
-	    return 0;
+	    return key;
 	}
 	
 	@Override
@@ -22,6 +30,6 @@ public class AddItem implements UserAction {
 	
 	@Override
     public String info() {
-        return "Add new Item.";
+        return info;
     }
 }

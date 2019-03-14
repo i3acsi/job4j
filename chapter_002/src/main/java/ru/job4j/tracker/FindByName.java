@@ -4,9 +4,17 @@ package ru.job4j.tracker;
  * Класс для поиска заявок по названию.
  */
 public class FindByName implements UserAction {
+    private int key;
+    private String info;
+
+    public FindByName(int key, String info) {
+        this.key = key;
+        this.info = info;
+    }
+
     @Override
 	public int key() {
-	    return 5;
+	    return key;
 	}
 	
 	@Override
@@ -26,6 +34,6 @@ public class FindByName implements UserAction {
 	
 	@Override
     public String info() {
-        return "Find Items by Name.";
+        return info;
     }
 }
