@@ -27,9 +27,14 @@ public class StartUI {
     public void init() {
         MenuTracker menu = new MenuTracker(this.input, this.tracker);
         menu.fillActions();
+        int[] range = new int[menu.getActionsLentgh()];
+        for (int i = 0; i < menu.getActionsLentgh(); i++) {
+            range[i] = range[i] + i;
+        }
         do {
             menu.show();
-            menu.select(Integer.valueOf(input.ask("select ")));
+            //int key = Integer.valueOf(input.ask("select "));
+            menu.select(input.ask("select", range));
         } while (!"y".equals(this.input.ask("Exit?(y) ")));
     }
 
@@ -39,7 +44,7 @@ public class StartUI {
      * @param args
      */
     public static void main(String[] args) {
-        new StartUI(new ConsoleInput(), new Tracker()).init();
+        new StartUI(new ValidateInput(), new Tracker()).init();
     }
 }
 
