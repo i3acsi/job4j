@@ -34,13 +34,43 @@ public class ValidateInputTest {
     @Test
     public void whenInvalidInput() {
         ValidateInput input = new ValidateInput(
-                new StubInput(new String[] {"invalid", "1"})
+                new StubInput(new String[]{"invalid", "1"})
         );
-        input.ask("Enter", new int[] {1});
+        input.ask("Enter", new int[]{1});
         assertThat(
                 this.mem.toString(),
                 is(
                         String.format("Please input valid data again%n")
+                )
+        );
+    }
+
+    @Test
+    public void whenOutOfRangeInput() {
+        ValidateInput input = new ValidateInput(
+                new StubInput(new String[]{"-1", "1"})
+        );
+        input.ask("Enter", new int[]{1});
+        assertThat(
+                this.mem.toString(),
+                is(
+                        String.format("Please select key from menu%n")
+                )
+        );
+    }
+
+    @Test
+    public void whenRightInput() {
+        ValidateInput input = new ValidateInput(
+                new StubInput(new String[]{"1" , "1"})
+        );
+        input.ask( "select", new int[]{1});
+
+        input.ask( "Exit?(y)", new int[]{2});
+        assertThat(
+                this.mem.toString(),
+                is(
+                        String.format("----------------Заявок нет----------------%n")
                 )
         );
     }
