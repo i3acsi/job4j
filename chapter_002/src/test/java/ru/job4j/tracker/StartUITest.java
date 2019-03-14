@@ -61,7 +61,6 @@ public class StartUITest {
                                 .append(menu)
                                 .append("----------Поиск заявки по ID----------" + ln)
                                 .append("Найдена заявка " + item.show() + ln)
-                                //.append(menu)
                                 .toString()
                 )
         );
@@ -87,7 +86,6 @@ public class StartUITest {
                                 .append("Найденные заявки: " + ln)
                                 .append(ex[0].show() + ln)
                                 .append(ex[1].show() + ln)
-                                //.append(menu)
                                 .toString()
                 )
         );
@@ -111,7 +109,6 @@ public class StartUITest {
                                 .append(item2.show() + ln)
                                 .append(item3.show() + ln)
                                 .append("------------------------------------------" + ln)
-                               // .append(menu)
                                 .toString()
                 )
         );
