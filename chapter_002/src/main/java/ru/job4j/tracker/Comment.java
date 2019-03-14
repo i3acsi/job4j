@@ -3,10 +3,10 @@ package ru.job4j.tracker;
 /**
  * Класс для добавления комментария к заявке.
  */
-public class Comment imlements UserAction {
+public class Comment implements UserAction {
     @Override
 	public int key() {
-	    return COMMENT;
+	    return 6;
 	}
 	
 	@Override

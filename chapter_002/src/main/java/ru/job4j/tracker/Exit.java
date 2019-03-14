@@ -3,15 +3,14 @@ package ru.job4j.tracker;
 /**
  * Класс для добавления комментария к заявке.
  */
-public class Exit imlements UserAction {
+public class Exit implements UserAction {
     @Override
 	public int key() {
-	    return EXIT;
+	    return 7;
 	}
 	
 	@Override
 	public void execute(Input input, Tracker tracker) {
-	    exit = true;
 	}
 	
 	@Override

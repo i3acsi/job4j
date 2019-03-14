@@ -1,6 +1,9 @@
 package ru.job4j.tracker;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MenuTracker {
     /**
      * @param хранит ссылку на объект .
@@ -39,14 +42,14 @@ public class MenuTracker {
      * Метод заполняет массив.
      */
     public void fillActions() {
-        this.actions.add(new AddItem(0, "Add program"));
-        this.actions.add(new FindAll(1, "Show all items"));
-        this.actions.add(new Edit(2, "Edit item"));
-        this.actions.add(new Delete(3, "Delete item"));
-        this.actions.add(new FindById(4, "Find item by Id"));
-        this.actions.add(new FindByName(5, "Find items by name"));
-		this.actions.add(new Comment(6, "Add comment"));
-        this.actions.add(new Exit(7, "Exit Program"));
+        this.actions.add(new AddItem());
+        this.actions.add(new FindAll());
+        this.actions.add(new Edit());
+        this.actions.add(new Delete());
+        this.actions.add(new FindById());
+        this.actions.add(new FindByName());
+		this.actions.add(new Comment());
+        this.actions.add(new Exit());
     }
 
     /**
@@ -64,7 +67,7 @@ public class MenuTracker {
     public void show() {
         for (UserAction action : this.actions) {
             if (action != null) {
-                System.out.println(action.info());
+                System.out.printf("%d. %s%s",action.key(), action.info(), System.lineSeparator());
             }
         }
     }

@@ -3,10 +3,10 @@ package ru.job4j.tracker;
 /**
  * Класс для отображения в консоли всех существующих заявок.
  */
-public class FindAll imlements UserAction {
+public class FindAll implements UserAction {
     @Override
 	public int key() {
-	    return SHOW;
+	    return 2;
 	}
 	
 	@Override

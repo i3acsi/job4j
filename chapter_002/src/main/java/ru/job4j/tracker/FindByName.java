@@ -3,10 +3,10 @@ package ru.job4j.tracker;
 /**
  * Класс для поиска заявок по названию.
  */
-public class FindByName imlements UserAction {
+public class FindByName implements UserAction {
     @Override
 	public int key() {
-	    return FIND_BY_NAME;
+	    return 5;
 	}
 	
 	@Override

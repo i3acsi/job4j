@@ -3,10 +3,10 @@ package ru.job4j.tracker;
 /**
  * Класс для редактирования заявки.
  */
-public class Edit imlements UserAction {
+public class Edit implements UserAction {
     @Override
 	public int key() {
-	    return EDIT;
+	    return 3;
 	}
 	
 	@Override
@@ -19,7 +19,7 @@ public class Edit imlements UserAction {
             String desc = input.ask("Введите новое описание заявки ");
             String newComment = null;
             if (!temp.getComments().equals("")) {
-                newComment = this.input.ask("Введите новый коииентарий к заявке ");
+                newComment = input.ask("Введите новый коииентарий к заявке ");
             }
             System.out.println("------------------------------------------");
             Item item = new Item(task, desc);

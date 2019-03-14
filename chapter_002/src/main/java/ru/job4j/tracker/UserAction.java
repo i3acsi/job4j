@@ -2,21 +2,21 @@ package ru.job4j.tracker;
 
 public interface UserAction {
     /**
-     * Метод возвращает ключ опции.
-     * @return key - ключ
+     * РњРµС‚РѕРґ РІРѕР·РІСЂР°С‰Р°РµС‚ РєР»СЋС‡ РѕРїС†РёРё.
+     * @return key - РєР»СЋС‡.
      */
     int key();
 
     /**
-     * Основной метод.
-     * @param input - объект типа Input.
-     * @param tracker - объект типа Tracker.
+     * РћСЃРЅРѕРІРЅРѕР№ РјРµС‚РѕРґ.
+     * @param input - РѕР±СЉРµРєС‚ С‚РёРїР° Input
+     * @param tracker - РѕР±СЉРµРєС‚ С‚РёРїР° Tracker
      */
     void execute(Input input, Tracker tracker);
 
     /**
-     * Метод возвращает информацию о данном пункте меню.
-     * @return info - Строка меню.
+     * РњРµС‚РѕРґ РІРѕР·РІСЂР°С‰Р°РµС‚ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РґР°РЅРЅРѕРј РїСѓРЅРєС‚Рµ РјРµРЅСЋ.
+     * @return info - РЎС‚СЂРѕРєР° РјРµРЅСЋ
      */
     String info();
 }

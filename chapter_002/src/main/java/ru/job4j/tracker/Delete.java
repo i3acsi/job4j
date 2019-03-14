@@ -3,12 +3,12 @@ package ru.job4j.tracker;
 /**
  * Класс для удаления заявки.
  */
-public class Delete imlements UserAction {
+public class Delete implements UserAction {
 	private final String ln = System.lineSeparator();
 	 
     @Override
 	public int key() {
-	    return DELETE;
+	    return 3;
 	}
 	
 	@Override
