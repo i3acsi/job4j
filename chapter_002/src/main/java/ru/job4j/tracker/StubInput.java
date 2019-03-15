@@ -24,6 +24,17 @@ class StubInput implements Input {
         this.value = value;
     }
 
+    private boolean exist(int key, int[] range) {
+        boolean result = false;
+        for (int value: range) {
+            if (value == key) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
+
     /**
      * При вызове метода ask - возвращается значение, которое хранится
      * по адресу value с нулевым индексом
@@ -39,17 +50,9 @@ class StubInput implements Input {
     @Override
     public int ask(String question, int[] range) {
         int key = Integer.valueOf(this.ask(question));
-        boolean exist = false;
-        for (int value: range) {
-            if (value == key) {
-                exist = true;
-                break;
-            }
-        }
-		if (exist) {
-			return key;
-		} else {
+        if (!exist(key, range)) {
             throw new MenuOutException("Out of menu range");
 		}
+		return key;
     }
 }
