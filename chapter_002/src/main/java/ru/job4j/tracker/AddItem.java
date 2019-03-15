@@ -3,19 +3,11 @@ package ru.job4j.tracker;
 /**
  * Класс для добавления новой заявки.
  */
-public class AddItem implements UserAction {
-    private int key;
-    private String info;
-
+public class AddItem extends  BaseAction {
+    
     public AddItem(int key, String info) {
-        this.key = key;
-        this.info = info;
+        super(key, info);
     }
-
-    @Override
-	public int key() {
-	    return key;
-	}
 	
 	@Override
 	public void execute(Input input, Tracker tracker) {
@@ -27,9 +19,4 @@ public class AddItem implements UserAction {
         tracker.add(temp);
         System.out.println("Заявка добавлена." + temp.show());
 	}
-	
-	@Override
-    public String info() {
-        return info;
-    }
 }

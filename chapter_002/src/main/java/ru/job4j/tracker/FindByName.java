@@ -3,19 +3,11 @@ package ru.job4j.tracker;
 /**
  * Класс для поиска заявок по названию.
  */
-public class FindByName implements UserAction {
-    private int key;
-    private String info;
-
+public class FindByName extends  BaseAction {
+    
     public FindByName(int key, String info) {
-        this.key = key;
-        this.info = info;
+        super(key, info);
     }
-
-    @Override
-	public int key() {
-	    return key;
-	}
 	
 	@Override
 	public void execute(Input input, Tracker tracker) {
@@ -31,9 +23,4 @@ public class FindByName implements UserAction {
             System.out.println("---Заявок с таким названием не найдено---");
         }
 	}
-	
-	@Override
-    public String info() {
-        return info;
-    }
 }

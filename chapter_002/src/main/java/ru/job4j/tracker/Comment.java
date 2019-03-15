@@ -3,18 +3,11 @@ package ru.job4j.tracker;
 /**
  * Класс для добавления комментария к заявке.
  */
-public class Comment implements UserAction {
-    private int key;
-    private String info;
-
+public class Comment extends  BaseAction {
+    
     public Comment(int key, String info) {
-        this.key = key;
-        this.info = info;
+        super(key, info);
     }
-    @Override
-	public int key() {
-	    return key;
-	}
 	
 	@Override
 	public void execute(Input input, Tracker tracker) {
@@ -31,8 +24,4 @@ public class Comment implements UserAction {
         }
 	}
 	
-	@Override
-    public String info() {
-        return info;
-    }
 }

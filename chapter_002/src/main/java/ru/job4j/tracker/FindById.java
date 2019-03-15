@@ -3,18 +3,11 @@ package ru.job4j.tracker;
 /**
  * Класс для поиска заявки по ID.
  */
-public class FindById implements UserAction {
-    private int key;
-    private String info;
-
+public class FindById extends  BaseAction {
+    
     public FindById(int key, String info) {
-        this.key = key;
-        this.info = info;
+        super(key, info);
     }
-    @Override
-	public int key() {
-	    return key;
-	}
 	
 	@Override
 	public void execute(Input input, Tracker tracker) {
@@ -27,9 +20,4 @@ public class FindById implements UserAction {
             System.out.println("---------Заявка не найдена---------");
         }
 	}
-	
-	@Override
-    public String info() {
-        return info;
-    }
 }

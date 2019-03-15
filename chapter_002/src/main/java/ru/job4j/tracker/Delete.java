@@ -3,20 +3,13 @@ package ru.job4j.tracker;
 /**
  * Класс для удаления заявки.
  */
-public class Delete implements UserAction {
-	private final String ln = System.lineSeparator();
-    private int key;
-    private String info;
-
+public class Delete extends  BaseAction {
+    
     public Delete(int key, String info) {
-        this.key = key;
-        this.info = info;
+        super(key, info);
     }
-	 
-    @Override
-	public int key() {
-	    return key;
-	}
+	
+	private final String ln = System.lineSeparator();
 	
 	@Override
 	public void execute(Input input, Tracker tracker) {
@@ -28,9 +21,4 @@ public class Delete implements UserAction {
             System.out.println("---------Заявка не найдена---------");
         }
 	}
-	
-	@Override
-    public String info() {
-        return info;
-    }
 }

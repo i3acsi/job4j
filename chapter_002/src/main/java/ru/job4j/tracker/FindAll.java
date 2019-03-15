@@ -3,19 +3,11 @@ package ru.job4j.tracker;
 /**
  * Класс для отображения в консоли всех существующих заявок.
  */
-public class FindAll implements UserAction {
-    private int key;
-    private String info;
-
+public class FindAll extends  BaseAction {
+    
     public FindAll(int key, String info) {
-        this.key = key;
-        this.info = info;
+        super(key, info);
     }
-
-    @Override
-	public int key() {
-	    return key;
-	}
 	
 	@Override
 	public void execute(Input input, Tracker tracker) {
@@ -30,9 +22,4 @@ public class FindAll implements UserAction {
             System.out.println("----------------Заявок нет----------------");
         }
 	}
-	
-    @Override
-    public String info() {
-        return info;
-    }
  }

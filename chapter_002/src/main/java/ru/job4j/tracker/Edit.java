@@ -3,18 +3,11 @@ package ru.job4j.tracker;
 /**
  * Класс для редактирования заявки.
  */
-public class Edit implements UserAction {
-    private int key;
-    private String info;
-
+public class Edit extends  BaseAction {
+    
     public Edit(int key, String info) {
-        this.key = key;
-        this.info = info;
+        super(key, info);
     }
-    @Override
-	public int key() {
-	    return key;
-	}
 	
 	@Override
 	public void execute(Input input, Tracker tracker) {
@@ -39,9 +32,4 @@ public class Edit implements UserAction {
             System.out.println("---------Заявка не найдена---------");
         }
 	}
-	
-    @Override
-    public String info() {
-        return info;
-    }
 }
