@@ -9,7 +9,7 @@ import java.util.Date;
  * @version $Id$
  * @since 0.1
  */
-class Item {
+public class Item {
     /**
      * Название задачи
      */
