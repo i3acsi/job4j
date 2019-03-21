@@ -1,7 +1,10 @@
 package ru.job4j.chess.firuges.black;
 
+import ru.job4j.chess.exceptions.ImpossibleMoveException;
 import ru.job4j.chess.firuges.Cell;
 import ru.job4j.chess.firuges.Figure;
+
+import static ru.job4j.chess.firuges.Cell.*;
 
 /**
  *
@@ -25,19 +28,27 @@ public class BishopBlack implements Figure {
         return this.position;
     }
 
+    /**
+     *
+     * @param source - исходная ячейка
+     * @param dest - конечная ячейка
+     * @return way - массив ячеек, являющихся путем фигуры по доске
+     */
     @Override
-    public Cell[] way(Cell source, Cell dest) {
-        int dY = (source.x - dest.x)<0? -1 : 1;
-        int dX = (source.y - dest.y)<0? -1 : 1;
-        int length = Math.abs(source.x - dest.x);
+    public Cell[] way(Cell source, Cell dest){
+        int dX = (source.x - dest.x) < 0 ? -1 : 1;
+        int dY = (source.y - dest.y) < 0 ? -1 : 1;
+        int length = Math.abs(source.x - dest.x) + 1;
         Cell[] steps;
-        //if (isDiaganal(source, dest)) {
+        if (isDiaganal(source, dest)) {
             steps = new Cell[length];
             for (int i = 0; i < length; i++) {
-               // i = i + deltaY + (deltaX * 8)
-                steps[i] = Cell.values()[(8*source.y - (dY * 8 *i)+(source.x - dX * i))];
+                steps[i] = Cell.values()[(source.x - i * dX) * 8 + (source.y - i * dY)];
+
             }
-        //} else steps = new Cell[]{source};
+        } else {
+            steps = new Cell[]{source};
+        }
         return steps;
     }
 

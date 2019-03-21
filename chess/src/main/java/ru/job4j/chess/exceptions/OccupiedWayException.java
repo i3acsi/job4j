@@ -1,4 +1,8 @@
-package ru.job4j.chess;
+package ru.job4j.chess.exceptions;
 
-public class OccupiedWayException {
+public class OccupiedWayException extends RuntimeException {
+
+    public OccupiedWayException(String msg) {
+        super(msg);
+    }
 }
