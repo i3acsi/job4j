@@ -28,7 +28,7 @@ public class Logic {
             if (!occupiedWay(source, dest)) {
                 rst = true;
                 this.figures[index] = this.figures[index].copy(dest);
-            }
+            } else throw new OccupiedWayException("Way is occupied");
         }
         return rst;
     }

@@ -47,7 +47,7 @@ public class BishopBlack implements Figure {
 
             }
         } else {
-            steps = new Cell[]{source};
+            throw new ImpossibleMoveException("Wrong way");
         }
         return steps;
     }
