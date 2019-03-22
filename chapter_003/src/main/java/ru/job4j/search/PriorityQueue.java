@@ -16,21 +16,21 @@ public class PriorityQueue {
      * @param task задача
      */
     public void put(Task task) {
-        tasks.add(task);
-        tasks = tasks.stream().sorted(comparing(Task::getPriority)).collect(Collectors.toCollection(LinkedList::new));
-//        int i = 0;
-//        if (tasks.size() != 0) {
-//            for (Task t : tasks) {
-//                if (task.getPriority() < t.getPriority()) {
-//                    tasks.add(i++, task);
-//                    break;
-//                }
-//                i++;
-//                if (i == tasks.size()) {
-//                    tasks.addLast(task);
-//                }
-//            }
-//        }else tasks.add(task);
+//        tasks.add(task);
+//        tasks = tasks.stream().sorted(comparing(Task::getPriority)).collect(Collectors.toCollection(LinkedList::new));
+        int i = 0;
+        if (tasks.size() != 0) {
+            for (Task t : tasks) {
+                if (task.getPriority() < t.getPriority()) {
+                    tasks.add(i++, task);
+                    break;
+                }
+                i++;
+                if (i == tasks.size()) {
+                    tasks.addLast(task);
+                }
+            }
+        } else tasks.add(task);
     }
 
     public Task take() {
