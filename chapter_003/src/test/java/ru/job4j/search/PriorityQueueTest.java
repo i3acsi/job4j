@@ -11,7 +11,13 @@ public class PriorityQueueTest {
         queue.put(new Task("low", 5));
         queue.put(new Task("urgent", 1));
         queue.put(new Task("middle", 3));
-        Task result = queue.take();
-        assertThat(result.getDesc(), is("urgent"));
+        Task[] result = new Task[queue.length()];
+        String[] expected = new String[]{"urgent", "middle", "low"};
+        for (int i = 0; i < queue.length(); i++) {
+            result[i] = queue.take();
+            assertThat(result[i].getDesc(), is(expected[i]));
+        }
+
+
     }
 }
