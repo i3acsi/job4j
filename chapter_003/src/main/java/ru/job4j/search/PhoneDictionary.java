@@ -17,13 +17,11 @@ public class PhoneDictionary {
      * @return Список подощедщих пользователей.
      */
     public List<Person> find(String key) {
-        List<Person> result = new ArrayList<>();
-
         return persons.stream()
-//                .filter((x -> x.getAddress().equals(key)))
-                .filter(x->x.getName().equals(key))
-//                .filter(x->x.getPhone().equals(key))
-//                .filter(x->x.getSurname().equals(key))
-                        .collect(Collectors.toList());
+                .filter(x -> x.getName().equals(key)
+                        | x.getAddress().equals(key)
+                        | x.getPhone().equals(key)
+                        | x.getSurname().equals(key))
+                .collect(Collectors.toList());
     }
 }
