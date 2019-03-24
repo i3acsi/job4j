@@ -23,7 +23,7 @@ public class ConvertList2Array {
 //                        array[j][k]=0;
 //                    }
 //                }
-           }
+        }
         return array;
     }
 }

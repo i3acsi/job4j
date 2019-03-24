@@ -13,7 +13,7 @@ public class PhoneDictionaryTest {
         PhoneDictionary phones = new PhoneDictionary();
         phones.add(new Person("Petr", "Arsentev", "534872", "Bryansk"));
         phones.add(new Person("Vasiliy", "Gasevskiy", "3366126", "Novosibirsk"));
-        phones.add(new Person("Ivan","Ivanov", "03", "Bryansk"));
+        phones.add(new Person("Ivan", "Ivanov", "03", "Bryansk"));
         List<Person> persons = phones.find("Bryansk");
         String[] values = new String[]{"Arsentev", "Ivanov"};
         int i = 0;

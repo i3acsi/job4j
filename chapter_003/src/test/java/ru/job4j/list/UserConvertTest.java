@@ -22,8 +22,8 @@ public class UserConvertTest {
         List<User> list = new ArrayList<>(Arrays.asList(users));
         HashMap<Integer, User> result = userConvert.process(list);
         HashMap<Integer, User> expected = new HashMap<>();
-        for (User u:users){
-            expected.put(u.getId(),u);
+        for (User u : users) {
+            expected.put(u.getId(), u);
         }
         assertThat(result, is(expected));
     }

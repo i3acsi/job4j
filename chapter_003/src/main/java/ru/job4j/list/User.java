@@ -6,7 +6,7 @@ public class User {
     private String surname;
     private String city;
 
-    public User(int id, String name, String surname, String city){
+    public User(int id, String name, String surname, String city) {
         this.city = city;
         this.surname = surname;
         this.name = name;
@@ -14,20 +14,19 @@ public class User {
     }
 
 
-
-    public int getId(){
+    public int getId() {
         return id;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public String getSurname(){
+    public String getSurname() {
         return surname;
     }
 
-    public String getCity(){
+    public String getCity() {
         return city;
     }
 }
