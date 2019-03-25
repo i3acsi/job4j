@@ -1,6 +1,8 @@
 package ru.job4j.list;
 
-public class User implements Comparable{
+import java.util.Comparator;
+
+public class User implements Comparable<User> {
     private int id;
     private String name;
     private String surname;
@@ -37,7 +39,7 @@ public class User implements Comparable{
     }
 
     @Override
-    public int compareTo(Object o) {
-        return this.age - ((User) o).age;
+    public int compareTo(User o) {
+        return Integer.compare(this.age, o.age);
     }
 }
