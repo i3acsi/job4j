@@ -26,7 +26,7 @@ enum Tracker {
     /**
      * Массив для хранение заявок.
      */
-    private ArrayList<Item> items = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
 
     /**
      * Метод реализаущий добавление заявки в хранилище
@@ -56,7 +56,7 @@ enum Tracker {
      *
      * @return Item[].
      */
-    public ArrayList<Item> findAll() {
+    public List<Item> findAll() {
         return items;
     }
 
@@ -77,14 +77,14 @@ enum Tracker {
      * @return boolean.
      */
     public boolean replace(String id, Item item) {
-        int index = items.indexOf(this.findById(id));
+        int index = this.index(id);
         if (index >= 0) {
             items.remove(index);
             item.setId(id);
-            items.add(index, item);
-        }
+            items.add(index, item);}
         return index >= 0;
     }
+
 
     /**
      * Метод должен удалить ячейку в массиве. Для этого необходимо найти
@@ -93,7 +93,7 @@ enum Tracker {
      * @return boolean.
      */
     public boolean delete(String id) {
-        int index = items.indexOf(this.findById(id));
+        int index = this.index(id);
         if (index >= 0) {
             items.remove(index);
         }
@@ -106,12 +106,24 @@ enum Tracker {
      *
      * @return Item[].
      */
-    public ArrayList<Item> findByName(String key) {
+    public List<Item> findByName(String key) {
         return items.stream().filter(x -> key.equals(x.getTask())).collect(Collectors.toCollection(ArrayList::new));
     }
 
     public void clean() {
         items.clear();
+    }
+
+    private int index(String id) {
+        int index = -1 , i = 0;
+        for (Item item:items){
+            if (id.equals(item.getId())){
+                index = i;
+                break;
+            }
+            i++;
+        }
+        return index;
     }
 }
 

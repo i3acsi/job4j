@@ -1,6 +1,6 @@
 package ru.job4j.tracker;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Класс для поиска заявок по названию.
@@ -15,7 +15,7 @@ public class FindByName extends BaseAction {
     public void execute(Input input, Tracker tracker) {
         System.out.println("----------Поиск заявок по названию----------");
         String task = input.ask("Введите название заявки для поиска ");
-        ArrayList<Item> temp = tracker.findByName(task);
+        List<Item> temp = tracker.findByName(task);
         if (temp.size() != 0) {
             System.out.println("Найденные заявки: ");
             for (Item item : temp) {

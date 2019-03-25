@@ -1,6 +1,6 @@
 package ru.job4j.tracker;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Класс для отображения в консоли всех существующих заявок.
@@ -13,7 +13,7 @@ public class FindAll extends  BaseAction {
 	
 	@Override
 	public void execute(Input input, Tracker tracker) {
-	    ArrayList<Item> temp = tracker.findAll();
+	    List<Item> temp = tracker.findAll();
         if (temp.size() != 0) {
             System.out.println("----------Все существующие заявки---------");
             for (Item item : temp) {
