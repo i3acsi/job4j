@@ -27,6 +27,10 @@ public class SortUserTest {
         expected.add(users[1]);
         expected.add(users[0]);
         expected.add(users[2]);
+        expected.add(users[5]);
+        expected.add(users[4]);
+
+
         assertThat(result, is(expected));
     }
 
@@ -34,9 +38,11 @@ public class SortUserTest {
     public void whenSortedByName() {
         List<User> result  = sortUser.sortNameLength(Arrays.asList(users));
         List<User> expected = new ArrayList<>();
-        expected.add(users[1]);
-        expected.add(users[2]);
         expected.add(users[3]);
+        expected.add(users[4]);
+        expected.add(users[5]);
+        expected.add(users[2]);
+        expected.add(users[1]);
         expected.add(users[0]);
         assertThat(result, is(expected));
     }
@@ -51,10 +57,6 @@ public class SortUserTest {
         expected.add(users[2]);
         expected.add(users[1]);
         expected.add(users[0]);
-        int i=0;
-        for (User u: result) {
-            System.out.println(u.getName() + " " + u.getAge()+"//"+expected.get(i).getName()+" "+expected.get(i++).getAge());
-        }
         assertThat(result, is(expected));
 
     }
