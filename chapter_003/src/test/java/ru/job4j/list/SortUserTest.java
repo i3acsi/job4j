@@ -11,10 +11,10 @@ public class SortUserTest {
     private final SortUser sortUser = new SortUser();
     private final User[] users = new User[]{
             new User(0, "Vasiliy", "Gasevskiy", "Nsk", 32),
-            new User(2, "Petr", "Arsentev", "Bryansk", 31),
+            new User(1, "Petr", "Arsentev", "Bryansk", 31),
             new User(2, "Ivan", "Ivanov", "Bryansk", 34),
-            new User(3, "Child1", "Kid", "Kinder Garden", 4)
-            new User(3, "Child2", "Kid", "Kinder Garden", 5)
+            new User(3, "Child", "Kid", "Kinder Garden", 4),
+
     };
 
     @Test
