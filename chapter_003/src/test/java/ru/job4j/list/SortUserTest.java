@@ -14,6 +14,8 @@ public class SortUserTest {
             new User(1, "Petr", "Arsentev", "Bryansk", 31),
             new User(2, "Ivan", "Ivanov", "Bryansk", 34),
             new User(3, "Child", "Kid", "Kinder Garden", 4),
+            new User(4, "Child", "Kid", "Kinder Garden", 344),
+            new User(5, "Child", "Kid", "Kinder Garden", 37)
 
     };
 
@@ -44,11 +46,14 @@ public class SortUserTest {
         List<User> result  = sortUser.sortByAllFields(Arrays.asList(users));
         List<User> expected = new ArrayList<>();
         expected.add(users[3]);
+        expected.add(users[5]);
+        expected.add(users[4]);
         expected.add(users[2]);
         expected.add(users[1]);
         expected.add(users[0]);
+        int i=0;
         for (User u: result) {
-            System.out.println(u.getName());
+            System.out.println(u.getName() + " " + u.getAge()+"//"+expected.get(i).getName()+" "+expected.get(i++).getAge());
         }
         assertThat(result, is(expected));
 

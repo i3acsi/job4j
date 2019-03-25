@@ -42,4 +42,14 @@ public class User implements Comparable<User> {
     public int compareTo(User o) {
         return Integer.compare(this.age, o.age);
     }
+
+    public int compareThis(User o) {
+        int result = Integer.compare(this.age, o.age);
+        if (result == 0) {
+            result = o.getName().compareTo(this.getName());
+        } else result = 0;
+        System.out.println(result+" "+o.getName()+""+this.getName());
+        return result;
+    }
+
 }
