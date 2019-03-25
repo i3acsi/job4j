@@ -15,9 +15,9 @@ public class UserConvertTest {
     public void when2on2ArrayThenList4() {
         UserConvert userConvert = new UserConvert();
         User[] users = new User[]{
-                new User(0, "Vasiliy", "Gasevskiy", "Nsk"),
-                new User(2, "Ivan", "Ivanov", "Bryansk"),
-                new User(2, "Ivan", "Ivanov", "Bryansk")
+                new User(0, "Vasiliy", "Gasevskiy", "Nsk", 32),
+                new User(2, "Ivan", "Ivanov", "Bryansk",31),
+                new User(2, "Ivan", "Ivanov", "Bryansk", 34)
         };
         List<User> list = new ArrayList<>(Arrays.asList(users));
         HashMap<Integer, User> result = userConvert.process(list);
