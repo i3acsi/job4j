@@ -79,9 +79,8 @@ enum Tracker {
     public boolean replace(String id, Item item) {
         int index = this.index(id);
         if (index >= 0) {
-            items.remove(index);
             item.setId(id);
-            items.add(index, item);}
+            items.set(index, item);}
         return index >= 0;
     }
 
