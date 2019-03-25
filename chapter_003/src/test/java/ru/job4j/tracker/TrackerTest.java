@@ -1,6 +1,9 @@
 package ru.job4j.tracker;
 
+import org.junit.After;
 import org.junit.Test;
+
+import java.util.Arrays;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -13,6 +16,12 @@ import static org.junit.Assert.assertThat;
  * @since 0.1
  */
 public class TrackerTest {
+    private final Tracker tracker = Tracker.getInstance();
+
+    @After
+    public void backOutput() {
+        tracker.clean();
+    }
 
     /**
      * Test adding a new element.
@@ -20,7 +29,6 @@ public class TrackerTest {
      */
     @Test
     public void whenAddNewItemThenTrackerHasSameItem() {
-        Tracker tracker = Tracker.getInstance();
         Item item = new Item("test1", "testDescription");
         tracker.add(item);
         assertThat(tracker.findAll().get(0), is(item));
@@ -32,7 +40,6 @@ public class TrackerTest {
      */
     @Test
     public void whenReplaceNameThenReturnNewName() {
-        Tracker tracker = Tracker.getInstance();
         Item previous = new Item("test1", "testDescription");
         tracker.add(previous);
         String id = previous.getId();
@@ -48,14 +55,13 @@ public class TrackerTest {
      */
     @Test
     public void whenFindByNameThenReturnArrayOfItems() {
-        Tracker tracker = Tracker.getInstance();
         Item[] ex = {
                 tracker.add(new Item("test1", "testDescription")),
                 tracker.add(new Item("test1", "testDescription"))
         };
         Item item3 = new Item("test2", "testDescription");
         tracker.add(item3);
-        assertThat(tracker.findByName("test1"), is(ex));
+        assertThat(tracker.findByName("test1"), is(Arrays.asList(ex)));
     }
 
     /**
@@ -64,7 +70,6 @@ public class TrackerTest {
      */
     @Test
     public void whenFindByNameThenNoItems() {
-        Tracker tracker = Tracker.getInstance();
         Item item1 = new Item("test1", "testDescription");
         tracker.add(item1);
         assertThat(tracker.findByName("test").size(), is(0));
@@ -76,7 +81,6 @@ public class TrackerTest {
      */
     @Test
     public void whenDeleteReturnTrue() {
-        Tracker tracker = Tracker.getInstance();
         Item item1 = new Item("test1", "testDescription");
         Item item2 = new Item("test1", "testDescription");
         Item item3 = new Item("test2", "testDescription");
@@ -95,7 +99,6 @@ public class TrackerTest {
      */
     @Test
     public void whenDeleteReturnFalse() {
-        Tracker tracker = Tracker.getInstance();
         Item item1 = new Item("test1", "testDescription");
         Item item2 = new Item("test1", "testDescription");
         tracker.add(item1);
@@ -111,7 +114,6 @@ public class TrackerTest {
      */
     @Test
     public void whenFindAllThenReturnArrayOfItemsWithoutNull() {
-        Tracker tracker = Tracker.getInstance();
         Item item1 = new Item("test1", "testDescription");
         Item item2 = new Item("test1", "testDescription");
         Item item3 = new Item("test2", "testDescription");
@@ -130,7 +132,6 @@ public class TrackerTest {
      */
     @Test
     public void whenFindByIdThenOnExistReturnItem() {
-        Tracker tracker = Tracker.getInstance();
         Item item1 = new Item("test1", "testDescription");
         Item item2 = new Item("test1", "testDescription");
         Item item3 = new Item("test2", "testDescription");
@@ -146,7 +147,6 @@ public class TrackerTest {
      */
     @Test
     public void whenFindByIdThenIfNotExistReturnNull() {
-        Tracker tracker = Tracker.getInstance();
         Item item1 = new Item("test1", "testDescription");
         Item item2 = new Item("test1", "testDescription");
         Item item3 = new Item("test2", "testDescription");

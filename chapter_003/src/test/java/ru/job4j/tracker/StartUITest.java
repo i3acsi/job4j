@@ -29,10 +29,10 @@ public class StartUITest {
             + "6. Comment." + ln
             + "7. Exit." + ln);
     private final Tracker tracker = Tracker.getInstance();
-    private final Item item = tracker.add(new Item("test name", "desc"));
-    private final Item item2 = tracker.add(new Item("test name 2", "desc2"));
-    private final Item item3 = tracker.add(new Item("test name 3", "desc3"));
-    private final String id = item.getId();
+    private final Item[] item = {tracker.add(new Item("test name", "desc")),
+            tracker.add(new Item("test name", "desc2")),
+            tracker.add(new Item("test name 3", "desc3"))};
+    private final String[] id = {item[0].getId(), item[1].getId(), item[2].getId()};
     private final PrintStream stdout = System.out;
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -44,6 +44,7 @@ public class StartUITest {
 
     @After
     public void backOutput() {
+        tracker.clean();
         System.setOut(this.stdout);
         System.out.println("execute after method");
     }
@@ -53,14 +54,14 @@ public class StartUITest {
      */
     @Test
     public void whenFindByIDThenItemShown() {
-        Input input = new StubInput(new String[]{"4", id, "y"});
+        Input input = new StubInput(new String[]{"4", id[0], "y"});
         new StartUI(input, tracker).init();
         assertThat(this.out.toString(),
                 is(
                         new StringBuilder()
                                 .append(menu)
                                 .append("----------Поиск заявки по ID----------" + ln)
-                                .append("Найдена заявка " + item.show() + ln)
+                                .append("Найдена заявка " + item[0].show() + ln)
                                 .toString()
                 )
         );
@@ -72,11 +73,7 @@ public class StartUITest {
      */
     @Test
     public void whenFindTaskThenItemsShown() {
-        Item[] ex = {
-                tracker.add(new Item("testEx", "testDescription")),
-                tracker.add(new Item("testEx", "testDescription"))
-        };
-        Input input = new StubInput(new String[]{"5", "testEx", "y"});
+        Input input = new StubInput(new String[]{"5", "test name", "y"});
         new StartUI(input, tracker).init();
         assertThat(this.out.toString(),
                 is(
@@ -84,12 +81,11 @@ public class StartUITest {
                                 .append(menu)
                                 .append("----------Поиск заявок по названию----------" + ln)
                                 .append("Найденные заявки: " + ln)
-                                .append(ex[0].show() + ln)
-                                .append(ex[1].show() + ln)
+                                .append(item[0].show() + ln)
+                                .append(item[1].show() + ln)
                                 .toString()
                 )
         );
-        tracker.clean();
     }
 
     /**
@@ -98,7 +94,6 @@ public class StartUITest {
     @Test
     public void whenShowThenAllItemsShown() {
         Input input = new StubInput(new String[]{"1", "y"});
-        tracker.clean();
         new StartUI(input, tracker).init();
         assertThat(
                 this.out.toString(),
@@ -106,9 +101,9 @@ public class StartUITest {
                         new StringBuilder()
                                 .append(menu)
                                 .append("----------Все существующие заявки---------" + ln)
-                                .append(item.show() + ln)
-                                .append(item2.show() + ln)
-                                .append(item3.show() + ln)
+                                .append(item[0].show() + ln)
+                                .append(item[1].show() + ln)
+                                .append(item[2].show() + ln)
                                 .append("------------------------------------------" + ln)
                                 .toString()
                 )
@@ -120,9 +115,10 @@ public class StartUITest {
      */
     @Test
     public void whenUserAddItemThenTrackerHasNewItemWithSameName() {
-        Input input = new StubInput(new String[]{"0", "test name", "desc", "y"});
+        Input input = new StubInput(new String[]{"0", "test name0", "desc", "y"});
         new StartUI(input, tracker).init();
-        assertThat(tracker.findAll().get(3).getTask(), is("test name"));
+        assertThat(tracker.findAll().size(), is(4));
+        assertThat(tracker.findAll().get(3).getTask(), is("test name0"));
     }
 
 
@@ -131,9 +127,9 @@ public class StartUITest {
      */
     @Test
     public void whenUpdateThenTrackerHasUpdatedValue() {
-        Input input = new StubInput(new String[]{"2", id, "test replace", "заменили заявку", "y"});
+        Input input = new StubInput(new String[]{"2", id[0], "test replace", "заменили заявку", "y"});
         new StartUI(input, tracker).init();
-        assertThat(tracker.findById(id).getTask(), is("test replace"));
+        assertThat(tracker.findById(id[0]).getTask(), is("test replace"));
     }
 
     /**
@@ -141,7 +137,7 @@ public class StartUITest {
      */
     @Test
     public void whenDeleteThenTrackerHasNoValue() {
-        Input input = new StubInput(new String[]{"3", id, "y"});
+        Input input = new StubInput(new String[]{"3", id[2], "y"});
         new StartUI(input, tracker).init();
         assertThat(tracker.findAll().size(), is(2));
     }
@@ -150,9 +146,9 @@ public class StartUITest {
      * Тест комментария к заявке.
      */
     @Test
-    public void whenFindByIdThenTrackerHasItem() {
-        Input input = new StubInput(new String[]{"6", id, "comment", "y"});
+    public void whenCommentThenItemHasComment() {
+        Input input = new StubInput(new String[]{"6", id[0], "comment", "y"});
         new StartUI(input, tracker).init();
-        assertThat(tracker.findById(id).getComments(), is("comment"));
+        assertThat(tracker.findById(id[0]).getComments(), is("comment"));
     }
 }

@@ -1,6 +1,7 @@
 package ru.job4j.tracker;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,6 +40,7 @@ enum Tracker {
         return item;
     }
 
+    private static AtomicLong idCounter = new AtomicLong();
     /**
      * Метод генерирует уникальный ключ для заявки.
      * Так как у заявки нет уникальности полей, имени и описание. Для идентификации нам нужен уникальный ключ.
@@ -46,7 +48,7 @@ enum Tracker {
      * @return Уникальный ключ.
      */
     private String generateId() {
-        return UUID.randomUUID().toString();
+        return String.valueOf(idCounter.getAndIncrement());
     }
 
     /**
@@ -82,15 +84,6 @@ enum Tracker {
             items.add(index, item);
         }
         return index >= 0;
-        //        boolean result = false;
-//        for (int i = 0; i < items.length; i++) {
-//            if (items[i] != null && items[i].getId().equals(id)) {
-//                items[i] = item;
-//                items[i].setId(id);
-//                result = true;
-//            }
-//        }
-//        return result;
     }
 
     /**
@@ -115,14 +108,6 @@ enum Tracker {
      */
     public ArrayList<Item> findByName(String key) {
         return items.stream().filter(x -> key.equals(x.getTask())).collect(Collectors.toCollection(ArrayList::new));
-//        Item[] result = new Item[this.position];
-//        int count = 0;
-//        for (int i = 0; i < this.position; i++) {
-//            if (items[i].getTask().equals(key)) {
-//                result[count++] = items[i];
-//            }
-//        }
-//        return Arrays.copyOf(result, count);
     }
 
     public void clean() {
