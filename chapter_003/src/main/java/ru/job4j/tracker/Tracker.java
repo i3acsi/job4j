@@ -41,6 +41,7 @@ enum Tracker {
     }
 
     private static AtomicLong idCounter = new AtomicLong();
+
     /**
      * Метод генерирует уникальный ключ для заявки.
      * Так как у заявки нет уникальности полей, имени и описание. Для идентификации нам нужен уникальный ключ.
@@ -80,7 +81,8 @@ enum Tracker {
         int index = this.index(id);
         if (index >= 0) {
             item.setId(id);
-            items.set(index, item);}
+            items.set(index, item);
+        }
         return index >= 0;
     }
 
@@ -114,9 +116,9 @@ enum Tracker {
     }
 
     private int index(String id) {
-        int index = -1 , i = 0;
-        for (Item item:items){
-            if (id.equals(item.getId())){
+        int index = -1, i = 0;
+        for (Item item : items) {
+            if (id.equals(item.getId())) {
                 index = i;
                 break;
             }
