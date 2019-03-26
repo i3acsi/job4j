@@ -1,7 +1,8 @@
-package ru.job4j.trackerSingle;
+package ru.job4j.trackersingle;
 
 import java.util.Arrays;
 import java.util.Random;
+
 import ru.job4j.tracker.Item;
 
 import static java.lang.Thread.sleep;
@@ -16,13 +17,14 @@ import static java.lang.Thread.sleep;
 enum Tracker {
     INSTANCE;
 
-    public static Tracker getInstance(){
+    public static Tracker getInstance() {
         return INSTANCE;
     }
 
-    private Tracker(){
+    private Tracker() {
 
     }
+
     /**
      * Массив для хранение заявок.
      */
@@ -46,7 +48,7 @@ enum Tracker {
     public Item add(Item item) {
         item.setId(this.generateId());
         this.items[this.position++] = item;
-        return  item;
+        return item;
     }
 
     /**
@@ -144,4 +146,3 @@ enum Tracker {
         return Arrays.copyOf(result, count);
     }
 }
-

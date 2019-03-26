@@ -28,7 +28,9 @@ public class Logic {
             if (!occupiedWay(source, dest)) {
                 rst = true;
                 this.figures[index] = this.figures[index].copy(dest);
-            } else throw new OccupiedWayException("Way is occupied");
+            } else {
+                throw new OccupiedWayException("Way is occupied");
+            }
         }
         return rst;
     }
@@ -50,14 +52,6 @@ public class Logic {
         }
         return rst;
     }
-
-//    private Cell[] occupied() {
-//        Cell[] result = new Cell[32];
-//        for (int i = 0; i < 32; i++) {
-//            result[i] = this.figures[i].position();
-//        }
-//        return result;
-//    }
 
     private boolean occupiedWay(Cell source, Cell dest) {
         boolean rst = false;

@@ -7,7 +7,6 @@ import ru.job4j.chess.firuges.Figure;
 import static ru.job4j.chess.firuges.Cell.*;
 
 /**
- *
  * @author Petr Arsentev (parsentev@yandex.ru)
  * @version $Id$
  * @since 0.1
@@ -29,13 +28,12 @@ public class BishopBlack implements Figure {
     }
 
     /**
-     *
      * @param source - исходная ячейка
-     * @param dest - конечная ячейка
+     * @param dest   - конечная ячейка
      * @return way - массив ячеек, являющихся путем фигуры по доске
      */
     @Override
-    public Cell[] way(Cell source, Cell dest){
+    public Cell[] way(Cell source, Cell dest) {
         int dX = (source.x - dest.x) < 0 ? -1 : 1;
         int dY = (source.y - dest.y) < 0 ? -1 : 1;
         int length = Math.abs(source.x - dest.x) + 1;

@@ -1,4 +1,4 @@
-package ru.job4j.trackerSingle2;
+package ru.job4j.trackersingle2;
 
 import java.util.Arrays;
 import java.util.Random;

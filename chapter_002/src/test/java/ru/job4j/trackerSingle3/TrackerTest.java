@@ -1,4 +1,4 @@
-package ru.job4j.trackerSingle3;
+package ru.job4j.trackersingle3;
 
 import org.junit.Test;
 
