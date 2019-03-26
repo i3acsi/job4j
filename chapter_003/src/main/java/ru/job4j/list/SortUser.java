@@ -14,6 +14,6 @@ public class SortUser {
     }
 
     public List<User> sortByAllFields(List<User> users) {
-        return users.stream().sorted(User::compareThis).collect(Collectors.toList());
+        return users.stream().sorted(Comparator.comparing(User::getName).thenComparing(User::getAge)).collect(Collectors.toList());
     }
 }
