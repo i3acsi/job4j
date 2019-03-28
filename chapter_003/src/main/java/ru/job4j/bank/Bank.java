@@ -85,7 +85,7 @@ enum Bank {
      * @return List<Account> - список счетов клиента.
      */
     public List<Account> getUserAccounts(String passport) {
-        List<Account> result = new ArrayList<>();
+        List<Account> result;
         User user = findUser(passport);
         result = clients.get(user);
         return result;
@@ -125,7 +125,6 @@ enum Bank {
     }
 
     public List<User> findAllUsers() {
-
         return new ArrayList<>(clients.keySet());
     }
 }
