@@ -8,7 +8,6 @@ public class StartUI {
     }
 
     private void start() {
-        machine.init();
         machine.make();
     }
 

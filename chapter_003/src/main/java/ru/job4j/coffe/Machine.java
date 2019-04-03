@@ -1,22 +1,21 @@
 package ru.job4j.coffe;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.function.Predicate;
 
 public class Machine {
     private Input input;
     private int money;
-    private List<Drink> drinks = new ArrayList<>();
+    private static List<Drink> drinks = new ArrayList<Drink>() {
+        {
+            add(new Drink("Coffe", 30));
+            add(new Drink("Tea", 20));
+            add(new Drink("Water", 5));
+        }
+    };
 
     public Machine(Input input) {
         this.input = input;
-    }
-
-    public void init() {
-        drinks.add(new Drink("Coffe", 30));
-        drinks.add(new Drink("Tea", 20));
-        drinks.add(new Drink("Water", 5));
     }
 
     public void make() {
