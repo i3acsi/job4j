@@ -6,3 +6,5 @@
 
 [![Build Status](https://travis-ci.org/i3acsi/job4j.svg?branch=master)](https://travis-ci.org/i3acsi/job4j)
 [![codecov](https://codecov.io/gh/i3acsi/job4j/branch/master/graph/badge.svg)](https://codecov.io/gh/i3acsi/job4j)
+
+Создания новой ветки через IDEA
