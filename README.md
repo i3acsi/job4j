@@ -8,3 +8,5 @@
 [![codecov](https://codecov.io/gh/i3acsi/job4j/branch/master/graph/badge.svg)](https://codecov.io/gh/i3acsi/job4j)
 
 Создания новой ветки через IDEA
+
+В курсе производилась работа с ветках git.
