@@ -1,6 +1,6 @@
 package ru.job4j.addresslist;
 
-public class Address {
+public class Address implements Comparable<Address> {
     private String city;
     private String street;
     private int home;
@@ -37,5 +37,48 @@ public class Address {
                 this.home,
                 this.apartment
         );
+    }
+
+    @Override
+    public int compareTo(Address o) {
+        return this.city.compareTo(o.city);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result;
+        result = this.city.hashCode();
+        result = prime * result + this.street.hashCode();
+        result = prime * result + Integer.hashCode(this.apartment);
+        result = prime * result + Integer.hashCode(this.home);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Address other = (Address) obj;
+        if (!this.city.equals(other.city)) {
+            return false;
+        }
+        if (!this.street.equals(other.street)) {
+            return false;
+        }
+        if (this.home != other.home) {
+            return false;
+        }
+        if (this.apartment != other.apartment) {
+            return false;
+        }
+        return true;
     }
 }
