@@ -21,7 +21,7 @@
 		<module>chapter_004</module>
 		<module>puzzle</module>
 		<module>chess</module>
-     </modules>
+    </modules>
 	 
 	<build>
 		<plugins>
