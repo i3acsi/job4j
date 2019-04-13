@@ -17,8 +17,8 @@ public class Profiles {
     public List<Address> collectSorted() {
         return profiles.stream().
                 map(Profile::getAddress).
-                distinct().
                 sorted().
+                distinct().
                 collect(Collectors.toList()
                 );
     }
