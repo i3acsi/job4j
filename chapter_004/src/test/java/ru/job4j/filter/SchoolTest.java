@@ -63,7 +63,7 @@ public class SchoolTest {
     public void collectToMapTest() {
         Map<String, Student> result = school.collectToMap(students);
         List<Student> res = new ArrayList<>(result.values());
-        res.sort(Student::compareTo);
+        //res.sort(Student::compareTo);
         students.sort(Student::compareTo);
         assertThat(res, is(students));
     }

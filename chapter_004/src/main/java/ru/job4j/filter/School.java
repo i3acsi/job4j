@@ -1,5 +1,7 @@
 package ru.job4j.filter;
 
+import sun.reflect.generics.tree.Tree;
+
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -22,7 +24,9 @@ public class School {
         return students.stream().filter(predict).collect(Collectors.toList());
     }
 
-    public Map<String, Student> collectToMap(List<Student> stud) {
-        return stud.stream().collect(Collectors.toMap(Student::getName, v ->v));
+    public TreeMap<String, Student> collectToMap(List<Student> stud) {
+        TreeMap<String, Student> res = new TreeMap<>();
+        stud.forEach(x->res.put(x.getName(), x));
+        return res;
     }
 }
