@@ -1,10 +1,9 @@
 package ru.job4j.filter;
 
-import sun.reflect.generics.tree.Tree;
-
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class School {
     private List<Student> students = new ArrayList<>();
@@ -28,5 +27,13 @@ public class School {
         TreeMap<String, Student> res = new TreeMap<>();
         stud.forEach(x->res.put(x.getName(), x));
         return res;
+    }
+
+    List<Student> levelOf(List<Student> students, int bound) {
+        return students.stream()
+                .flatMap(Stream::ofNullable)
+                .sorted()
+                .takeWhile(x->(x.getScore())>bound)
+                .collect(Collectors.toList());
     }
 }

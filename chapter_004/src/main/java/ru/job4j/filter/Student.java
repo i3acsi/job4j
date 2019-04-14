@@ -1,5 +1,6 @@
 package ru.job4j.filter;
 
+
 public class Student implements Comparable<Student> {
     private int score;
     private String name;
@@ -24,6 +25,6 @@ public class Student implements Comparable<Student> {
 
     @Override
     public int compareTo(Student o) {
-        return this.getName().compareTo(o.getName());
+        return Integer.compare(o.score, this.score);
     }
 }

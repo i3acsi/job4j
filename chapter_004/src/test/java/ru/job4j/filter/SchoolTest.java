@@ -5,8 +5,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -29,10 +31,8 @@ public class SchoolTest {
     @Test
     public void from70to100() {
         List<Student> result = school.collect(students, x -> x.getScore() > 70 & x.getScore() <= 100);
-        System.out.println("from 70 to 100");
         for (Student s : result) {
             int score = s.getScore();
-            System.out.println(s.toString());
             assert (score > 70 & score <= 100);
         }
     }
@@ -40,10 +40,8 @@ public class SchoolTest {
     @Test
     public void from50to70() {
         List<Student> result = school.collect(students, x -> x.getScore() > 50 & x.getScore() <= 70);
-        System.out.println("from 50 to 70");
         for (Student s : result) {
             int score = s.getScore();
-            System.out.println(s.toString());
             assert (score > 50 & score <= 70);
         }
     }
@@ -51,10 +49,8 @@ public class SchoolTest {
     @Test
     public void from0to50() {
         List<Student> result = school.collect(students, x -> x.getScore() >= 0 & x.getScore() <= 50);
-        System.out.println("from 0 to 50");
         for (Student s : result) {
             int score = s.getScore();
-            System.out.println(s.toString());
             assert (score >= 0 & score <= 100);
         }
     }
@@ -63,8 +59,14 @@ public class SchoolTest {
     public void collectToMapTest() {
         Map<String, Student> result = school.collectToMap(students);
         List<Student> res = new ArrayList<>(result.values());
-        //res.sort(Student::compareTo);
-        students.sort(Student::compareTo);
+        students.sort((Comparator.comparing(Student::getName)));
         assertThat(res, is(students));
+    }
+
+    @Test
+    public void levelOfTest() {
+        List<Student> result = school.levelOf(students, 90);
+        List<Student> expected = students.stream().filter(x->x.getScore()>90).sorted().collect(Collectors.toList());
+        assertThat(result, is(expected));
     }
 }
