@@ -22,42 +22,39 @@ public class SortUserTest {
     @Test
     public void whenSortedByAge() {
         Set<User> result = sortUser.sort(Arrays.asList(users));
-        Set<User> expected = new LinkedHashSet<>();
-        expected.add(users[3]);
-        expected.add(users[1]);
-        expected.add(users[0]);
-        expected.add(users[2]);
-        expected.add(users[5]);
-        expected.add(users[4]);
-
-
+        Set<User> expected = Set.of(
+                users[3],
+                users[1],
+                users[0],
+                users[2],
+                users[5],
+                users[4]);
         assertThat(result, is(expected));
     }
 
     @Test
     public void whenSortedByName() {
-        List<User> result  = sortUser.sortNameLength(Arrays.asList(users));
-        List<User> expected = new ArrayList<>();
-        expected.add(users[3]);
-        expected.add(users[4]);
-        expected.add(users[5]);
-        expected.add(users[2]);
-        expected.add(users[1]);
-        expected.add(users[0]);
+        List<User> result = sortUser.sortNameLength(Arrays.asList(users));
+        List<User> expected = List.of(
+                users[3],
+                users[4],
+                users[5],
+                users[2],
+                users[1],
+                users[0]);
         assertThat(result, is(expected));
     }
 
     @Test
     public void whenSortedTwice() {
-        List<User> result  = sortUser.sortByAllFields(Arrays.asList(users));
-        List<User> expected = new ArrayList<>();
-        expected.add(users[3]);
-        expected.add(users[5]);
-        expected.add(users[4]);
-        expected.add(users[2]);
-        expected.add(users[1]);
-        expected.add(users[0]);
+        List<User> result = sortUser.sortByAllFields(Arrays.asList(users));
+        List<User> expected = List.of(
+                users[3],
+                users[5],
+                users[4],
+                users[2],
+                users[1],
+                users[0]);
         assertThat(result, is(expected));
-
     }
 }

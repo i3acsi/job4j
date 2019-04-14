@@ -19,12 +19,10 @@ public class UserConvertTest {
                 new User(2, "Ivan", "Ivanov", "Bryansk", 31),
                 new User(2, "Ivan", "Ivanov", "Bryansk", 34)
         };
-        List<User> list = new ArrayList<>(Arrays.asList(users));
+        List<User> list = List.of(users);
         HashMap<Integer, User> result = userConvert.process(list);
         HashMap<Integer, User> expected = new HashMap<>();
-        for (User u : users) {
-            expected.put(u.getId(), u);
-        }
+        Arrays.stream(users).forEach(x->expected.put(x.getId(), x));
         assertThat(result, is(expected));
     }
 }
