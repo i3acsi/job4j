@@ -1,8 +1,12 @@
 dist: trusty
 # используем €зык java. Travis CI поддерживает другие €зыки тоже.
 language: java
+before_install:
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
 # используем режим обычного пользовател€ дл€ сборки проекта.
 sudo: false
+
 
 # после выполнени€ сборки запустить скрипт, который будет собирать статистику по JaCoCo
 # «десь используетс€ сторонни сервис https://codecov.io/
