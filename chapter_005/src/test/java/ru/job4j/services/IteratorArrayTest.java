@@ -5,7 +5,6 @@ import org.junit.Test;
 
 
 import java.util.Iterator;
-import java.util.Objects;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;

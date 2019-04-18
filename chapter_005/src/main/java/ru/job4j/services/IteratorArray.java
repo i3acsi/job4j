@@ -1,7 +1,6 @@
 package ru.job4j.services;
 
 import java.util.Iterator;
-import java.util.Optional;
 
 public class IteratorArray implements Iterator {
     private final int[] values;
