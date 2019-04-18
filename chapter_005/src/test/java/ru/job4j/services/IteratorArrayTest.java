@@ -4,11 +4,27 @@ import org.junit.Before;
 import org.junit.Test;
 
 
+import java.util.Iterator;
+import java.util.Objects;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class IteratorArrayTest {
-    private static int[] array = new int[]{2, 4, 7, 12, 3, 78, 223, 12, 11, 13};
+
+    public static final class ForEachArray implements Iterable{
+        private final int[] array;
+
+        public ForEachArray(int[] array) {
+            this.array = array;
+        }
+
+        @Override
+        public Iterator iterator() {
+            return new IteratorArray(array);
+        }
+    }
+    private final int[] array = new int[]{2, 4, 7, 12, 3, 78, 223, 12, 11, 13};
     private static IteratorArray iteratorArray;
 
     @Before
@@ -30,6 +46,16 @@ public class IteratorArrayTest {
     }
 
     @Test
+    public void whenChekTHenReturnSameValue() {
+        while (iteratorArray.hasNext()) {
+            iteratorArray.next();
+        }
+        iteratorArray.hasNext();
+        boolean result = iteratorArray.hasNext();
+        assertThat(result, is(false));
+    }
+
+    @Test
     public void whenGetNextPointerStepsForward() {
         int result = (Integer) iteratorArray.next();
         assertThat(result, is(array[0]));
@@ -47,5 +73,15 @@ public class IteratorArrayTest {
             flag = true;
         }
         assertThat(flag, is(true));
+    }
+
+    @Test
+    public void foreach() {
+        int[] ints = new int[]{34, 23, 11, 3};
+        ForEachArray forEach = new ForEachArray(ints);
+        int i = 0;
+        for (Object value: forEach) {
+            assertThat(value, is(ints[i++]));
+        }
     }
 }
