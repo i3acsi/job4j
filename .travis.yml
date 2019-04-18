@@ -1,3 +1,4 @@
+dist: trusty
 # используем язык java. Travis CI поддерживает другие языки тоже.
 language: java
 # используем режим обычного пользователя для сборки проекта.
@@ -20,5 +21,5 @@ env:
     - CODECOV_TOKEN="8ebf84bd-ab26-4130-b346-f199aecd27fd"
 
 jdk:
-  - openjdk11
+  - openjdk12
 
