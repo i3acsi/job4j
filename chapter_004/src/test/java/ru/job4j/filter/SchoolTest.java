@@ -66,7 +66,7 @@ public class SchoolTest {
     @Test
     public void levelOfTest() {
         List<Student> result = school.levelOf(students, 90);
-        List<Student> expected = students.stream().filter(x->x.getScore()>90).sorted().collect(Collectors.toList());
+        List<Student> expected = students.stream().filter(x->x.getScore() > 90).sorted().collect(Collectors.toList());
         assertThat(result, is(expected));
     }
 }

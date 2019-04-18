@@ -33,7 +33,7 @@ public class School {
         return students.stream()
                 .flatMap(Stream::ofNullable)
                 .sorted()
-                .takeWhile(x->(x.getScore())>bound)
+                .takeWhile(x->(x.getScore()) > bound)
                 .collect(Collectors.toList());
     }
 }
