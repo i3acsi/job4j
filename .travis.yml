@@ -20,5 +20,5 @@ env:
     - CODECOV_TOKEN="8ebf84bd-ab26-4130-b346-f199aecd27fd"
 
 jdk:
-  - openjdk12
+  - openjdk11
 
