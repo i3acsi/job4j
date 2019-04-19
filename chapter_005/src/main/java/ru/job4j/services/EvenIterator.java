@@ -1,7 +1,6 @@
 package ru.job4j.services;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * Итератор возвращающий только четные цифры.
@@ -11,34 +10,38 @@ import java.util.NoSuchElementException;
 public class EvenIterator implements Iterator {
     private final int[] values;
     private int index = 0;
-    private IteratorArray ir;
 
-    public EvenIterator(final int[] numbs) {
-        for (int value : numbs) {
-            if (value % 2 == 0) {
-                index++;
-            }
-        }
-        this.values = new int[index];
-        index = 0;
-        for (int value : numbs) {
-            if (value % 2 == 0) {
-                this.values[index++] = value;
-            }
-        }
-        ir = new IteratorArray(this.values);
+    public EvenIterator(final int[] numbs){
+        this.values = numbs;
     }
 
     @Override
     public boolean hasNext() {
-        return ir.hasNext();
+        return ir.asNext();
     }
 
     @Override
     public Integer next() {
-        if (!ir.hasNext()) {
-            throw new NoSuchElementException();
-        }
-        return (Integer) ir.next();
+        int result;
+        do {
+            result = values[index++];
+        } while (result%2!=0);
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] ints = new int[]{2, 4, 3, 1, 7 ,12, 9};
+        EvenIterator ei = new EvenIterator(ints);
+        System.out.println(ei.hasNext());
+        System.out.println(ei.hasNext());
+        System.out.println(ei.hasNext());
+        System.out.println(ei.hasNext());
+        System.out.println(ei.next());//2
+        System.out.println(ei.hasNext());
+        System.out.println(ei.next());//4
+        System.out.println(ei.hasNext());
+        System.out.println(ei.next());//12
+        System.out.println(ei.hasNext());
+
     }
 }
