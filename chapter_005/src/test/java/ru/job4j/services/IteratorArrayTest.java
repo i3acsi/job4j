@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 
 public class IteratorArrayTest {
 
-    public static final class ForEachArray implements Iterable{
+    public static final class ForEachArray implements Iterable {
         private final int[] array;
 
         public ForEachArray(int[] array) {
@@ -23,6 +23,7 @@ public class IteratorArrayTest {
             return new IteratorArray(array);
         }
     }
+
     private final int[] array = new int[]{2, 4, 7, 12, 3, 78, 223, 12, 11, 13};
     private static IteratorArray iteratorArray;
 
@@ -33,7 +34,7 @@ public class IteratorArrayTest {
 
     @Test
     public void whenHasNoNext() {
-        for (int i: array) {
+        for (int i : array) {
             iteratorArray.next();
         }
         assertThat(iteratorArray.hasNext(), is(false));
@@ -68,7 +69,7 @@ public class IteratorArrayTest {
         }
         try {
             iteratorArray.next();
-        } catch (ArrayIndexOutOfBoundsException e){
+        } catch (ArrayIndexOutOfBoundsException e) {
             flag = true;
         }
         assertThat(flag, is(true));
@@ -79,7 +80,7 @@ public class IteratorArrayTest {
         int[] ints = new int[]{34, 23, 11, 3};
         ForEachArray forEach = new ForEachArray(ints);
         int i = 0;
-        for (Object value: forEach) {
+        for (Object value : forEach) {
             assertThat(value, is(ints[i++]));
         }
     }
