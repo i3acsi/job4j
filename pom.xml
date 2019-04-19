@@ -77,7 +77,7 @@
 
     <dependencies>
 
-	<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-fxml -->
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-fxml -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
