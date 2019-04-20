@@ -1,6 +1,7 @@
 package ru.job4j.services;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Итератор возвращающий только четные цифры.
@@ -9,39 +10,46 @@ import java.util.Iterator;
 
 public class EvenIterator implements Iterator {
     private final int[] values;
-    private int index = 0;
+    private int currentPos = 0, index = 0;
 
-    public EvenIterator(final int[] numbs){
+    public EvenIterator(final int[] numbs) {
         this.values = numbs;
     }
 
     @Override
     public boolean hasNext() {
-        return ir.asNext();
+        boolean result = false;
+        //Проверка на -1 для того, чтобы вызов hasNext повторно - не вызывал бы ошибок
+        if (currentPos == -1) {
+            return true;
+        }
+        // Проверка на -2 для того, чтобы вызов hasNext при уже
+        // полученном результате false - не проходить цикл заново, т.к. результат уже известен.
+        if (currentPos == -2) {
+            return false;
+        }
+        if (currentPos == index) {
+            for (int i = index; i < values.length; i++) {
+                if (values[i] % 2 == 0) {
+                    index = i;
+                    result = true;
+                    currentPos = -1;
+                    break;
+                }
+                result = false;
+                currentPos = -2;
+            }
+        }
+        return result;
     }
 
     @Override
     public Integer next() {
-        int result;
-        do {
-            result = values[index++];
-        } while (result%2!=0);
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
+        Integer result = values[index++];
+        currentPos = index;
         return result;
-    }
-
-    public static void main(String[] args) {
-        int[] ints = new int[]{2, 4, 3, 1, 7 ,12, 9};
-        EvenIterator ei = new EvenIterator(ints);
-        System.out.println(ei.hasNext());
-        System.out.println(ei.hasNext());
-        System.out.println(ei.hasNext());
-        System.out.println(ei.hasNext());
-        System.out.println(ei.next());//2
-        System.out.println(ei.hasNext());
-        System.out.println(ei.next());//4
-        System.out.println(ei.hasNext());
-        System.out.println(ei.next());//12
-        System.out.println(ei.hasNext());
-
     }
 }
