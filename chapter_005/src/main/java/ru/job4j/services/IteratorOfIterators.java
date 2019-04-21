@@ -10,7 +10,7 @@ public class IteratorOfIterators {
 
             @Override
             public boolean hasNext() {
-                while (!innerIterator.hasNext() & it.hasNext()) {
+                if (!innerIterator.hasNext() & it.hasNext()) {
                     innerIterator = it.next();
                 }
                 return innerIterator.hasNext();
