@@ -21,13 +21,13 @@ public abstract class AbstractStore<T extends Base> implements Store<T> {
     @Override
     public boolean replace(String id, T item) {
         int position = findPosition(id);
-        return check(id, x->x.set(position, item));
+        return position == -1 ? null : check(id, x->x.set(position, item));
     }
 
     @Override
     public boolean delete(String id) {
         int position = findPosition(id);
-        return check(id, x->x.remove(position));
+        return position == -1 ? null : check(id, x->x.remove(position));
     }
 
     @Override
