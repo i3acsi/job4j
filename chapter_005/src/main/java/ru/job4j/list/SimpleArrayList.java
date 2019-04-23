@@ -1,12 +1,12 @@
 package ru.job4j.list;
 
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * Класс SimpleArrayList.
  */
-public class SimpleArrayList<E> {
-
+public class SimpleArrayList<E> implements Iterable<E> {
+    private int modCount = 0;
     private int size;
     private Node<E> first;
 
@@ -18,6 +18,7 @@ public class SimpleArrayList<E> {
         newLink.next = this.first;
         this.first = newLink;
         this.size++;
+        this.modCount++;
     }
 
     /**
@@ -26,7 +27,9 @@ public class SimpleArrayList<E> {
     public E delete() {
         Node<E> result = this.first;
         this.first = result.next;
+        result.setNextNull();
         this.size--;
+        this.modCount++;
         return result.date;
     }
 
@@ -51,6 +54,38 @@ public class SimpleArrayList<E> {
         return this.size;
     }
 
+    @Override
+    public Iterator<E> iterator() {
+        int expectedModCount = this.modCount;
+        return new Iterator<E>() {
+            Node<E> current = first;
+            int inerIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                return inerIndex < size;
+            }
+
+            @Override
+            public E next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                checkMod();
+                Node<E> result = current;
+                current = current.next;
+                inerIndex++;
+                return result.date;
+            }
+
+            private void checkMod() {
+                if (modCount != expectedModCount) {
+                    throw new ConcurrentModificationException();
+                }
+            }
+        };
+    }
+
     /**
      * Класс предназначен для хранения данных.
      */
@@ -61,6 +96,10 @@ public class SimpleArrayList<E> {
 
         Node(E date) {
             this.date = date;
+        }
+
+        public void setNextNull() {
+            this.next = null;
         }
     }
 }
