@@ -3,53 +3,24 @@ package ru.job4j.list;
 import java.util.NoSuchElementException;
 
 public class SimpleQueue<T> {
-    private int size;
-    private Node<T> first;
-    private Node<T> last;
-
-    public SimpleQueue() {
-        this.first = null;
-        this.last = null;
-        this.size = 0;
-    }
+    public SimpleStack<T> list1 = new SimpleStack<>();
+    public SimpleStack<T> list2 = new SimpleStack<>();
 
     public T poll() {
-        if (size == 0) {
+        if (list1.size() <= 0) {
             throw new NoSuchElementException();
         }
-        Node<T> result = this.last;
-        this.last = result.next;
-        this.size--;
-        return result.date;
-    }
-
-    public boolean isEmpty() {
-        return (size == 0);
+        return list1.poll();
     }
 
     public void push(T value) {
-        Node<T> oldItem = first;
-        first = new Node<>(value);
-        if (isEmpty()) {
-            last = first;
-            last.next = first;
-        } else {
-            oldItem.next = first;
+        int temp = list1.size();
+        for (int i = 0; i < temp; i++) {
+            list2.push(list1.poll());
         }
-        this.size++;
-    }
-
-    public int size() {
-        return this.size;
-    }
-
-    private static class Node<E> {
-
-        E date;
-        Node<E> next;
-
-        Node(E date) {
-            this.date = date;
+        list1.push(value);
+        for (int i = 0; i < temp; i++) {
+            list1.push(list2.poll());
         }
     }
 }
