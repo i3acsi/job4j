@@ -33,4 +33,12 @@ public class SimpleArrayListTest {
         assertThat(list.delete(), is(3));
         assertThat(list.get(0), is(2));
     }
+
+    @Test
+    public  void whenCycled() {
+        list.add(4);
+        list.add(5);
+        list.add(2);
+        assert (list.hasCycle());
+    }
 }
