@@ -38,4 +38,15 @@ public class SimpleQueueTest {
         assert (flag);
     }
 
+    @Test
+    public void orderTest() {
+        assertThat(list.poll(), is(1));
+        assertThat(list.poll(), is(2));
+        list.push(4);
+        list.push(5);
+        assertThat(list.poll(), is(3));
+        assertThat(list.poll(), is(4));
+        assertThat(list.poll(), is(5));
+    }
+
 }

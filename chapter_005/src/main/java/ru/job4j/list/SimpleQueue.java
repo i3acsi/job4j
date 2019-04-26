@@ -1,26 +1,30 @@
 package ru.job4j.list;
 
-import java.util.NoSuchElementException;
+/**
+ * FILO - Очередь
+ * @param <T>
+ */
 
 public class SimpleQueue<T> {
     public SimpleStack<T> list1 = new SimpleStack<>();
     public SimpleStack<T> list2 = new SimpleStack<>();
 
     public T poll() {
-        if (list1.size() <= 0) {
-            throw new NoSuchElementException();
-        }
-        return list1.poll();
+        migrate(list2, list1);
+        return list2.poll();
     }
 
     public void push(T value) {
-        int temp = list1.size();
-        for (int i = 0; i < temp; i++) {
-            list2.push(list1.poll());
-        }
+        migrate(list1, list2);
         list1.push(value);
-        for (int i = 0; i < temp; i++) {
-            list1.push(list2.poll());
+    }
+
+    private void migrate(SimpleStack<T> stack, SimpleStack<T> stack2) {
+        int length = stack2.size();
+        if (length != 0) {
+            for (int i = 0; i < length; i++) {
+                stack.push(stack2.poll());
+            }
         }
     }
 }
