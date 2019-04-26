@@ -63,22 +63,4 @@ public class SimpleArrayList<E> {
             this.date = date;
         }
     }
-
-    public boolean hasCycle() {
-        Node first = this.first;
-        boolean result = false;
-        link:
-        for (int i = 0; i < size; i++) {
-            Node temp = first;
-            while (temp.next != null) {
-                if (first.date == temp.next.date) {
-                    result = true;
-                    break link;
-                }
-                temp = temp.next;
-            }
-            first = first.next;
-        }
-        return result;
-    }
 }
