@@ -14,8 +14,14 @@ public class DynamicList<E> implements Iterable<E> {
 
     public boolean add(E item) {
         checkSize();
-        container[index] = item;
-        boolean result = container[index++].equals(item);
+        boolean result = false;
+        if (item == null) {
+            container[index++] = null;
+            result = true;
+        } else {
+            container[index] = item;
+            result = container[index++].equals(item);
+        }
         if (result) {
             modCount++;
         }
