@@ -44,7 +44,6 @@ public class SimpleMapTest {
         assert (iterator.hasNext());
         assertThat(iterator.next(), is(5));
         assert (iterator.hasNext());
-        assertThat(iterator.next(), is(3));
     }
 
     @Test
