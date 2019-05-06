@@ -60,11 +60,11 @@ public class SimpleMapTest {
     }
 
     @Test
-    public void whenOuOfLimitThenGrow() {
+    public void whenOutOfLimitThenGrow() {
         for (int i = 0; i < 16; i++) {
-            map.insert(new User(String.format("name %d", i), i, new GregorianCalendar(1999,0,i)), i);
+            map.insert(new User(String.format("name %d", i), i, new GregorianCalendar(1999, 0, i)), i);
         }
-        assert (map.insert(users[0],1));
+        assert (map.insert(users[0], 1));
     }
 
     @Test
