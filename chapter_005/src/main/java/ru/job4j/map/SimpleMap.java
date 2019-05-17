@@ -93,6 +93,8 @@ public class SimpleMap<K, V> implements Iterable {
             }
         }
         modCount++;
+        oldTable = null;
+        newTable = null;
     }
 
     static final int hash(Object key) {
