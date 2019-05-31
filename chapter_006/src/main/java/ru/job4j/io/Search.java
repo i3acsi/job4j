@@ -38,7 +38,9 @@ public class Search {
         if (temp != null && temp.length != 0) {
             for (File f : temp) {
                 if (f.isDirectory()) {
-                    dirs.add(f);
+                   // if (!f.getName().equals("target")) {
+                        dirs.add(f);
+                   // }
                 } else {
                     if (MyFiles.checkFileExtension(f, exts) == include) {
                         files.add(f);
