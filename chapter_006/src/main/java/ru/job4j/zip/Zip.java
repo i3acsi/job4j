@@ -26,11 +26,15 @@ public class Zip {
         Search search = new Search();
         List<File> sources = search.files(source, exts, false);
 
-        try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
+        try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(DIR + target)))) {
             for (File f : sources) {
                 zip.putNextEntry(new ZipEntry(f.getCanonicalPath().substring(length)));
-                try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(target))) {
-                    zip.write(out.readAllBytes());
+                try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(DIR + target))) {
+                    if (out.available() < 1575848036) {
+                        zip.write(out.readAllBytes());
+                    } else {
+                        out.close();
+                    }
                 }
             }
         } catch (IOException e) {

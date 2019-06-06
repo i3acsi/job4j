@@ -25,10 +25,6 @@ public class Search {
      * @return List<File> - список всех файлов с конкретным расширением
      */
     public List<File> files(String parent, List<String> exts, boolean include) {
-        System.out.println(parent);
-        for (String s: exts) {
-            System.out.println(s);
-        }
         this.exts = exts;
         inOrder(parent, include);
         return this.result;
@@ -42,9 +38,9 @@ public class Search {
         if (temp != null && temp.length != 0) {
             for (File f : temp) {
                 if (f.isDirectory()) {
-                    if (!f.getName().equals("target")) {
+                   // if (!f.getName().equals("target")) {
                         dirs.add(f);
-                    }
+                   // }
                 } else {
                     if (MyFiles.checkFileExtension(f, exts) == include) {
                         files.add(f);

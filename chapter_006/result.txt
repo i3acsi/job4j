@@ -1,0 +1,10 @@
+D:\projects\job4j\pom.xml
+D:\projects\job4j\chapter_001\pom.xml
+D:\projects\job4j\chapter_002\pom.xml
+D:\projects\job4j\chapter_003\pom.xml
+D:\projects\job4j\chapter_004\pom.xml
+D:\projects\job4j\chapter_005\pom.xml
+D:\projects\job4j\chapter_006\pom.xml
+D:\projects\job4j\chess\pom.xml
+D:\projects\job4j\puzzle\pom.xml
+D:\projects\job4j\tictactoe\pom.xml

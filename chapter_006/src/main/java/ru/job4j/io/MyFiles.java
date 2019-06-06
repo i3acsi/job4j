@@ -30,6 +30,15 @@ public class MyFiles {
         }
     }
 
+    public static String getFileShortName(File file) {
+        String fileName = file.getName();
+        int index = fileName.lastIndexOf(File.separator);
+        if (index != -1) {
+            fileName = fileName.substring(index);
+        }
+        return fileName.toLowerCase();
+    }
+
     public static boolean deleteDirectory(File dir) {
         boolean result = false;
         if (dir.isDirectory()) {

@@ -4,9 +4,6 @@ import ru.job4j.io.MyFiles;
 
 import org.apache.commons.cli.*;
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 public class Args {
@@ -92,7 +89,6 @@ public class Args {
 
     private static boolean checkDir(String path) {
         File f = new File(path);
-        //Path check = Paths.get(path);
         return f.exists() && f.isDirectory();
     }
 
