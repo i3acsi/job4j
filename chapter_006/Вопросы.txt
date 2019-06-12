@@ -81,12 +81,16 @@ Scanner, позволяет выделять примитивы и строки из входного потока. Он разбивает 
 						- abs int read(char buf[], int смещение, int колво символов)
 						- boolen ready - true, усли следующий запрос на ввод не будет ждать
 						- reset, skip
-	FileReader - лдя чтения содержимого файла. В конструктор принимает String путь; File file
+	FileReader - лдя чтения содержимого файла. В конструктор принимает String путь; File file (не принимает CharSet,так что лучше создать ISReader)
 	CharArrayReader - реализует поток вывода, использующий массив в качестве источника данных. Есть 2 конструктора, каждый из которых принимает char[] в качестве источника данных
 char[] array; char[] array, int begin, int symbol_count
 	BufferedReader - увеличивает производительность благодаря буферизации ввода. Есть 2 конструктора: Reader stream; Reader stream, int buffer
-
-
+Аналагично BufferedIS - BR - так же поддерживает перемещение обратно по потоку ввода в пределах доступного буфера (с помощью методов mark , reset)
+метод lines - возвращает Stream<String>
+	PushbackReader - позволяет возвратить в поток ввода1 и более символов, не выводя из него данные. 2 конструктора:
+Reader stream; Reader stream, int buffer. Метод unread - возвращает 1 и более символов в вызывающий поток ввода:
+unread(int char); unread(char[] buffer); unread(char[] buffer, int смещение, int количество символов). В первом случае в поток ввода возвращается указанный символ,
+это будет символ, который будет получен при следующем вызове метода read. Во втором случае в поток ввода возвращаются символы из буфера. А в 3м - кол-во симвлов из буфера начиная со (смещение)
 
 				Writer - AutoCloseable, Closeable, Flushable, Appendable
 						-append(char c) Присединяет указанный символ в конце вызывающего потока вывода. Возвращает ссылку на вызывающий поток вывода
@@ -102,8 +106,11 @@ char[] array; char[] array, int begin, int symbol_count
 	FileWriter - для записи данных в файл. В конструктор принимает String путь + опц.(boolen add); File file + опц.(boolean add). Если файл не существует - то он создается
 если существует, но с атрибутом readOnly - IOException.
 	CharArrayWriter - char[] в качестве адресата выводимых данных. Есть 2 Конструктора: по умолчанию; int symbol_count. - Создается буфер с заданным размером.
-При этом размер буфера растет по мере надобности 
- 
+При этом размер буфера растет по мере надобности
+	BufferedWriter - производный от Writer, буферизирует выводимые данные.Повышает производительность за счет снижения количества операций записи на физ. устройство. 2 конструктора:
+Writer stream; Writer stream, int buffer
+	PrintWriter - символьная версия PrintStream. Есть 4 конструктора OS stream; OS stream, boolean autoclean; Writer stream; Writer stream, boolean autoclean
+поддерживается метод printf 
 
 9. Что такое буферизированный поток?
 	Фильтруемые потоки - оболочки, в которые заключаются базовые потоки для расширения их функциональных возможностей. Такие потоки обычно доступны методам,
@@ -115,6 +122,7 @@ char[] array; char[] array, int begin, int symbol_count
 	PushbackIS - позволяет просмотреть поток ввода, не извлекая данные. Констркутор: IS stream; IS stream, int количество байт
 для первого конструктора- можно вернуть 1 байт в указанный поток ввода. 2й конструктор - создается поток ввода с буферомвозврата указанной длинны - можно вернуть заданное количество байт
 добавляется метод unread(int b) (byte[] buf) (byte[] buf, int смещение, int количество байт)
+
 10. Что такое форматированный вывод? Какие механизмы позволяют осуществить форматированный вызов?
 //todo
 (Класс PrintStream предоставляет все возможности для вывода данных по дескриптору файла System.out типа System) узнать подробней
@@ -134,7 +142,10 @@ String форматирующая строка, Object аргументы; Locale рег. настройки, String фор
 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
 12. Что такое класс Console? Расскажите его АПИ.
-
+Служит для ввода-вывода данных на консоль, если она есть. Интерфейс Flushable. Функционирует, главным образом через System.in, System.out.
+Его экземпляр получается вызовом метода System.console(); если консоль доступна - возвращается ссылка на нее, иначе - null.
+метод flush - вывод буферизированных данных в консоль; printf; Reader reader возвращает ссылку на поток чтения типа Reader, связанный с консолью
+readLine, readPassword, Writer writer
 
 13. Что такое поток данных? Data stream.
 Классы DataOS (IS) позволяют выводить примитивные данные в поток или выводить из потока. Такие потоки упрощают сохранение в файле данных, представленных в двоичной форме.
@@ -153,9 +164,28 @@ RandomAccessFile так же реализует интерфейсы DataInput, DataOutput (+ AutoClosea
 RAF реализут стандартные методы ввода/вывода, которые можно использовать для чтения/ записи файлов с произвольным доступом. 
 readUTF, readLine, setLength(устанавливает заданную длинну вызывающего файла)
 
-
 14. Что такое поток объектов, Object stream.
+Сериализация - процесс записи состояния объектров в поток вывода байт. Используется для записи состоянияпрограммы в файле.
+Средствами сериализации может быть сохранен и восстановлен только объект класса, реализующего интерфейс Serializable. Если класс сериализуется, то сериализуются и подклассы.
+Переменные, объявленные как transient не сериализуются, не сериализуются и статические переменные
+Интерфейс ObjectOutput - расширяет интерфейсы AutoCloseable, DataOutput, поддерживая сериализацию объектов.
+close, flush, write(byte[] buffer), write(byte[] buffer, int смещение, int количество байт), write(int byte), writeObject(Object obj) - записывает объект в вызывающий поток вывода
+Класс ObjectOutputStream расширяет OS, и реализует ObjectOutput. Конструктор: OutputSTream stream
++ writeBoolean, writeByte, writeBytes(String str), writeChar, writeChars(String str).. Double,Float, Int, Long, Short
+Интерфейс ObjectInput - расширяет интерфейсы AutoCloseable, DataInput, поддерживая сериализацию объектов.
+int available - колво бай, доступных в данный момент в буфере ввода; close; read; read(byte[] buffer); read(byte[] buffer, int семещение, int количество байт)
+Object readObject - читает объект из вызывающего потока ввода; Long skip(long количество байт) - скипает колво байт, возвращает колво фактически проигнорированных байт
+Класс ObjectInputStream расширяет IS и реализует интерфейс ObjectInput. Отвечает за ввод объектов из потока. Конструктор: IS stream
+Имеется внутренний класс GetField, упрощащий чтение постоянных полей
++readBoolean, readByte, readChar, readDouble, readFloat, readFully(byte[] buffer), readFully(byte[] buffer, int смещение, int количество байт), readInt, readLong
+readObject(может бросить ClassNotFoundException), readShort, readUnsignedByte, readUnsignedShort
+
 15. Что такое Path? Как он реализуется на разных ОС?
+Операции на файлом реализуются с помощью статических методов класса Files
+Все методы Files, если не принимают кодировку, работают с utf-8
+В Files есть метод lines/list/walk, которые возвращают стримы, что м.б. удобно. При этом Stream держит файловый ресурс
+соответственно этот метод нужно использовать в блоку try with resources. метод walk обойдет все подкаталоги рекурсивно, но если какой-то каталог не доступен на чтение - бросит исключение
+поэтому есть метод walkFileTree
 
 16. Как получить список файлов?
 класс File:
@@ -171,17 +201,23 @@ readUTF, readLine, setLength(устанавливает заданную длинну вызывающего файла)
 
 	в интрефейсе FilenameFilter определен единственный метод accept(File dir, String file_name), который вызывается каждым файлом из списка.
 	в интрефейсе FileFilter  определен единственный метод accept(File path), который вызывается каждым файлом из списка.
+класс Files:
+метод list
 
 17. Как проверить что файловая сущность является файлом или папкой?
-класс File:
+класс File: 1. Создать объект класса файл. 2. метод isFile(); isDirectory()
+класс Files: isDirectory, isRegularFile
 
 18. Как удалить файл?
 класс File:
 	1. Создать объект класса File
 	2. boolean delete. (можно так же удалить каталог, если он пуст) 
-
+класс Files:
+	1. Создать объект класса Path
+	2. delete; deleteIfExists
 19. Как переместить файл?
-класс File:
+класс File: метод rename, но он плох тем, что может перместить файл в пределах 1ой файловой системы
+класс Files: метод move
 
 20. Как управлять аттрибьтами файла?
 класс File:
@@ -199,9 +235,34 @@ readUTF, readLine, setLength(устанавливает заданную длинну вызывающего файла)
 22. Как создать директорию?
 класс File:
 mkdir() mkdirs()
+класс Files: createDirectory, createDirectories
 
 23. Как записать в файл?
 класс File:
+(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"windows-1251"));
+
+try(ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file)))
+        {
+            objectOutputStream.writeObject("String");
+        }
+класс Files:
+write (byte[]; Itreable<String>)
+ метод newOutputStream, newByteChannel
 
 24. Как прочитать данные из файла?
 класс File:
+Если это текстовый файл, то проблемой может быть кодировка, поэтому использую ISReader (куда можно передать кодировку) вместо FileReader 
+try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "windows-1251")))
+Если не текстовый файл -  try(BufferedInputStream reader = new BufferedInputStream((new FileInputStream(file))))
+читать можно в буфер byte[] buf = new byte[1024];
+            	    int i = reader.read(buf);()
+try(DataInputStream reader = new DataInputStream(new BufferedInputStream((new FileInputStream(file)))))
+класс Files:
+readAllBytes/ readAllLines
+метод newBufferedReader, newInputStream,
+
+//try with resources нужен, главным образом, для гарантированного закрытия ресурса + более удобный синтаксис. При не закрытии ресурса могут быть проблемы.
+Например если это файл - то в java, это например InputStream, но под ним есть еще объект операционной сиситемы - файловый Дескриптор. Для сбережения ресурурсов,
+система ограничивает количество опкрытых файловых дескрипторов. В винде открытый на чтение файл блокируется. Если в файл велась запись, то незакрытие файла означает несброшенные буферы, соответственно информация не дозпаисана.
+Всем потокам ввода-вывода соответсвует какое-то число, Файловый дескриптор — это неотрицательное целое число. Когда создается новый поток ввода-вывода, ядро возвращает процессу,
+создавшему поток ввода-вывода, его файловый дескриптор.
