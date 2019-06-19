@@ -36,6 +36,7 @@ INSERT INTO car_body(name) VALUES ('off-road vehicle');
 INSERT INTO car_body(name) VALUES ('sport car');
 INSERT INTO car_body(name) VALUES ('sedan');
 INSERT INTO car_body(name) VALUES ('wagon');
+INSERT INTO car_body(name) VALUES ('bus');
 
 INSERT INTO car(name, id_transmission, id_engine, id_car_body)
 VALUES ('jeep', 1, 2, 1);
@@ -66,8 +67,17 @@ LEFT OUTER JOIN engine e ON c.id_engine=e.id
 LEFT OUTER JOIN car_body c_b ON c.id_car_body=c_b.id;
 
 -- Вывести отдельно детали, которые не используются в машине, кузова, двигатели, коробки передач.
-SELECT t.type--, e.name--, c_b.name
-FROM car
-WHERE c.id NOT IN (RIGHT JOIN transmission t ON (t.id=c.id_transmission));
---RIGHT JOIN engine e ON (e.id=c.id_engine)
---WHERE c.id IS NULL;
+SELECT t.type
+FROM car c
+RIGHT OUTER JOIN transmission t ON c.id_transmission=t.id
+WHERE c.id IS NULL
+	UNION
+	SELECT e.name
+	FROM car c
+	RIGHT OUTER JOIN engine e ON c.id_engine=e.id
+	WHERE c.id IS NULL
+		UNION
+		SELECT c_b.name
+		FROM car c
+		RIGHT OUTER JOIN car_body c_b ON c.id_car_body=c_b.id
+		WHERE c.id IS NULL;

@@ -59,9 +59,13 @@ INSERT INTO product(name, type_id, expired_date, price) VALUES (
 INSERT INTO product(name, type_id, expired_date, price) VALUES (
 	'just a milk', 6, '2019-06-25 23:59:59', 052.20
 );
+
 -- Написать запрос получение всех продуктов с типом "СЫР"
-SELECT * FROM product AS p 
-WHERE p.type_id=(SELECT t.id FROM type t WHERE t.name='cheese');
+SELECT *
+FROM product p
+LEFT OUTER JOIN type t
+ON p.type_id=t.id
+WHERE t.name = 'cheese';
 
 -- Написать запрос получения всех продуктов, у кого в имени есть слово "мороженное"
 SELECT * FROM product
@@ -69,7 +73,7 @@ WHERE name LIKE '%ice cream%';
 
 -- Написать запрос, который выводит все продукты, срок годности которых заканчивается в следующем месяце.
 SELECT * FROM product p
-WHERE p.expired_date BETWEEN date_trunc('month', CURRENT_DATE + interval '1' month) 
+WHERE p.expired_date BETWEEN date_trunc('month', CURRENT_DATE + interval '1' month)
 and date_trunc('month', CURRENT_DATE + interval '2' month);
 
 -- Написать запрос, который выводит самый дорогой продукт.
@@ -77,13 +81,19 @@ SELECT * FROM product p
 WHERE p.price = (SELECT MAX(p.price) FROM product p);
 
 -- Написать запрос, который выводит количество всех продуктов определенного типа.
-SELECT COUNT(p.id) FROM product p
-WHERE p.type_id=5;
+SELECT COUNT(p.id)
+FROM product p
+LEFT OUTER JOIN type t
+ON p.type_id=t.id
+WHERE t.name = 'cheese';
 
 --Написать запрос получение всех продуктов с типом "СЫР" и "МОЛОКО"
-SELECT * FROM product AS p 
-WHERE p.type_id=(SELECT t.id FROM type t WHERE t.name='cheese') OR 
-	p.type_id=(SELECT t.id FROM type t WHERE t.name='milk');
+SELECT *
+FROM product p
+LEFT OUTER JOIN type t
+ON p.type_id=t.id
+WHERE t.name = 'cheese'
+OR t.name='milk';
 
 -- Написать запрос, который выводит тип продуктов, которых осталось меньше 3 штук.
 SELECT t.name, COUNT(p.name)

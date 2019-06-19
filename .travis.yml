@@ -3,23 +3,28 @@ language: java
 # используем режим обычного пользователя для сборки проекта.
 sudo: false
 
+jdk:
+- openjdk12
+
+services:
+- postgresql
+
 
 # после выполнения сборки запустить скрипт, который будет собирать статистику по JaCoCo
 # Здесь используется сторонни сервис https://codecov.io/
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+- bash <(curl -s https://codecov.io/bash)
 
 # Отправлять уведомление на почту gasevskyv@gmail.com если сборка упала
 notifications:
   email:
     recipients:
-      - gasevskyv@gmail.com
+    - gasevskyv@gmail.com
     on_success: never # default: change
     on_failure: always # default: always
 env:
   global:
-    - CODECOV_TOKEN="8ebf84bd-ab26-4130-b346-f199aecd27fd"
+  - CODECOV_TOKEN="8ebf84bd-ab26-4130-b346-f199aecd27fd"
 
-jdk:
-  - openjdk12
+
 
