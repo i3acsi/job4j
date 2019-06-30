@@ -10,7 +10,7 @@ public class Comment extends  BaseAction {
     }
 	
 	@Override
-	public void execute(Input input, Tracker tracker) {
+	public void execute(Input input, ITracker tracker) {
 	    System.out.println("----------Комментарий к заявке по ID----------");
         String id = input.ask("Введите id комментируемой заявки ");
         Item temp = tracker.findById(id);

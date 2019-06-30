@@ -12,7 +12,7 @@ public class Delete extends  BaseAction {
 	private final String ln = System.lineSeparator();
 	
 	@Override
-	public void execute(Input input, Tracker tracker) {
+	public void execute(Input input, ITracker tracker) {
 	    System.out.println("----------Удаление заявки----------");
         String id = input.ask("Введите id удаляемой заявки ");
         if (tracker.delete(id)) {

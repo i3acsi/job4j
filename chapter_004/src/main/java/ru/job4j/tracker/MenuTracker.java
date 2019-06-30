@@ -13,7 +13,7 @@ public class MenuTracker {
     /**
      * хранит ссылку на объект .
      */
-    private Tracker tracker;
+    private ITracker tracker;
 
     private final Consumer<String> output;
 
@@ -28,7 +28,7 @@ public class MenuTracker {
      * @param input   объект типа Input
      * @param tracker объект типа Tracker
      */
-    public MenuTracker(Input input, Tracker tracker, Consumer<String> output) {
+    public MenuTracker(Input input, ITracker tracker, Consumer<String> output) {
         this.input = input;
         this.tracker = tracker;
         this.output = output;

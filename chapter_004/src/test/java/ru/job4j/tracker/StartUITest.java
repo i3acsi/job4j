@@ -29,7 +29,7 @@ public class StartUITest {
             + "5. Find Items by Name." + ln
             + "6. Comment." + ln
             + "7. Exit." + ln);
-    private final Tracker tracker = Tracker.getInstance();
+    private final ITracker tracker = Tracker.getInstance();
     private final Item[] item = {tracker.add(new Item("test name", "desc")),
             tracker.add(new Item("test name", "desc2")),
             tracker.add(new Item("test name 3", "desc3"))};

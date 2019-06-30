@@ -12,7 +12,7 @@ public class FindAll extends  BaseAction {
     }
 	
 	@Override
-	public void execute(Input input, Tracker tracker) {
+	public void execute(Input input, ITracker tracker) {
 	    List<Item> temp = tracker.findAll();
         if (temp.size() != 0) {
             System.out.println("----------Все существующие заявки---------");

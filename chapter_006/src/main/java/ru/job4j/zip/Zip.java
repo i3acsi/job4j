@@ -28,19 +28,20 @@ public class Zip {
 
         try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(DIR + target)))) {
             for (File f : sources) {
-                zip.putNextEntry(new ZipEntry(f.getCanonicalPath().substring(length)));
-                try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(DIR + target))) {
-                    if (out.available() < 1575848036) {
-                        zip.write(out.readAllBytes());
-                    } else {
-                        out.close();
-                    }
+                try (FileInputStream fis = new FileInputStream(f)) {
+                    ZipEntry entry = new ZipEntry(f.getCanonicalPath().substring(length));
+                    zip.putNextEntry(entry);
+                    byte[] buffer = new byte[fis.available()];
+                    fis.read(buffer);
+                    zip.write(buffer);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
+
 
     private List<String> extensions(String exclude) {
         List<String> result = Arrays.asList(exclude.split(","));

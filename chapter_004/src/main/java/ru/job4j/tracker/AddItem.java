@@ -10,7 +10,7 @@ public class AddItem extends  BaseAction {
     }
 	
 	@Override
-	public void execute(Input input, Tracker tracker) {
+	public void execute(Input input, ITracker tracker) {
         System.out.println("----------Добавление новой заявки----------");
         String task = input.ask("Введите название заявки ");
         String desc = input.ask("Введите описание заявки ");

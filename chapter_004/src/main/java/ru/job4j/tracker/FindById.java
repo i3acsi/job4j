@@ -10,7 +10,7 @@ public class FindById extends  BaseAction {
     }
 	
 	@Override
-	public void execute(Input input, Tracker tracker) {
+	public void execute(Input input, ITracker tracker) {
 	    System.out.println("----------Поиск заявки по ID----------");
         String id = input.ask("Введите id искомой заявки ");
         Item temp = tracker.findById(id);

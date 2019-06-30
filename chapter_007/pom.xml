@@ -25,6 +25,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
@@ -45,6 +46,7 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
     <parent>
@@ -55,5 +57,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>chapter_007</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>ru.job4j</groupId>
+            <artifactId>chapter_004</artifactId>
+            <version>2.0</version>
+        </dependency>
+    </dependencies>
 
 </project>
