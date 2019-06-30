@@ -12,7 +12,7 @@ public class Edit extends BaseAction {
     @Override
 
 
-    public void execute(Input input, Tracker tracker) {
+    public void execute(Input input, ITracker tracker) {
         System.out.println("----------Редактирование заявки----------");
         String id = input.ask("Введите id редактируемой заявки ");
         Item temp = tracker.findById(id);

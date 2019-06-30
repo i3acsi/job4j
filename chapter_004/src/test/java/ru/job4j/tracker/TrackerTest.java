@@ -16,7 +16,7 @@ import static org.junit.Assert.assertThat;
  * @since 0.1
  */
 public class TrackerTest {
-    private final Tracker tracker = Tracker.getInstance();
+    private final ITracker tracker = Tracker.getInstance();
 
     @After
     public void backOutput() {

@@ -10,6 +10,6 @@ public class Exit extends  BaseAction {
     }
 	
 	@Override
-	public void execute(Input input, Tracker tracker) {
+	public void execute(Input input, ITracker tracker) {
 	}
 }

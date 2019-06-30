@@ -11,7 +11,7 @@ public class StartUI {
     /**
      * Создание хранилища для заявок.
      */
-    private final Tracker tracker;
+    private final ITracker tracker;
 
     private final Consumer<String> output;
 
@@ -20,7 +20,7 @@ public class StartUI {
      * @param input ввод данных.
      * @param tracker хранилище заявок.
      */
-    public StartUI(Input input, Tracker tracker, Consumer<String> output) {
+    public StartUI(Input input, ITracker tracker, Consumer<String> output) {
         this.input = input;
         this.tracker = tracker;
         this.output = output;

@@ -16,10 +16,10 @@ import static java.lang.Thread.sleep;
  * @version $Id$
  * @since 0.1
  */
-enum Tracker {
+enum Tracker implements ITracker {
     INSTANCE;
 
-    public static Tracker getInstance() {
+    public static ITracker getInstance() {
         return INSTANCE;
     }
 
