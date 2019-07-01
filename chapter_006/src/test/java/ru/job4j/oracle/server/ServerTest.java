@@ -48,7 +48,7 @@ public class ServerTest {
             assert (result[j].length() > 0);
         }
         for (int j = length - i; j < length; j++) {
-            assertThat(result[j].replace("\n", ""), is(expected[k++]));
+            assertThat(result[j].replaceAll("\\r?\\n", ""), is(expected[k++]));
         }
 
     }
