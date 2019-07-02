@@ -1,6 +1,6 @@
 package ru.job4j.jobparser;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Vacancy {
@@ -9,22 +9,26 @@ public class Vacancy {
     private String description;
     private String url;
     private String author;
-    private long dateCreation;
+    private String authorURL;
+    private LocalDate dateCreation;
+    private String ln = System.lineSeparator();
 
-    public Vacancy(int id, String title, String description, String url, String author, long dateCreation) {
+    public Vacancy(int id, String title, String description, String url, String author, String authorURL, LocalDate dateCreation) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.url = url;
         this.author = author;
+        this.authorURL = authorURL;
         this.dateCreation = dateCreation;
     }
 
-    public Vacancy(String title, String description, String url, String author, long dateCreation) {
+    public Vacancy(String title, String description, String url, String author, String authorURL, LocalDate dateCreation) {
         this.title = title;
         this.description = description;
         this.url = url;
         this.author = author;
+        this.authorURL = authorURL;
         this.dateCreation = dateCreation;
     }
 
@@ -44,11 +48,15 @@ public class Vacancy {
         return url;
     }
 
+    public String getAuthorURL() {
+        return authorURL;
+    }
+
     public String getAuthor() {
         return author;
     }
 
-    public long getDateCreation() {
+    public LocalDate getDateCreation() {
         return dateCreation;
     }
 
@@ -57,27 +65,23 @@ public class Vacancy {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vacancy vacancy = (Vacancy) o;
-        return dateCreation == vacancy.dateCreation &&
-                Objects.equals(title, vacancy.title) &&
-                Objects.equals(description, vacancy.description) &&
-                Objects.equals(url, vacancy.url) &&
-                Objects.equals(author, vacancy.author);
+        return Objects.equals(title, vacancy.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, description, url, author, dateCreation);
+        return Objects.hash(title);
     }
 
     @Override
     public String toString() {
-        return "Vacancy{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", url='" + url + '\'' +
-                ", author='" + author + '\'' +
-                ", dateCreation=" + dateCreation +
+        return "Vacancy{" + ln +
+                "id=" + id + ln +
+                ", title='" + title + '\'' + ln +
+                ", description='" + description + '\'' + ln +
+                ", url='" + url + '\'' + ln +
+                ", author='" + author + '\'' + ln +
+                ", dateCreation=" + dateCreation.toString() +
                 '}';
     }
 }
