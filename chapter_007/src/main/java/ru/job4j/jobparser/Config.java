@@ -9,6 +9,7 @@ public class Config {
     public Config() {
         try (InputStream in = Config.class.getClassLoader().getResourceAsStream("parser.properties")) {
             values.load(in);
+            Class.forName(values.getProperty("driver"));
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }

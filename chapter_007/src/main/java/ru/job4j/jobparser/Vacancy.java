@@ -1,5 +1,7 @@
 package ru.job4j.jobparser;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -83,5 +85,23 @@ public class Vacancy {
                 ", author='" + author + '\'' + ln +
                 ", dateCreation=" + dateCreation.toString() +
                 '}';
+    }
+
+    public static Vacancy getVac(ResultSet input) {
+        Vacancy result = null;
+        try (ResultSet set = input)
+        {
+            String title = set.getString("title");
+            String description = set.getString("description");
+            String url = set.getString("url");
+            String author = set.getString("author");
+            String authorURL = set.getString("author_URL");
+            LocalDate dateCreation = set.getDate("date_creation").toLocalDate();
+            result = new Vacancy(title, description, url, author, authorURL, dateCreation);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

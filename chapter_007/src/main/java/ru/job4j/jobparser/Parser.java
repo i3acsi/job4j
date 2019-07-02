@@ -11,6 +11,7 @@ import org.jsoup.nodes.Document;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Predicate;
 
 /*
 парсинг HTML с помощью jsoup
@@ -20,19 +21,10 @@ import java.util.*;
  */
 public class Parser {
     private final Logger log = LogManager.getLogger(Parser.class.getName());
-    private Document doc;
     private Map<String, Integer> month;
 
-    public Parser(String url) {
-        Logger l = this.log;
+    public Parser() {
         this.setMonth();
-        try {
-            this.doc =  Jsoup.connect(url)
-                    .get();
-            log.info(String.format("Connected to %s on Date %s", url, LocalDate.now().toString()));
-        } catch (IOException e) {
-            log.error("IOException on Document init", e);
-        }
     }
 
     private void setMonth() {
@@ -51,28 +43,55 @@ public class Parser {
         this.month.put("дек", 12);
     }
 
-
-    public Set<Vacancy> parse() throws IOException {
-        Set<Vacancy> result = new HashSet<>();
-        Elements vacs = doc.getElementsByAttributeValue("class", "forumTable").get(0).getElementsByTag("tr");
-        int count = 0;
-        for (Element element : vacs) {
-            String title = element.child(1).text();
-            String lowTitle = title.toLowerCase();
-            if (lowTitle.contains("java ") && !lowTitle.contains("java script")){
-                String url = element.child(1).select("a").attr("href");
-                Document temp = Jsoup.connect(url).get();
-                Element vacDesc = temp.getElementsByAttributeValue("class", "msgBody").get(1);
-                String desc = vacDesc.text();
-                String author = element.child(2).text();
-                String authorURL = element.child(2).select("a").attr("href");
-                LocalDate date = this.getDate(element.child(5).text());
-                Vacancy vac = new Vacancy(title, desc, url, author, authorURL, date);
-                result.add(vac);
-                count++;
-            }
+    public List<Vacancy> parse(Vacancy last) {
+        List<Vacancy> result = new ArrayList<>();
+        /*
+        Использую предикат для проверки текущей вакансии. Если вакансия last, поученная из базы данных равна null,
+        значит БД пуста, и получить нужно все вакансии текущего года. Если last не null то получать надо все вакансии,
+        пока не получим вакансию эквивалентную последней
+        */
+        Predicate<Vacancy> p;
+        int currentYear = LocalDate.now().getYear();
+        if (last!=null) {
+            p = vacancy -> vacancy.equals(last);
+        } else {
+            p= vacancy -> vacancy.getDateCreation().getYear() != currentYear;
         }
-        log.info(String.format("Were found %d Java vacancies. On page %s, On Date %s", count, doc.location(), LocalDate.now().toString()));
+        /*
+        int i - для подстановки в URL, count - счетчик полученных вакансий, flag - для выхода из цикла
+         */
+        int i = 1;
+        int globalCount = 0;
+        boolean flag = true;
+        do {
+            String url = String.format("https://www.sql.ru/forum/job-offers/%d", i++);
+            Document doc = this.getDoc(url);
+            Elements vacs = doc.getElementsByAttributeValue("class", "forumTable").get(0).getElementsByTag("tr");
+            int count = 0;
+            for (Element element : vacs) {
+                String title = element.child(1).text();
+                String lowTitle = title.toLowerCase();
+                if (lowTitle.contains("java ") && !lowTitle.contains("java script")) {
+                    String tmpURL = element.child(1).select("a").attr("href");
+                    Document temp = this.getDoc(tmpURL);
+                    Element vacDesc = temp.getElementsByAttributeValue("class", "msgBody").get(1);
+                    String desc = vacDesc.text();
+                    String author = element.child(2).text();
+                    String authorURL = element.child(2).select("a").attr("href");
+                    LocalDate date = this.getDate(element.child(5).text());
+                    Vacancy vac = new Vacancy(title, desc, tmpURL, author, authorURL, date);
+                    if (p.test(vac)) {
+                        flag = false;
+                        break;
+                    }
+                    result.add(vac);
+                    count++;
+                }
+            }
+            log.info(String.format("Were found %d Java vacancies. On page %s", count, doc.location()));
+            globalCount +=count;
+        } while (flag);
+        log.info(String.format("Total found %d Java vacancies. On Date %s", globalCount, LocalDate.now().toString()));
         return result;
     }
 
@@ -93,12 +112,15 @@ public class Parser {
         return result;
     }
 
-//    public static void main(String[] args) {
-//        Parser parser = new Parser("https://www.sql.ru/forum/job-offers/1");
-//        try {
-//            parser.init();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private Document getDoc(String url) {
+        Document result = null;
+        try {
+            result = Jsoup.connect(url)
+                    .get();
+            log.info(String.format("Connected to %s on Date %s", url, LocalDate.now().toString()));
+        } catch (IOException e) {
+            log.error("IOException on Document init", e);
+        }
+        return result;
+    }
 }
