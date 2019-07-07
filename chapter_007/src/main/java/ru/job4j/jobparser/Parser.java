@@ -10,6 +10,8 @@ import org.jsoup.nodes.Document;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -43,8 +45,8 @@ public class Parser {
         this.month.put("дек", 12);
     }
 
-    public List<Vacancy> parse(Vacancy last) {
-        List<Vacancy> result = new ArrayList<>();
+    public Set<Vacancy> parse(Vacancy last) {
+        Set<Vacancy> result = new HashSet<>();
         /*
         Использую предикат для проверки текущей вакансии. Если вакансия last, поученная из базы данных равна null,
         значит БД пуста, и получить нужно все вакансии текущего года. Если last не null то получать надо все вакансии,
@@ -52,10 +54,10 @@ public class Parser {
         */
         Predicate<Vacancy> p;
         int currentYear = LocalDate.now().getYear();
-        if (last!=null) {
+        if (last != null) {
             p = vacancy -> vacancy.equals(last);
         } else {
-            p= vacancy -> vacancy.getDateCreation().getYear() != currentYear;
+            p = vacancy -> vacancy.getDateCreation().getYear() != currentYear;
         }
         /*
         int i - для подстановки в URL, count - счетчик полученных вакансий, flag - для выхода из цикла
@@ -71,14 +73,14 @@ public class Parser {
             for (Element element : vacs) {
                 String title = element.child(1).text();
                 String lowTitle = title.toLowerCase();
-                if (lowTitle.contains("java ") && !lowTitle.contains("java script")) {
+                if (lowTitle.contains("java ") && !lowTitle.contains("java script") && !lowTitle.contains("nodejs")) {
                     String tmpURL = element.child(1).select("a").attr("href");
                     Document temp = this.getDoc(tmpURL);
                     Element vacDesc = temp.getElementsByAttributeValue("class", "msgBody").get(1);
                     String desc = vacDesc.text();
                     String author = element.child(2).text();
                     String authorURL = element.child(2).select("a").attr("href");
-                    LocalDate date = this.getDate(element.child(5).text());
+                    LocalDateTime date = this.getDate(element.child(5).text());
                     Vacancy vac = new Vacancy(title, desc, tmpURL, author, authorURL, date);
                     if (p.test(vac)) {
                         flag = false;
@@ -89,27 +91,34 @@ public class Parser {
                 }
             }
             log.info(String.format("Were found %d Java vacancies. On page %s", count, doc.location()));
-            globalCount +=count;
+            globalCount += count;
         } while (flag);
         log.info(String.format("Total found %d Java vacancies. On Date %s", globalCount, LocalDate.now().toString()));
         return result;
     }
 
-    private LocalDate getDate(String date) {
-        LocalDate result = null;
-        String tmpDate = date.split(",")[0];
-        if ("сегодня".equals(tmpDate)) {
-            result = LocalDate.now();
-        } else if ("вчера".equals(tmpDate)) {
-            result = LocalDate.now().minusDays(1);
-        } else {
-            String[] day = tmpDate.split(" ");
-            result = LocalDate.of(Integer.valueOf(String.format("20%s",day[2]))
-                    , month.get(day[1])
-                    , Integer.valueOf(day[0]));
+    private LocalDateTime getDate(String input) {
+        String[] tmpDate = input.split(", ");
+        LocalDate date;
+        LocalTime time;
 
+        String[] tmpTime = tmpDate[1].split(":");
+        int hour = Integer.valueOf(tmpTime[0]);
+        int minute = Integer.valueOf(tmpTime[1]);
+        int second = 0, nanoOfSecond = 0;
+        time = LocalTime.of(hour, minute, second, nanoOfSecond);
+
+        if ("сегодня".equals(tmpDate[0])) {
+            date = LocalDate.now();
+        } else if ("вчера".equals(tmpDate[0])) {
+            date = LocalDate.now().minusDays(1);
+        } else {
+            String[] day = tmpDate[0].split(" ");
+            date = LocalDate.of(Integer.valueOf(String.format("20%s", day[2])),
+                    month.get(day[1]),
+                    Integer.valueOf(day[0]));
         }
-        return result;
+        return LocalDateTime.of(date, time);
     }
 
     private Document getDoc(String url) {

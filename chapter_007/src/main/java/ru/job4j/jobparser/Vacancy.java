@@ -1,8 +1,10 @@
 package ru.job4j.jobparser;
 
+import com.google.common.base.Joiner;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Vacancy {
@@ -12,10 +14,9 @@ public class Vacancy {
     private String url;
     private String author;
     private String authorURL;
-    private LocalDate dateCreation;
-    private String ln = System.lineSeparator();
+    private LocalDateTime dateCreation;
 
-    public Vacancy(int id, String title, String description, String url, String author, String authorURL, LocalDate dateCreation) {
+    public Vacancy(int id, String title, String description, String url, String author, String authorURL, LocalDateTime dateCreation) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -25,7 +26,7 @@ public class Vacancy {
         this.dateCreation = dateCreation;
     }
 
-    public Vacancy(String title, String description, String url, String author, String authorURL, LocalDate dateCreation) {
+    public Vacancy(String title, String description, String url, String author, String authorURL, LocalDateTime dateCreation) {
         this.title = title;
         this.description = description;
         this.url = url;
@@ -58,50 +59,51 @@ public class Vacancy {
         return author;
     }
 
-    public LocalDate getDateCreation() {
+    public LocalDateTime getDateCreation() {
         return dateCreation;
+    }
+
+    private String getPureTitle(String title) {
+        return title.substring(0, title.indexOf("["));
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Vacancy vacancy = (Vacancy) o;
-        return Objects.equals(title, vacancy.title);
+        String t = getPureTitle(this.title);
+        String t2 = getPureTitle(vacancy.title);
+        return Objects.equals(t, t2);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title);
+        return Objects.hash(getPureTitle(title));
     }
 
     @Override
     public String toString() {
-        return "Vacancy{" + ln +
-                "id=" + id + ln +
-                ", title='" + title + '\'' + ln +
-                ", description='" + description + '\'' + ln +
-                ", url='" + url + '\'' + ln +
-                ", author='" + author + '\'' + ln +
-                ", dateCreation=" + dateCreation.toString() +
-                '}';
+        return Joiner.on(System.lineSeparator()).join("Vacancy{",
+                String.format("id= %d", id),
+                String.format("title= %s", title),
+                String.format("description= %s", description),
+                String.format("url= %s", url),
+                String.format("author= %s", author),
+                String.format("dateCreation= %s", dateCreation.toString()));
     }
 
-    public static Vacancy getVac(ResultSet input) {
-        Vacancy result = null;
-        try (ResultSet set = input)
-        {
-            String title = set.getString("title");
-            String description = set.getString("description");
-            String url = set.getString("url");
-            String author = set.getString("author");
-            String authorURL = set.getString("author_URL");
-            LocalDate dateCreation = set.getDate("date_creation").toLocalDate();
-            result = new Vacancy(title, description, url, author, authorURL, dateCreation);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
+    public static Vacancy getVac(ResultSet input) throws SQLException {
+        String title = input.getString("title");
+        String description = input.getString("description");
+        String url = input.getString("url");
+        String author = input.getString("author");
+        String authorURL = input.getString("author_URL");
+        LocalDateTime dateCreation = input.getTimestamp("date_creation").toLocalDateTime();
+        return new Vacancy(title, description, url, author, authorURL, dateCreation);
     }
 }
