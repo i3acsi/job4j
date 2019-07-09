@@ -24,9 +24,11 @@ import java.util.function.Predicate;
 public class Parser {
     private final Logger log = LogManager.getLogger(Parser.class.getName());
     private Map<String, Integer> month;
+    private Config properties;
 
     public Parser() {
         this.setMonth();
+        this.properties = new Config();
     }
 
     private void setMonth() {
@@ -45,8 +47,8 @@ public class Parser {
         this.month.put("дек", 12);
     }
 
-    public Set<Vacancy> parse(Vacancy last) {
-        Set<Vacancy> result = new HashSet<>();
+    public List<Vacancy> parse(Vacancy last) {
+        List<Vacancy> result = new ArrayList<>();
         /*
         Использую предикат для проверки текущей вакансии. Если вакансия last, поученная из базы данных равна null,
         значит БД пуста, и получить нужно все вакансии текущего года. Если last не null то получать надо все вакансии,
@@ -54,8 +56,28 @@ public class Parser {
         */
         Predicate<Vacancy> p;
         int currentYear = LocalDate.now().getYear();
+        // lastVisit - дата и время последнего посещения сайта - хранится в properties
+        LocalDateTime lastVisit = null;
+        try {
+            lastVisit = LocalDateTime.parse(properties.get("last_visit"));
+        } catch (Exception e) {
+            log.error("DateTimeParse exception", e);
+        }
+        //lastTime - дата и время сохранения последней по времени сохранения вакансси, хранящейся в БД
+        LocalDateTime lastTime;
+        //во-первых смотрим - имеются ли записи в БД, т.к. если БД пуста - ее надо заполнить вакансиями этого года
         if (last != null) {
-            p = vacancy -> vacancy.equals(last);
+            // далле смотрим - имеется ли информация о дате и времени последнео посещения сайта
+            // если - да, то смотрим все вакансии с временем сохранения с текущего по(включительно) время последнего визита
+            if (lastVisit != null) {
+                LocalDateTime finalLastVisit = lastVisit;
+                p = vacancy -> (vacancy.getDateCreation().compareTo(finalLastVisit) <= 0);
+            } else {
+                // если (по каким-то причинам) время последнего посещения сайта неизвестно, то смотрим вакансии
+                // с временем сохранения не раньше времени сохранения последней вакансии
+                lastTime = last.getDateCreation();
+                p = vacancy -> vacancy.getDateCreation().compareTo(lastTime) <= 0;
+            }
         } else {
             p = vacancy -> vacancy.getDateCreation().getYear() != currentYear;
         }
@@ -72,8 +94,8 @@ public class Parser {
             int count = 0;
             for (Element element : vacs) {
                 String title = element.child(1).text();
-                String lowTitle = title.toLowerCase();
-                if (lowTitle.contains("java ") && !lowTitle.contains("java script") && !lowTitle.contains("nodejs")) {
+                String pureTitle = this.getPureTitle(title);
+                if (pureTitle.contains("java ") && !pureTitle.contains("java script") && !pureTitle.contains("nodejs") && !title.contains("закрыт")) {
                     String tmpURL = element.child(1).select("a").attr("href");
                     Document temp = this.getDoc(tmpURL);
                     Element vacDesc = temp.getElementsByAttributeValue("class", "msgBody").get(1);
@@ -94,6 +116,7 @@ public class Parser {
             globalCount += count;
         } while (flag);
         log.info(String.format("Total found %d Java vacancies. On Date %s", globalCount, LocalDate.now().toString()));
+        properties.updateLastVisit();
         return result;
     }
 
@@ -119,6 +142,11 @@ public class Parser {
                     Integer.valueOf(day[0]));
         }
         return LocalDateTime.of(date, time);
+    }
+
+    private String getPureTitle(String title) {
+        int index = title.indexOf("[");
+        return index > 0 ? title.toLowerCase().substring(0, index) : title.toLowerCase();
     }
 
     private Document getDoc(String url) {

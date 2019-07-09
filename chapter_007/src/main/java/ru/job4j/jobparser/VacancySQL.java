@@ -11,27 +11,21 @@ import java.util.*;
 public class VacancySQL implements AutoCloseable, Job {
     private Config properties;
     private Connection connection;
-    private Set<Vacancy> vacancies;
-    private Set<Vacancy> loaded;
     private final Logger log = LogManager.getLogger(VacancySQL.class.getName());
 
     public VacancySQL(Connection conn) {
         this.properties = new Config();
-        // метод parse принимает Последнюю вакансию из БД
         this.connection = conn;
-        Vacancy last = structureCheck();
-        this.loadFromDB();
-        Parser parser = new Parser();
-        this.vacancies = parser.parse(last);
     }
 
     public VacancySQL() {
         this.properties = new Config();
-        // метод parse принимает Последнюю вакансию из БД
-        Vacancy last = structureCheck();
-        this.loadFromDB();
+    }
+
+    public void startSQL() {
         Parser parser = new Parser();
-        this.vacancies = parser.parse(last);
+        List<Vacancy> vacancies = parser.parse(this.structureCheck());
+        this.save(vacancies);
     }
 
     private Vacancy structureCheck() {
@@ -39,16 +33,16 @@ public class VacancySQL implements AutoCloseable, Job {
         if (connection == null) {
             getConnection();
         }
-        try (PreparedStatement st = connection.prepareStatement(
-                "CREATE TABLE if NOT EXISTS vacancy (\n"
-                        + "id SERIAL PRIMARY KEY NOT NULL,\n"
-                        + "title VARCHAR (1000),\n"
-                        + "description TEXT,\n"
-                        + "url VARCHAR (1000),\n"
-                        + "author VARCHAR (1000),\n"
-                        + "author_URL VARCHAR (1000),\n"
-                        + "date_creation TIMESTAMP \n"
-                        + ");")) {
+        String sql = "CREATE TABLE if NOT EXISTS vacancy ("
+                + "id SERIAL PRIMARY KEY NOT NULL,"
+                + "title VARCHAR (1000),"
+                + "description TEXT,"
+                + "url VARCHAR (1000),"
+                + "author VARCHAR (300),"
+                + "author_URL VARCHAR (1000),"
+                + "date_creation TIMESTAMP,"
+                + "CONSTRAINT unique_vacancy UNIQUE (title, description));";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.executeUpdate();
         } catch (SQLException e) {
             log.error("SQLException on CREATE TABLE", e);
@@ -65,50 +59,51 @@ public class VacancySQL implements AutoCloseable, Job {
         return result;
     }
 
-    private void loadFromDB() {
-        if (this.loaded != null) {
-            this.loaded.clear();
-        } else {
-            this.loaded = new HashSet<>();
+
+    public void save(List<Vacancy> vacancies) {
+//        try {
+//            connection.setAutoCommit(false);
+        try (PreparedStatement ps = connection.prepareStatement("INSERT INTO vacancy "
+                + "(title, description, url, author, author_URL, date_creation) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT (title, description) DO NOTHING;")) {
+
+            int count = 0;
+            for (Vacancy v : vacancies) {
+                ps.setString(1, v.getTitle());
+                ps.setString(2, v.getDescription());
+                ps.setString(3, v.getUrl());
+                ps.setString(4, v.getAuthor());
+                ps.setString(5, v.getAuthorURL());
+                ps.setTimestamp(6, Timestamp.valueOf(v.getDateCreation()));
+                int res = ps.executeUpdate();
+                if (res > 0) {
+                    count++;
+                }
+
+            }
+//            ps.executeBatch();
+//            connection.commit();
+//            connection.setAutoCommit(true);
+            log.info(String.format("Totally added to DB %d Java vacancies. On Date %s", count, LocalDateTime.now().toString()));
+            //         }
+        } catch (SQLException e) {
+            log.error("SQLException on SAVE", e);
         }
+
+    }
+
+    public List<Vacancy> loadFromDB() {
+        List<Vacancy> result = new ArrayList<>();
         try (PreparedStatement st = connection.prepareStatement("SELECT * FROM vacancy;")) {
             try (ResultSet set = st.executeQuery()) {
                 while (set.next()) {
                     Vacancy temp = Vacancy.getVac(set);
-                    this.loaded.add(temp);
+                    result.add(temp);
                 }
             }
         } catch (SQLException e) {
             log.error("SQLException on SELECT FROM vacancy TABLE", e);
         }
-    }
-
-    public void save() {
-        try {
-            connection.setAutoCommit(false);
-            try (PreparedStatement ps = connection.prepareStatement("INSERT INTO vacancy "
-                    + "(title, description, url, author, author_URL, date_creation) VALUES (?, ?, ?, ?, ?, ?);")) {
-                this.vacancies.removeAll(this.loaded);
-                int count = 0;
-                for (Vacancy v : vacancies) {
-                    ps.setString(1, v.getTitle());
-                    ps.setString(2, v.getDescription());
-                    ps.setString(3, v.getUrl());
-                    ps.setString(4, v.getAuthor());
-                    ps.setString(5, v.getAuthorURL());
-                    ps.setTimestamp(6, Timestamp.valueOf(v.getDateCreation()));
-                    ps.addBatch();
-                    count++;
-                }
-                ps.executeBatch();
-                connection.commit();
-                connection.setAutoCommit(true);
-                log.info(String.format("Totally added to DB %d Java vacancies. On Date %s", count, LocalDateTime.now().toString()));
-            }
-        } catch (SQLException e) {
-            log.error("SQLException on SAVE", e);
-        }
-
+        return result;
     }
 
     private void getConnection() {
@@ -150,10 +145,11 @@ public class VacancySQL implements AutoCloseable, Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         log.info("In VacancySQL - executing its JOB at "
                 + LocalDateTime.now().toString() + " by " + context.getTrigger().getDescription());
+        Parser parser = new Parser();
+        List<Vacancy> vacancies = parser.parse(this.structureCheck());
         try (VacancySQL sql = new VacancySQL()) {
-            sql.save();
+            sql.save(vacancies);
         }
     }
-
 
 }

@@ -1,7 +1,5 @@
 package ru.job4j.jobparser;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import ru.job4j.tracker.ConnectionRollback;
 
@@ -10,14 +8,22 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class ParserTest {
-    private Connection conn;
+
+    private static final LocalDate DATE = LocalDate.of(2019, 07, 1);
+    private static final LocalTime TIME = LocalTime.of(19, 0, 0, 0);
+    private static final Vacancy VACANCY = new Vacancy("Java разработчик, Москва [new]",
+            "desc",
+            "url",
+            "author",
+            "authorURL",
+            LocalDateTime.of(DATE, TIME));
 
     public Connection init() {
         try (InputStream in = VacancySQL.class.getClassLoader().getResourceAsStream("parser.properties")) {
@@ -35,43 +41,33 @@ public class ParserTest {
         }
     }
 
-    @Before
-    public void connect() throws SQLException {
-        this.conn = ConnectionRollback.create(this.init());
-    }
-
-    @After
-    public void connectClose() throws SQLException {
-        if (!conn.isClosed()) {
-            this.conn.close();
+    @Test
+    public void whenAddVacancyThanDbHasIt() {
+        try (VacancySQL sql = new VacancySQL(ConnectionRollback.create(this.init()))) {
+            sql.clean();
+            sql.save(List.of(VACANCY));
+            Vacancy expected = sql.loadFromDB().get(0);
+            assertThat(expected, is(VACANCY));
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
     @Test
-    public void test() {
-        LocalDate date = LocalDate.of(2019, 07, 1);
-        LocalTime time = LocalTime.of(19, 0, 0, 0);
-        Vacancy vacancy = new Vacancy("Java разработчик, Москва [new]",
-                "desc",
-                "url",
-                "author",
-                "authorURL",
-                LocalDateTime.of(date, time));
-        Parser parser = new Parser();
-        Set<Vacancy> result = parser.parse(vacancy);
-        result.forEach(x-> assertThat(x.getTitle().toLowerCase().contains("java"), is(true)));
-    }
-
-    @Test
-    public void sqlTest() throws SQLException {
-        try (VacancySQL sql = new VacancySQL(conn);
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM vacancy;");
-             ResultSet set = ps.executeQuery()) {
-            if (set.next()) {
-                String title = (set.getString("title"));
-                assertThat(title.toLowerCase().contains("java"), is(true));
-            }
-
+    public void whenAddVacancyThatAllreadyInThereThanDoNothing() {
+        try (VacancySQL sql = new VacancySQL(ConnectionRollback.create(this.init()))) {
+            sql.clean();
+            sql.save(List.of(VACANCY));
+            Vacancy v = new Vacancy("Java разработчик, Москва [new]", "desc", "u", "a", "au", LocalDateTime.now());
+            sql.save(List.of(v));
+            List<Vacancy> result = sql.loadFromDB();
+            assertThat(result.size(), is(1));
+            Vacancy expected = result.get(0);
+            assertThat(expected, is(VACANCY));
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
+
+
 }
