@@ -13,7 +13,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /*
 парсинг HTML с помощью jsoup
@@ -95,7 +99,7 @@ public class Parser {
             for (Element element : vacs) {
                 String title = element.child(1).text();
                 String pureTitle = this.getPureTitle(title);
-                if (pureTitle.contains("java ") && !pureTitle.contains("java script") && !pureTitle.contains("nodejs") && !title.contains("закрыт")) {
+                if (this.titleCheck(title)) {//pureTitle.contains("java ") && !pureTitle.contains("java script") && !pureTitle.contains("nodejs") && !title.contains("закрыт")) {
                     String tmpURL = element.child(1).select("a").attr("href");
                     Document temp = this.getDoc(tmpURL);
                     Element vacDesc = temp.getElementsByAttributeValue("class", "msgBody").get(1);
@@ -117,6 +121,30 @@ public class Parser {
         } while (flag);
         log.info(String.format("Total found %d Java vacancies. On Date %s", globalCount, LocalDate.now().toString()));
         properties.updateLastVisit();
+        return result;
+    }
+
+    public boolean titleCheck(String title) {
+        boolean result = false;
+        Iterator<String> i = Arrays.stream(title.split("\\W\\s|\\s")).map(String::toLowerCase).iterator();
+        while (i.hasNext()) {
+            String temp = i.next();
+            if ("java".equals(temp)) {
+                result = true;
+                if (i.hasNext() && "script".equals(i.next())) {
+                    result = false;
+                    break;
+                }
+                while (i.hasNext()) {
+                    temp = i.next();
+                    if ("nodejs".equals(temp) || "[закрыт".equals(temp)) {
+                        result = false;
+                        break;
+                    }
+                }
+            }
+        }
+
         return result;
     }
 
@@ -159,5 +187,11 @@ public class Parser {
             log.error("IOException on Document init", e);
         }
         return result;
+    }
+
+    public static void main(String[] args) {
+        Arrays.stream("[p][s]".split("\\]\\[")).forEach(System.out::println);
+//        Parser parser = new Parser();
+//        parser.titleCheck("Java Script, москва. [new]");
     }
 }

@@ -152,4 +152,10 @@ public class VacancySQL implements AutoCloseable, Job {
         }
     }
 
+    public static void main(String[] args) {
+        try (VacancySQL vacancySQL = new VacancySQL()){
+            vacancySQL.startSQL();
+        }
+    }
+
 }
