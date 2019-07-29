@@ -154,8 +154,8 @@ public class WordProcess implements AutoCloseable {
         data.values().forEach(System.out::println);
         try {
             connection.setAutoCommit(false);
-            try (PreparedStatement ps = connection.prepareStatement("INSERT INTO person (firstName, surName, patronymic, birthday, gender, department, profession, factor, medicalExaminations, medicalExaminationPrice)" +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")) {
+            try (PreparedStatement ps = connection.prepareStatement("INSERT INTO person (firstName, surName, patronymic, birthday, gender, department, profession, factor, medicalExaminations, medicalExaminationPrice)"
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")) {
                 data.values().forEach(x -> {
                     try {
                         ps.setString(1, x.getFirstName());
@@ -252,18 +252,17 @@ class Person {
 
     @Override
     public String toString() {
-        return "Person{" +
-                "firstName='" + firstName + '\'' +
-                ", surName='" + surName + '\'' +
-                ", patronymic='" + patronymic + '\'' +
-                ", birthday='" + birthday + '\'' +
-                ", gender='" + gender + '\'' +
-                ", department='" + department + '\'' +
-                ", profession='" + profession + '\'' +
-                ", factor='" + factor + '\'' +
-                ", medicalExaminations='" + medicalExaminations + '\'' +
-                ", medicalExaminationPrice=" + medicalExaminationPrice +
-                '}';
+        return "Person{"
+                + "firstName='" + firstName + '\''
+                + ", surName='" + surName + '\''
+                + ", patronymic='" + patronymic + '\''
+                + ", birthday='" + birthday + '\''
+                + ", gender='" + gender + '\''
+                + ", department='" + department + '\''
+                + ", profession='" + profession + '\''
+                + ", factor='" + factor + '\''
+                + ", medicalExaminations='" + medicalExaminations + '\''
+                + ", medicalExaminationPrice=" + medicalExaminationPrice + '}';
     }
 }
 
