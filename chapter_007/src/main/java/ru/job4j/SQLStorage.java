@@ -14,7 +14,7 @@ public class SQLStorage {
         Logger l = this.log;
         String url = "jdbc:postgresql://localhost:5432/db_134839";
         String username = "postgres";
-        String password = "nicKh0tpXs2z";
+        String password = "password";
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url, username, password); //используется PrepareStatement чтобы защититься от sqlinjection
