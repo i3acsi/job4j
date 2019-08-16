@@ -1,3 +1,5 @@
+import org.jsoup.select.Evaluator;
+
 public class MemoryUsage {
 
     private static final Runtime runtime = Runtime.getRuntime();
@@ -10,7 +12,7 @@ public class MemoryUsage {
         String[] s = new String[1000_000];
         before = (runtime.totalMemory() - runtime.freeMemory());
         for (int i = 0; i < 1000_000; i++) {//EmptyUser u: users) {
-            s[i] = name + i;//48 байт
+            s[i] = ""+i;//48 байт = 24 байта - String + 16 байт - byte[] +8?
         }
         after = (runtime.totalMemory() - runtime.freeMemory());
         System.out.println((after-before)/1_000_000);
