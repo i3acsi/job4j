@@ -6,30 +6,34 @@ public class MemoryUsage {
         System.gc();
         long before, after;
         String name ="name";
-        String[] u = new String[1000_000];
-        //User[] u = new User[1000_000];
-        //Object[] u = new Object[1000_000];
-        //EmptyUser[] u = new EmptyUser[1000_000];
+
+        String[] s = new String[1000_000];
         before = (runtime.totalMemory() - runtime.freeMemory());
         for (int i = 0; i < 1000_000; i++) {//EmptyUser u: users) {
-            u[i]
-                    //=new User(name);//16 байт
-                    //= new EmptyUser();//8 байт
-                    =name+i;//48 байт
-                    //= new Object();// 8 байт
-//            {
-//                @SuppressWarnings("deprecation")
-//                @Override
-//                protected void finalize() throws Throwable {
-//                    super.finalize();
-//                    System.out.printf("finalize %s \n", this);
-//                }
-//
-//            };
+            s[i] = name + i;//48 байт
         }
         after = (runtime.totalMemory() - runtime.freeMemory());
-        System.gc();
         System.out.println((after-before)/1_000_000);
+        System.gc();
+
+        User[] u = new User[1000_000];
+        before = (runtime.totalMemory() - runtime.freeMemory());
+        for (int i = 0; i < 1000_000; i++) {//EmptyUser u: users) {
+            u[i] = new User(name); //16 байт
+        }
+        after = (runtime.totalMemory() - runtime.freeMemory());
+        System.out.println((after-before)/1_000_000);
+        System.gc();
+
+        EmptyUser[] em = new EmptyUser[1000_000];
+        before = (runtime.totalMemory() - runtime.freeMemory());
+        for (int i = 0; i < 1000_000; i++) {//EmptyUser u: users) {
+            em[i] = new EmptyUser(); //8 байт
+        }
+        after = (runtime.totalMemory() - runtime.freeMemory());
+        System.out.println((after-before)/1_000_000);
+        System.gc();
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -53,12 +57,12 @@ public class MemoryUsage {
 //            super.finalize();
 //        }
 //
-//        @Override
-//        public String toString() {
-//            return "User{" +
-//                    "name='" + name + '\'' + this +
-//                    '}';
-//        }
+////        @Override
+////        public String toString() {
+////            return "User{" +
+////                    "name='" + name + '\'' + this +
+////                    '}';
+////        }
     }
 
     public static class EmptyUser {
