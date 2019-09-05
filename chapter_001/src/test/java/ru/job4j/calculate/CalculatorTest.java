@@ -28,7 +28,7 @@ public class CalculatorTest {
     @Test
     public void whenSubtractOneFromTwoThanOne() {
         Calculator calc = new Calculator();
-        calc.subtract(1D, 2D);
+        calc.subtract(2D, 1D);
         double result = calc.getResult();
         double expected = 1D;
         assertThat(result, is(expected));

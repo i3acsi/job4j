@@ -1,4 +1,4 @@
-package ru.job4j.tracker;
+package ru.job4j.interactcalc;
 
 import java.util.Scanner;
 
@@ -24,7 +24,7 @@ public class ConsoleInput implements Input {
 
     @Override
     public int ask(String question, int[] range) {
-        int key = Integer.valueOf(this.ask(question));
+        int key = Integer.parseInt(this.ask(question));
 		if (!exist(key, range)) {
             throw new MenuOutException("Out of menu range");
 		}

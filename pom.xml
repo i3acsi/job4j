@@ -7,6 +7,14 @@
     <name>junior</name>
     <url>http://job4j.ru/</url>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <name>Maven Plugin Repository</name>
+            <url>http://repo1.maven.org/maven2</url>
+        </pluginRepository>
+    </pluginRepositories>
+
 
     <properties>
         <maven.compiler.source>12</maven.compiler.source>
