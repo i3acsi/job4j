@@ -3,6 +3,7 @@ package ru.job4j.interactcalc;
 import java.util.Scanner;
 
 public class ConsoleInput implements Input {
+    private Double current;
     private Scanner scanner = new Scanner(System.in);
 
     private boolean exist(int key, int[] range) {

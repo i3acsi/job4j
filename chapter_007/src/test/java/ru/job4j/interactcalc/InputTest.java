@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.is;
  */
 
 
-public class NumericInputTest {
+public class InputTest {
     private final ByteArrayOutputStream mem = new ByteArrayOutputStream();
     private final PrintStream out = System.out;
 
@@ -35,7 +35,7 @@ public class NumericInputTest {
 
     @Test
     public void validInput() {
-        NumericInput input = new NumericInput(new StubInput(new String[]{"4.6"}));
+        Input input = new StubInput(new String[]{"4.6"});
         assertThat(input.getDouble("test"), is(4.6));
         assertThat(this.mem.toString(), is("")
         );
@@ -43,14 +43,14 @@ public class NumericInputTest {
 
     @Test
     public void invalidInput() {
-        NumericInput input = new NumericInput(new StubInput(new String[]{"test", "0"}));
+        Input input = new StubInput(new String[]{"test", "0"});
         assertThat(input.getDouble("test"), is(0.0));
         assertThat(this.mem.toString(), is(""));
     }
 
     @Test
     public void useOldResultTest() {
-        NumericInput input = new NumericInput(new StubInput(new String[]{""}));
+        Input input = new StubInput(new String[]{""});
         input.setCurrent(2.2);
         assertThat(input.getDouble("test"), is(2.2));
     }

@@ -4,41 +4,38 @@ import java.util.function.Consumer;
 
 public class StartUI {
 
+    protected MenuCalculator menu;
+
     /**
      * Содержит методы для математических действий
      */
-    private final Calculator calculator;
-
-    /**
-     * Для получения чисел от пользователя
-     */
-    private final NumericInput numericInput;
+    protected Calculator calculator;
 
     /**
      * Получение данных от пользователя.
      */
-    private final Input input;
+    protected final Input input;
 
-    private final Consumer<String> output;
+    protected final Consumer<String> output;
 
     /**
      * Конструктор с инициалицацией полей.
      *
      * @param input  ввод данных.
-     * @param //todo tracker хранилище заявок.
+     * @param calculator математические вычисления
+     * @param output вывод данных
      */
-    public StartUI(Input input, NumericInput numericInput, Calculator calculator, Consumer<String> output) {
+    public StartUI(Input input, Calculator calculator, Consumer<String> output) {
         this.input = input;
         this.calculator = calculator;
-        this.numericInput = numericInput;
         this.output = output;
+        this.menu = new MenuCalculator(this.input, this.calculator, this.output);
     }
 
     /**
      * Основой цикл программы.
      */
     public void init() {
-        MenuCalculator menu = new MenuCalculator(this.numericInput, this.calculator, this.output);
         menu.fillActions();
         int length = menu.getActionsLength();
         int[] range = new int[length];
@@ -49,7 +46,7 @@ public class StartUI {
             menu.show();
             menu.select(input.ask("select", range));
             double result = calculator.getResult();
-            numericInput.setCurrent(result);
+            input.setCurrent(result);
             System.out.println(result);
 
         } while (!"y".equals(this.input.ask("Exit?(y) ")));
@@ -62,10 +59,8 @@ public class StartUI {
      * @param args
      */
     public static void main(String[] args) {
-        Input input = new ValidateInput(new ConsoleInput());
         new StartUI(
-                input,
-                new NumericInput(input),
+                new ValidateInput(new ConsoleInput()),
                 new Calculator(),
                 System.out::println)
                 .init();

@@ -54,8 +54,7 @@ public class StartUITest {
     @Test
     public void when2Plus3Then5() {
         Input input = new StubInput(new String[]{"0", "2", "3", "y"});
-        NumericInput numericInput = new NumericInput(input);
-        new StartUI(input, numericInput, calculator, output).init();
+        new StartUI(input, calculator, output).init();
         assertThat(this.out.toString(),
                 is(
                         (new StringBuilder()
@@ -78,8 +77,7 @@ public class StartUITest {
     @Test
     public void when5Minus3Then2() {
         Input input = new StubInput(new String[]{"1", "5", "3", "y"});
-        NumericInput numericInput = new NumericInput(input);
-        new StartUI(input, numericInput, calculator, output).init();
+        new StartUI(input, calculator, output).init();
         assertThat(this.out.toString(),
                 is(
                         (new StringBuilder()
@@ -102,8 +100,7 @@ public class StartUITest {
     @Test
     public void when5Multiply3Then15() {
         Input input = new StubInput(new String[]{"2", "5", "3", "y"});
-        NumericInput numericInput = new NumericInput(input);
-        new StartUI(input, numericInput, calculator, output).init();
+        new StartUI(input, calculator, output).init();
         assertThat(this.out.toString(),
                 is(
                         (new StringBuilder()
@@ -126,8 +123,7 @@ public class StartUITest {
     @Test
     public void when5Divide2Then2point5() {
         Input input = new StubInput(new String[]{"3", "5", "2", "y"});
-        NumericInput numericInput = new NumericInput(input);
-        new StartUI(input, numericInput, calculator, output).init();
+        new StartUI(input, calculator, output).init();
         assertThat(this.out.toString(),
                 is(
                         (new StringBuilder()
@@ -150,8 +146,7 @@ public class StartUITest {
     @Test
     public void usePreviousResult() {
         Input input = new StubInput(new String[]{"3", "5", "2", "n", "2", "", "2", "y"});
-        NumericInput numericInput = new NumericInput(input);
-        new StartUI(input, numericInput, calculator, output).init();
+        new StartUI(input, calculator, output).init();
         assertThat(this.out.toString(),
                 is(
                         (new StringBuilder()
@@ -181,8 +176,7 @@ public class StartUITest {
     @Test
     public void incorrectInput() {
         Input input = new StubInput(new String[]{"0", "test", "4", "5", "y"});
-        NumericInput numericInput = new NumericInput(input);
-        new StartUI(input, numericInput, calculator, output).init();
+        new StartUI(input, calculator, output).init();
         assertThat(this.out.toString(),
                 is(
                         (new StringBuilder()
@@ -203,9 +197,8 @@ public class StartUITest {
     public void incorrectInput2() {
         boolean flag = false;
         Input input = new StubInput(new String[]{"90"});
-        NumericInput numericInput = new NumericInput(input);
         try {
-            new StartUI(input, numericInput, calculator, output).init();
+            new StartUI(input, calculator, output).init();
         } catch (MenuOutException e) {
             flag = true;
         }

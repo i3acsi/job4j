@@ -1,6 +1,7 @@
 package ru.job4j.interactcalc;
 
 class StubInput implements Input {
+    private Double current;
     /**
      * Поле value содержит послел\довательность
      * ответоов пользователя. Например для добавлния новой заявки
@@ -55,4 +56,23 @@ class StubInput implements Input {
 		}
 		return key;
     }
+    @Override
+    public double getDouble(String param) {
+        String question = String.format("введите %s число или ввод для использования предыдущего результата", param);
+        String str = this.ask(question);
+        if ("".equals(str) & current != null) {
+            return current;
+        }
+        while (!this.isDouble(str)) {
+            str = this.ask(question);
+        }
+
+        return Double.parseDouble(str);
+    }
+
+    @Override
+    public void setCurrent(double current) {
+        this.current = current;
+    }
+
 }

@@ -9,7 +9,7 @@ package ru.job4j.interactcalc;
  */
 
 public class Calculator {
-    private double result;
+    protected double result;
 
     /**
      * Method add.

@@ -1,28 +1,33 @@
 package ru.job4j.interactcalc;
 
+import ru.job4j.interactcalc.actions.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
 public class MenuCalculator {
-    private NumericInput numericInput;
-    private Calculator calculator;
-    private final Consumer<String> output;
+
+    /**
+     * @param input ввод данных пользователем
+     * @param calculator математические действия
+     * @param output вывод данных
+     */
+    protected final Input input;
+    protected final Calculator calculator;
+    protected final Consumer<String> output;
 
     /**
      * хранит ссылку на массив типа Action.
      */
-    private List<Action> actions = new ArrayList<>();
+    protected List<Action> actions = new ArrayList<>();
 
     /**
-     * Конструктор.
-     *
-     * @param numericInput объект типа numericInput для ввода чисел
-     * @param calculator   - для математических действий
+     * Конструктор. - Инициализация плей.
      */
-    public MenuCalculator(NumericInput numericInput, Calculator calculator, Consumer<String> output) {
+    public MenuCalculator(Input input, Calculator calculator, Consumer<String> output) {
+        this.input = input;
         this.calculator = calculator;
-        this.numericInput = numericInput;
         this.output = output;
     }
 
@@ -39,10 +44,10 @@ public class MenuCalculator {
      * Метод заполняет массив.
      */
     public void fillActions() {
-        this.actions.add(new Sum(0, "Сложить"));
-        this.actions.add(new Subtract(1, "Вычесть"));
-        this.actions.add(new Multiply(2, "Умножить"));
-        this.actions.add(new Divide(3, "Разделить"));
+        this.actions.add(new Sum(0, "Сложить", calculator, input));
+        this.actions.add(new Subtract(1, "Вычесть", calculator, input));
+        this.actions.add(new Multiply(2, "Умножить", calculator, input));
+        this.actions.add(new Divide(3, "Разделить", calculator, input));
     }
 
     /**
@@ -52,7 +57,7 @@ public class MenuCalculator {
      */
     public void select(int key) {
         System.out.println(this.actions.get(key).info());
-        this.actions.get(key).execute(this.calculator, this.numericInput);
+        this.actions.get(key).execute();
     }
 
     /**

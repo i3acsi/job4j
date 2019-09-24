@@ -1,4 +1,4 @@
-package ru.job4j.interactcalc;
+package ru.job4j.interactcalc.actions;
 
 public interface Action {
     /**
@@ -11,7 +11,7 @@ public interface Action {
      * Основной метод.
      * //todo @param tracker - объект типа Tracker
      */
-    void execute(Calculator calculator, NumericInput numericInput);
+    void execute();
 
     /**
      * Метод возвращает информацию о данном пункте меню.
