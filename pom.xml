@@ -1,4 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project>
+    <localRepository>d:/Documents/MyLocalRepository</localRepository>
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>ru.job4j</groupId>
     <artifactId>junior</artifactId>

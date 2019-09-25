@@ -13,7 +13,6 @@ public class StartUIEngineer extends StartUI {
      */
     public StartUIEngineer(Input input, EngineerCalculator calculator, Consumer<String> output) {
         super(input, calculator, output);
-        super.calculator = calculator;
         super.menu = new EngineerMenu(input, calculator, output);
     }
 
