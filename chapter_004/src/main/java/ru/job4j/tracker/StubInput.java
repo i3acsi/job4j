@@ -1,6 +1,6 @@
 package ru.job4j.tracker;
 
-class StubInput implements Input {
+public class StubInput implements Input {
     /**
      * Поле value содержит послел\довательность
      * ответоов пользователя. Например для добавлния новой заявки
@@ -20,7 +20,7 @@ class StubInput implements Input {
      * Конструктор с инициализацией value
      * @param value
      */
-    StubInput(String[] value) {
+    public StubInput(String[] value) {
         this.value = value;
     }
 
