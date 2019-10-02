@@ -1,6 +1,9 @@
 package ru.job4j.isp;
 
+import javafx.print.Collation;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -10,7 +13,7 @@ import java.util.List;
  * @author Vasiliy Gasevskiy (gasevskyv@gmail.com)
  * @version 0.1
  */
-public class MenuParagraph implements IMenu, IParagraph {
+public class MenuParagraph implements Runnable, IParagraph {
     /**
      * Название пункта меню.
      */
@@ -22,15 +25,16 @@ public class MenuParagraph implements IMenu, IParagraph {
     /**
      * Список подпунктов.
      */
-    private List<IMenu> children;
+    private List<MenuParagraph> children;
 
     /**
      * Конструктор, инициализирующий поля
-     * @param name название пункта
-     * @param action описание действия
+     *
+     * @param name     название пункта
+     * @param action   описание действия
      * @param children список подпунктов
      */
-    public MenuParagraph(String name, String action, List<IMenu> children) {
+    public MenuParagraph(String name, String action, List<MenuParagraph> children) {
         this.children = new ArrayList<>();
         this.name = name;
         this.action = action;
@@ -39,19 +43,30 @@ public class MenuParagraph implements IMenu, IParagraph {
 
     /**
      * Возвращает подпункты.
+     *
      * @return List<MenuParagraph>
      */
-    @Override
-    public List<IMenu> getChildren() {
+
+    public List<MenuParagraph> getChildren() {
         return this.children;
+    }
+
+    public List<MenuParagraph> getChildren(boolean reverse) {
+        if (!reverse) {
+            return this.children;
+        }
+        List<MenuParagraph> result = new ArrayList<>(this.children);
+        Collections.reverse(result);
+        return result;
     }
 
     /**
      * Добавляет в спсиок подпунктов ноый.
+     *
      * @param paragraph
      */
     @Override
-    public void addParagraph(IMenu paragraph) {
+    public void addParagraph(MenuParagraph paragraph) {
         this.children.add(paragraph);
     }
 
@@ -69,7 +84,6 @@ public class MenuParagraph implements IMenu, IParagraph {
         return name + "| action= " + action;
     }
 
-    @Override
     public String getName() {
         return name;
     }
