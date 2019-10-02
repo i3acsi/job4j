@@ -2,7 +2,7 @@ package ru.job4j.tracker;
 
 import java.util.Scanner;
 
-class ConsoleInput implements Input {
+public class ConsoleInput implements Input {
     private Scanner scanner = new Scanner(System.in);
 
     private boolean exist(int key, int[] range) {
@@ -24,7 +24,7 @@ class ConsoleInput implements Input {
 
     @Override
     public int ask(String question, int[] range) {
-        int key = Integer.valueOf(this.ask(question));
+        int key = Integer.parseInt(this.ask(question));
 		if (!exist(key, range)) {
             throw new MenuOutException("Out of menu range");
 		}
