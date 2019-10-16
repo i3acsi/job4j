@@ -65,7 +65,13 @@
     <module name="AvoidNestedBlocks"/>
     <module name="EmptyBlock"/>
     <module name="LeftCurly"/>
-    <module name="NeedBraces"/>
+
+    <!-- Allow single-line statements (if, while, do-while, for) without braces  {}     -->
+    <!-- See https://checkstyle.sourceforge.io/config_blocks.html#NeedBraces -->
+    <module name="NeedBraces">
+        <property name="allowSingleLineStatement" value="true"/>
+    </module>
+
     <module name="RightCurly"/>
 
     <!-- Checks for common coding problems               -->
