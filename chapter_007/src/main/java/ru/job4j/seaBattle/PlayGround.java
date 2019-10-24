@@ -1,6 +1,7 @@
 package ru.job4j.seaBattle;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -19,12 +20,24 @@ public class PlayGround implements IPlayGround {
     private SimpleCell[][] cells;
     private int size;
     private List<SimpleWarship> myWarSips;
+    private List<Integer> listOfShipSizes;
 
     PlayGround(Consumer<String> out) {
         this.out = out;
         this.cells = new SimpleCell[10][10];
         this.size = 10;
         this.myWarSips = new ArrayList<>(10);
+        this.listOfShipSizes = new ArrayList<>(10);
+        this.listOfShipSizes.addAll(Arrays.asList(4, 3, 3, 2, 2, 2, 1, 1, 1, 1));
+    }
+
+    public SimpleCell getCell(String coordinates) {
+        int[] coordinate = SimpleCell.coordinatesConvert(coordinates);
+        return cells[coordinate[1]][coordinate[0]]; //todo
+    }
+
+    public List<SimpleWarship> getMyWarSips() {
+        return myWarSips;
     }
 
     /**
@@ -36,10 +49,11 @@ public class PlayGround implements IPlayGround {
      */
     @Override
     public boolean place(SimpleWarship ship) {
+        if (!listOfShipSizes.remove(Integer.valueOf(ship.getSize()))) return false;
         boolean result = setState(ship);
         if (result) {
             this.myWarSips.add(ship);
-            ship.getCells().forEach(cell -> cell.setMyShip(ship));
+            //ship.getCells().forEach(cell -> cell.setMyShip(ship));// не полнял - это же одно и тоже . пожоже что это ошибка. пока уберу
         }
         return result;
     }
@@ -69,6 +83,7 @@ public class PlayGround implements IPlayGround {
                 this.cells[y][x] = new SimpleCell(x, y, 1);
             }
         }
+        //Расположу корабль на поле.
         updateShip(ship, true);
         return true;
     }
@@ -81,7 +96,8 @@ public class PlayGround implements IPlayGround {
      */
     private void updateShip(SimpleWarship ship, boolean firstInit) {
         ship.getCells().forEach(cell -> this.cells[cell.getY()][cell.getX()].setState(cell.getState()));
-        if (firstInit) ship.getCells().forEach(cell -> this.cells[cell.getY()][cell.getX()].setMyShip(ship));
+        if (firstInit)
+            ship.getCells().forEach(cell -> this.cells[cell.getY()][cell.getX()].setMyShip(ship));// не полнял - это же одно и тоже
     }
 
     /**
@@ -101,9 +117,12 @@ public class PlayGround implements IPlayGround {
      * Display playground with warships on console;
      */
     @Override
-    public void show() {
-        this.out.accept(this.toString());
+    public void show(boolean hide) {
+        if(!hide) this.out.accept(this.toString());
+        else this.out.accept(this.toHiddenString());
     }
+
+    //public void show(boolean )
 
     /**
      * Use this method to shot.
@@ -115,9 +134,9 @@ public class PlayGround implements IPlayGround {
     public boolean shoot(String coordinate) {
         boolean result = false;
         int[] xy = SimpleCell.coordinatesConvert(coordinate);
-        SimpleWarship temp = this.cells[xy[0]][xy[1]].getMyShip();
+        SimpleWarship temp = this.cells[xy[1]][xy[0]].getMyShip();
         if (temp != null) {
-            temp.acceptDamage(new SimpleCell(xy[0], xy[1], 1));
+            temp.acceptDamage(new SimpleCell(xy[0], xy[1], 1)); // параметр state в данном случае не важен. можно было бы пердавать координаты
             updateShip(temp, false);
             result = true;
         } else {
@@ -128,19 +147,40 @@ public class PlayGround implements IPlayGround {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder("   А Б В Г Д Е Ж З И К");
+        StringBuilder result = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК");
         int size = 10;
-        for (int i = 0; i < size - 1; i++) {
-            result.append(ln).append(" ").append(i + 1);
+        for (int i = 0; i < size ; i++) {
+            result.append(ln).append("\t").append(i + 1);
             for (int j = 0; j < size; j++) {
-                result.append(" ").append(this.cells[i][j]);
+                result.append("\t");
+                SimpleCell c = this.cells[i][j];
+                if (c == null) result.append("_");
+                else result.append(c);
             }
         }
-        result.append(ln).append(size);
-        for (int j = 0; j < size; j++) {
-            result.append(" ").append(this.cells[size - 1][j]);
-        }
+//        result.append(ln).append(size);
+//        for (int j = 0; j < size; j++) {
+//            result.append("\t");
+//            SimpleCell c = this.cells[size - 1][j];
+//            if (c == null) result.append("_");
+//            else result.append(c);
+//        }
 
+        return result.toString();
+    }
+
+    public String toHiddenString() {
+        StringBuilder result = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК");
+        int size = 10;
+        for (int i = 0; i < size ; i++) {
+            result.append(ln).append("\t").append(i + 1);
+            for (int j = 0; j < size; j++) {
+                result.append("\t");
+                SimpleCell c = this.cells[i][j];
+                if (c.getState() == 2) result.append("_");
+                else result.append(c);
+            }
+        }
         return result.toString();
     }
 
@@ -150,5 +190,9 @@ public class PlayGround implements IPlayGround {
             if (!ship.isKilled()) return false;
         }
         return true;
+    }
+
+    public Consumer<String> getOut() {
+        return out;
     }
 }

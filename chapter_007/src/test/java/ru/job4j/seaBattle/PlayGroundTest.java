@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
 
 public class PlayGroundTest {
     private IPlayGround playGround;
+    private IPlayGround enemyPlayground;
     private final PrintStream stdout = System.out;
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
     private final Consumer<String> output = new Consumer<>() {
@@ -29,6 +30,7 @@ public class PlayGroundTest {
     @Before
     public void loadOutput() {
         playGround = new PlayGround(output);
+        enemyPlayground = new PlayGround(output);
         System.out.println("execute before method");
         System.setOut(new PrintStream(this.out));
     }
@@ -44,20 +46,20 @@ public class PlayGroundTest {
      */
     @Test
     public void whenCallMethodShowThanPlayGroundDisplayedInConsole() {
-        String emptyPlayGround = new StringBuilder("   А Б В Г Д Е Ж З И К").append(ln)
-                .append(" 1 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 2 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 3 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 4 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 5 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 6 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 7 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 8 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 9 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append("10 _ _ _ _ _ _ _ _ _ _").append(ln)
+        String emptyPlayGround = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
+                .append("\t1\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t4\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t5\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t7\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t8\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
                 .toString();
         playGround.initPlayGround();
-        playGround.show();
+        playGround.show(false);
         assertThat(this.out.toString(), is(emptyPlayGround));
     }
 
@@ -66,85 +68,85 @@ public class PlayGroundTest {
      */
     @Test
     public void whenPutAShipOnThePlayGroundAndCallMethodShowThanItDisplayedThere() {
-        SimpleWarship warship = new SimpleWarship("А1-А4", 4);
+        SimpleWarship warship = new SimpleWarship("А1-А4");
         assertTrue(playGround.place(warship));
         playGround.initPlayGround();
-        String oneShipPlayGround = new StringBuilder("   А Б В Г Д Е Ж З И К").append(ln)
-                .append(" 1 █ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 2 █ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 3 █ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 4 █ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 5 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 6 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 7 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 8 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 9 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append("10 _ _ _ _ _ _ _ _ _ _").append(ln)
+        String oneShipPlayGround = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
+                .append("\t1\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t4\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t5\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t7\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t8\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
                 .toString();
-        playGround.show();
+        playGround.show(false);
         assertThat(this.out.toString(), is(oneShipPlayGround));
     }
 
     @Test
     public void whenPutAShipOnThePlayGroundAndCallMethodShowThanItDisplayedThere2() {
-        SimpleWarship warship = new SimpleWarship("А6-А8", 3);
+        SimpleWarship warship = new SimpleWarship("А6-А8");
         assertTrue(playGround.place(warship));
         playGround.initPlayGround();
-        String oneShipPlayGround = new StringBuilder("   А Б В Г Д Е Ж З И К").append(ln)
-                .append(" 1 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 2 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 3 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 4 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 5 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 6 █ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 7 █ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 8 █ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 9 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append("10 _ _ _ _ _ _ _ _ _ _").append(ln)
+        String oneShipPlayGround = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
+                .append("\t1\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t4\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t5\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t6\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t7\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t8\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
                 .toString();
-        playGround.show();
+        playGround.show(false);
         assertThat(this.out.toString(), is(oneShipPlayGround));
     }
 
     @Test
     public void whenPutAShipOnThePlayGroundAndCallMethodShowThanItDisplayedThere3() {
-        SimpleWarship warship = new SimpleWarship("В2-Г2", 2);
+        SimpleWarship warship = new SimpleWarship("В2-Г2");
         assertTrue(playGround.place(warship));
         playGround.initPlayGround();
-        String oneShipPlayGround = new StringBuilder("   А Б В Г Д Е Ж З И К").append(ln)
-                .append(" 1 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 2 _ _ █ █ _ _ _ _ _ _").append(ln)
-                .append(" 3 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 4 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 5 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 6 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 7 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 8 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 9 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append("10 _ _ _ _ _ _ _ _ _ _").append(ln)
+        String oneShipPlayGround = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
+                .append("\t1\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t_\t_\t█\t█\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t4\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t5\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t7\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t8\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
                 .toString();
-        playGround.show();
+        playGround.show(false);
         assertThat(this.out.toString(), is(oneShipPlayGround));
     }
 
     @Test
     public void whenPutAShipOnThePlayGroundAndCallMethodShowThanItDisplayedThere4() {
-        SimpleWarship warship = new SimpleWarship("К10-К10", 1);
+        SimpleWarship warship = new SimpleWarship("К10-К10");
         assertTrue(playGround.place(warship));
         playGround.initPlayGround();
-        String oneShipPlayGround = new StringBuilder("   А Б В Г Д Е Ж З И К").append(ln)
-                .append(" 1 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 2 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 3 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 4 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 5 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 6 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 7 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 8 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 9 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append("10 _ _ _ _ _ _ _ _ _ █").append(ln)
+        String oneShipPlayGround = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
+                .append("\t1\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t4\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t5\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t7\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t8\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t█").append(ln)
                 .toString();
-        playGround.show();
+        playGround.show(false);
         assertThat(this.out.toString(), is(oneShipPlayGround));
     }
 
@@ -153,34 +155,34 @@ public class PlayGroundTest {
      */
     @Test
     public void whenPutAListOfShipsOnThePlayGroundAndCallMethodShowThanItDisplayedThere() {
-        SimpleWarship warship4_1 = new SimpleWarship("А1-А4", 4);
-        SimpleWarship warship3_1 = new SimpleWarship("А6-А8", 3);
-        SimpleWarship warship3_2 = new SimpleWarship("В1-В3", 3);
-        SimpleWarship warship2_1 = new SimpleWarship("В5-В6", 2);
-        SimpleWarship warship2_2 = new SimpleWarship("Д1-Д2", 2);
-        SimpleWarship warship2_3 = new SimpleWarship("Д4-Д5", 2);
-        SimpleWarship warship1_1 = new SimpleWarship("А10-А10", 1);
-        SimpleWarship warship1_2 = new SimpleWarship("В8-В8", 1);
-        SimpleWarship warship1_3 = new SimpleWarship("В10-В10", 1);
-        SimpleWarship warship1_4 = new SimpleWarship("Д7-Д7", 1);
+        SimpleWarship warship4_1 = new SimpleWarship("А1-А4");
+        SimpleWarship warship3_1 = new SimpleWarship("А6-А8");
+        SimpleWarship warship3_2 = new SimpleWarship("В1-В3");
+        SimpleWarship warship2_1 = new SimpleWarship("В5-В6");
+        SimpleWarship warship2_2 = new SimpleWarship("Д1-Д2");
+        SimpleWarship warship2_3 = new SimpleWarship("Д4-Д5");
+        SimpleWarship warship1_1 = new SimpleWarship("А10-А10");
+        SimpleWarship warship1_2 = new SimpleWarship("В8-В8");
+        SimpleWarship warship1_3 = new SimpleWarship("В10-В10");
+        SimpleWarship warship1_4 = new SimpleWarship("Д7-Д7");
         List<SimpleWarship> ships = List.of(warship1_1, warship1_2, warship1_3, warship1_4, warship2_1, warship2_2, warship2_3,
                 warship3_1, warship3_2, warship4_1);
 
         ships.forEach(playGround::place);
-        String allShipsPlayGround = new StringBuilder("   А Б В Г Д Е Ж З И К").append(ln)
-                .append(" 1 █ _ █ _ █ _ _ _ _ _").append(ln)
-                .append(" 2 █ _ █ _ █ _ _ _ _ _").append(ln)
-                .append(" 3 █ _ █ _ _ _ _ _ _ _").append(ln)
-                .append(" 4 █ _ _ _ █ _ _ _ _ _").append(ln)
-                .append(" 5 _ _ █ _ █ _ _ _ _ _").append(ln)
-                .append(" 6 █ _ █ _ _ _ _ _ _ _").append(ln)
-                .append(" 7 █ _ _ _ █ _ _ _ _ _").append(ln)
-                .append(" 8 █ _ █ _ _ _ _ _ _ _").append(ln)
-                .append(" 9 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append("10 █ _ █ _ _ _ _ _ _ _").append(ln)
+        String allShipsPlayGround = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
+                .append("\t1\t█\t_\t█\t_\t█\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t█\t_\t█\t_\t█\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t█\t_\t█\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t4\t█\t_\t_\t_\t█\t_\t_\t_\t_\t_").append(ln)
+                .append("\t5\t_\t_\t█\t_\t█\t_\t_\t_\t_\t_").append(ln)
+                .append("\t6\t█\t_\t█\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t7\t█\t_\t_\t_\t█\t_\t_\t_\t_\t_").append(ln)
+                .append("\t8\t█\t_\t█\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t10\t█\t_\t█\t_\t_\t_\t_\t_\t_\t_").append(ln)
                 .toString();
         playGround.initPlayGround();
-        playGround.show();
+        playGround.show(false);
         assertThat(this.out.toString(), is(allShipsPlayGround));
     }
 
@@ -189,25 +191,52 @@ public class PlayGroundTest {
      */
     @Test
     public void whenPutShipsCloseToEachOtherThenGetFalse() {
-        SimpleWarship warship1 = new SimpleWarship("А1-А4", 4);
-        SimpleWarship warship2 = new SimpleWarship("Б1-Б3", 3);
-        SimpleWarship warship3 = new SimpleWarship("А4-А4", 1);
+        SimpleWarship warship1 = new SimpleWarship("А1-А4");
+        SimpleWarship warship2 = new SimpleWarship("Б1-Б3");
+        SimpleWarship warship3 = new SimpleWarship("А4-А4");
         assertTrue(playGround.place(warship1));
         assertFalse(playGround.place(warship2));
         assertFalse(playGround.place(warship3));
-        String oneShipPlayGround = new StringBuilder("   А Б В Г Д Е Ж З И К").append(ln)
-                .append(" 1 █ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 2 █ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 3 █ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 4 █ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 5 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 6 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 7 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 8 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 9 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append("10 _ _ _ _ _ _ _ _ _ _").append(ln)
+        playGround.initPlayGround();
+        String oneShipPlayGround = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
+                .append("\t1\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t4\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t5\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t7\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t8\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
                 .toString();
-        playGround.show();
+        playGround.show(false);
+        assertThat(this.out.toString(), is(oneShipPlayGround));
+    }
+
+    /**
+     * There must be certain number of ships with certain length.
+     */
+    @Test
+    public void whenTryToPutTwoFourDeckShipsThenGetFalse() {
+        SimpleWarship warship1 = new SimpleWarship("А1-А4");
+        SimpleWarship warship2 = new SimpleWarship("В1-В4");
+        assertTrue(playGround.place(warship1));
+        assertFalse(playGround.place(warship2));
+        playGround.initPlayGround();
+        String oneShipPlayGround = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
+                .append("\t1\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t4\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t5\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t7\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t8\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .toString();
+        playGround.show(false);
         assertThat(this.out.toString(), is(oneShipPlayGround));
     }
 
@@ -216,20 +245,23 @@ public class PlayGroundTest {
      */
     @Test
     public void whenShotAndMissThenGetFalse() {
+        SimpleWarship warship = new SimpleWarship("Б2-Б2");
+        assertTrue(playGround.place(warship));
+        playGround.initPlayGround();
         assertFalse(playGround.shoot("А1"));
-        String missedShotPlayGround = new StringBuilder("   А Б В Г Д Е Ж З И К").append(ln)
-                .append(" 1 ● _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 2 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 3 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 4 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 5 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 6 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 7 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 8 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 9 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append("10 _ _ _ _ _ _ _ _ _ _").append(ln)
+        String missedShotPlayGround = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
+                .append("\t1\t●\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t_\t█\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t4\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t5\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t7\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t8\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
                 .toString();
-        playGround.show();
+        playGround.show(false);
         assertThat(this.out.toString(), is(missedShotPlayGround));
     }
 
@@ -238,24 +270,24 @@ public class PlayGroundTest {
      */
     @Test
     public void whenShotAndHitThenGetTrue() {
-        SimpleWarship warship = new SimpleWarship("А1-А4", 4);
+        SimpleWarship warship = new SimpleWarship("А1-А4");
         assertTrue(playGround.place(warship));
         playGround.initPlayGround();
         boolean rslt = playGround.shoot("А1");
         assertTrue(rslt);
-        String damagedShipPlayGround = new StringBuilder("   А Б В Г Д Е Ж З И К").append(ln)
-                .append(" 1 ▓ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 2 █ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 3 █ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 4 █ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 5 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 6 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 7 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 8 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 9 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append("10 _ _ _ _ _ _ _ _ _ _").append(ln)
+        String damagedShipPlayGround = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
+                .append("\t1\t▓\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t4\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t5\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t7\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t8\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
                 .toString();
-        playGround.show();
+        playGround.show(false);
         assertThat(this.out.toString(), is(damagedShipPlayGround));
     }
 
@@ -265,27 +297,104 @@ public class PlayGroundTest {
      */
     @Test
     public void whenShipsAreKilledThenGetTrue() {
-        SimpleWarship warship = new SimpleWarship("А1-А4", 4);
+        SimpleWarship warship = new SimpleWarship("А1-А4");
         assertTrue(playGround.place(warship));
+        playGround.initPlayGround();
         assertTrue(playGround.shoot("А1"));
         assertTrue(playGround.shoot("А2"));
         assertTrue(playGround.shoot("А3"));
         assertFalse(playGround.isLose());
         assertTrue(playGround.shoot("А4"));
         assertTrue(playGround.isLose());
-        String destroyedShipPlayGround = new StringBuilder("   А Б В Г Д Е Ж З И К").append(ln)
-                .append(" 1 ░ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 2 ░ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 3 ░ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 4 ░ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 5 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 6 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 7 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 8 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append(" 9 _ _ _ _ _ _ _ _ _ _").append(ln)
-                .append("10 _ _ _ _ _ _ _ _ _ _").append(ln)
+        String destroyedShipPlayGround = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
+                .append("\t1\t░\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t░\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t░\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t4\t░\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t5\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t7\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t8\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
                 .toString();
-        playGround.show();
+        playGround.show(false);
         assertThat(this.out.toString(), is(destroyedShipPlayGround));
+    }
+
+    /**
+     * OtherPlayground test. When player shot at enemy`s playground, it show only cells that was fired.
+     * Cells, that was`nt fired are shown like empty cell;
+     */
+
+    @Test
+    public void whenShotAtEnemyPlaygroundAndMissThanOnlyFiredCellChangeView() {
+        SimpleWarship warship = new SimpleWarship("А1-А4");
+        assertTrue(enemyPlayground.place(warship));
+        enemyPlayground.initPlayGround();
+        enemyPlayground.shoot("Б2");
+        enemyPlayground.show(true);
+        String expected = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
+                .append("\t1\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t_\t●\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t4\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t5\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t7\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t8\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .toString();
+        assertThat(this.out.toString(), is(expected));
+    }
+
+    @Test
+    public void whenShotAtEnemyPlaygroundAndHitThanOnlyFiredCellChangeView() {
+        SimpleWarship warship = new SimpleWarship("А1-А4");
+        assertTrue(enemyPlayground.place(warship));
+        enemyPlayground.initPlayGround();
+        enemyPlayground.shoot("А1");
+        enemyPlayground.shoot("А2");
+        enemyPlayground.shoot("А3");
+        enemyPlayground.show(true);
+        String expected = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
+                .append("\t1\t▓\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t▓\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t▓\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t4\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t5\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t7\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t8\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .toString();
+        assertThat(this.out.toString(), is(expected));
+    }
+
+    @Test
+    public void whenShotAtEnemyPlaygroundAndKillShipThanShipChangeView() {
+        SimpleWarship warship = new SimpleWarship("А1-А4");
+        assertTrue(enemyPlayground.place(warship));
+        enemyPlayground.initPlayGround();
+        enemyPlayground.shoot("А1");
+        enemyPlayground.shoot("А2");
+        enemyPlayground.shoot("А3");
+        enemyPlayground.shoot("А4");
+        enemyPlayground.show(true);
+        String expected = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
+                .append("\t1\t░\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t░\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t░\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t4\t░\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t5\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t7\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t8\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .toString();
+        assertThat(this.out.toString(), is(expected));
     }
 }

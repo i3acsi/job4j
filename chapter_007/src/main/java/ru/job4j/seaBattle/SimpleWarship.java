@@ -11,15 +11,14 @@ public class SimpleWarship implements IWarship {
     private List<SimpleCell> cells;
     private int damagedCells;
 
-    public SimpleWarship(String coordinates, int size) {
+    public SimpleWarship(String coordinates) {
         this.isKilled = false;
-        this.size = size;
         this.damagedCells = 0;
         String[] c = coordinates.split("-");
         if (c.length != 2) throw new InitException("Ship initialization fail: wrong coordinates were input.");
         int[] a = SimpleCell.coordinatesConvert(c[0]);
         int[] b = SimpleCell.coordinatesConvert(c[1]);
-        this.cells = getCells(a, b, size);
+        this.cells = getCells(a, b);
     }
 
     public boolean isKilled() {
@@ -30,6 +29,10 @@ public class SimpleWarship implements IWarship {
         return cells;
     }
 
+    public int getSize() {
+        return size;
+    }
+
     /**
      * // TODO: 11.10.2019 description
      *
@@ -37,17 +40,18 @@ public class SimpleWarship implements IWarship {
      * @param tail - ship stern coordinates.
      * @return - list of cells.
      */
-    private List<SimpleCell> getCells(int[] nose, int[] tail, int size) {
+    private List<SimpleCell> getCells(int[] nose, int[] tail) {
         if (nose[0] == tail[0]) {
-            return CellsXorY(nose, tail, size, true);
+            return CellsXorY(nose, tail, true);
         } else if (nose[1] == tail[1]) {
-            return CellsXorY(nose, tail, size, false);
+            return CellsXorY(nose, tail, false);
         } else {
             throw new InitException("Ship initialization fail: ship cells should be on one line.");
         }
     }
 
-    private List<SimpleCell> CellsXorY(int[] nose, int[] tail, int size, boolean invert) {
+    private List<SimpleCell> CellsXorY(int[] nose, int[] tail, boolean invert) {
+        this.size = Math.abs(nose[0] - tail[0] + nose[1] - tail[1]) + 1;
         int x = invert ? 0 : 1;
         int y = invert ? 1 : 0;
         List<SimpleCell> result = null;
@@ -59,6 +63,7 @@ public class SimpleWarship implements IWarship {
             int b = Math.max(nose[y], tail[y]);
             for (; a <= b; a++) {
                 SimpleCell temp = invert ? new SimpleCell(nose[x], a, 2) : new SimpleCell(a, nose[x], 2);
+                temp.setMyShip(this);//todo разобраться с инициализацией ячеек
                 result.add(temp);
             }
         }

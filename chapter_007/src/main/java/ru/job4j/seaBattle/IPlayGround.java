@@ -1,9 +1,10 @@
 package ru.job4j.seaBattle;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public interface IPlayGround {
-    void show();
+    void show(boolean hide);
 
     void initPlayGround();
 
@@ -12,4 +13,10 @@ public interface IPlayGround {
     boolean shoot(String coordinate);
 
     boolean isLose();
+
+    List<SimpleWarship> getMyWarSips();
+
+    SimpleCell getCell(String coordinates);
+
+    public Consumer<String> getOut();
 }
