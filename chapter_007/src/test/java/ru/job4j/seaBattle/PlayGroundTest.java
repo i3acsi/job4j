@@ -249,10 +249,12 @@ public class PlayGroundTest {
         assertTrue(playGround.place(warship));
         playGround.initPlayGround();
         assertFalse(playGround.shoot("А1"));
+        assertFalse(playGround.shoot("В2"));
+        assertFalse(playGround.shoot("В3"));
         String missedShotPlayGround = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
                 .append("\t1\t●\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
-                .append("\t2\t_\t█\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
-                .append("\t3\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t_\t█\t●\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t_\t_\t●\t_\t_\t_\t_\t_\t_\t_").append(ln)
                 .append("\t4\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
                 .append("\t5\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
                 .append("\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
@@ -298,13 +300,18 @@ public class PlayGroundTest {
     @Test
     public void whenShipsAreKilledThenGetTrue() {
         SimpleWarship warship = new SimpleWarship("А1-А4");
+        SimpleWarship warship2 = new SimpleWarship("И9-Ж9");
         assertTrue(playGround.place(warship));
+        assertTrue(playGround.place(warship2));
         playGround.initPlayGround();
         assertTrue(playGround.shoot("А1"));
         assertTrue(playGround.shoot("А2"));
         assertTrue(playGround.shoot("А3"));
-        assertFalse(playGround.isLose());
         assertTrue(playGround.shoot("А4"));
+        assertTrue(playGround.shoot("И9"));
+        assertTrue(playGround.shoot("Ж9"));
+        assertFalse(playGround.isLose());
+        assertTrue(playGround.shoot("З9"));
         assertTrue(playGround.isLose());
         String destroyedShipPlayGround = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
                 .append("\t1\t░\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
@@ -315,7 +322,7 @@ public class PlayGroundTest {
                 .append("\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
                 .append("\t7\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
                 .append("\t8\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
-                .append("\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t░\t░\t░\t_").append(ln)
                 .append("\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
                 .toString();
         playGround.show(false);

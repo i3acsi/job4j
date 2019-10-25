@@ -19,4 +19,6 @@ public interface IPlayGround {
     SimpleCell getCell(String coordinates);
 
     public Consumer<String> getOut();
+
+    String toHiddenString();
 }

@@ -55,7 +55,8 @@ public class SimpleWarship implements IWarship {
         int x = invert ? 0 : 1;
         int y = invert ? 1 : 0;
         List<SimpleCell> result = null;
-        if (Math.abs(nose[y] - tail[y]) != size - 1) {
+
+        if (size > 4 || size < 1) {
             throw new InitException("Ship initialization fail: wrong size.");
         } else {
             result = new ArrayList<>(size);
@@ -71,15 +72,17 @@ public class SimpleWarship implements IWarship {
     }
 
     public void acceptDamage(SimpleCell cell) {
-        for (SimpleCell c: this.cells) {
+        for (SimpleCell c : this.cells) {
             if (c.equals(cell)) {
-                c.setState(3);
-                damagedCells++;
+                if (c.getState() == 2) {
+                    c.setState(3);
+                    damagedCells++;
+                }
                 break;
             }
         }
-        if (damagedCells==size) {
-            this.cells.forEach(c->c.setState(4));
+        if (damagedCells == size) {
+            this.cells.forEach(c -> c.setState(4));
             this.isKilled = true;
         }
     }

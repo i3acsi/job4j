@@ -49,12 +49,13 @@ public class PlayGround implements IPlayGround {
      */
     @Override
     public boolean place(SimpleWarship ship) {
-        if (!listOfShipSizes.remove(Integer.valueOf(ship.getSize()))) return false;
+        Integer size = ship.getSize();
+        if (!listOfShipSizes.remove(size)) return false;
         boolean result = setState(ship);
         if (result) {
             this.myWarSips.add(ship);
             //ship.getCells().forEach(cell -> cell.setMyShip(ship));// не полнял - это же одно и тоже . пожоже что это ошибка. пока уберу
-        }
+        } else listOfShipSizes.add(size);
         return result;
     }
 
@@ -118,7 +119,7 @@ public class PlayGround implements IPlayGround {
      */
     @Override
     public void show(boolean hide) {
-        if(!hide) this.out.accept(this.toString());
+        if (!hide) this.out.accept(this.toString());
         else this.out.accept(this.toHiddenString());
     }
 
@@ -140,7 +141,7 @@ public class PlayGround implements IPlayGround {
             updateShip(temp, false);
             result = true;
         } else {
-            this.cells[xy[0]][xy[1]].setState(5);
+            this.cells[xy[1]][xy[0]].setState(5);
         }
         return result;
     }
@@ -149,7 +150,7 @@ public class PlayGround implements IPlayGround {
     public String toString() {
         StringBuilder result = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК");
         int size = 10;
-        for (int i = 0; i < size ; i++) {
+        for (int i = 0; i < size; i++) {
             result.append(ln).append("\t").append(i + 1);
             for (int j = 0; j < size; j++) {
                 result.append("\t");
@@ -169,10 +170,11 @@ public class PlayGround implements IPlayGround {
         return result.toString();
     }
 
+    @Override
     public String toHiddenString() {
         StringBuilder result = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК");
         int size = 10;
-        for (int i = 0; i < size ; i++) {
+        for (int i = 0; i < size; i++) {
             result.append(ln).append("\t").append(i + 1);
             for (int j = 0; j < size; j++) {
                 result.append("\t");
