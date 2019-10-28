@@ -19,6 +19,7 @@ public class UserInput {
         while (!predicate.test(result)) {
             output.accept(question);
             result = scanner.nextLine();
+            result = result.toUpperCase().trim();
         }
         return result;
     }

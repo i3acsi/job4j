@@ -7,6 +7,8 @@ import org.junit.Test;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -41,20 +43,21 @@ public class PlayerTest {
 
     @Test
     public void whenShootAndHitThanShowPlayground() {
-        shootTest("А1\r\nА2\r\nА3\r\nА3", "▓", "_", "_", false);
+        shootTest("А1\r\nА2\r\nА3\r\nА3", "▓", "_", "_", new Boolean[]{true, true, true, false, false});
     }
 
     @Test
     public void whenShootAndMissThanShowPlayground() {
-        shootTest("Б1\r\nБ2\r\nБ3\r\nБ3", "_", "●", "_", false);
+        shootTest("Б1\r\nБ2\r\nБ3\r\nБ3", "_", "●", "_", new Boolean[]{false, false, false, false, false});
     }
 
     @Test
     public void whenShootAndKillThanShowPlayground() {
-        shootTest("А1\r\nА2\r\nА3\r\nА4", "░", "_", "░", true);
+        shootTest("А1\r\nА2\r\nА3\r\nА4", "░", "_", "░", new Boolean[]{true, true, true, true, true});
     }
 
-    private void shootTest(String coordinates, String symbol0, String symbol, String symbol2, boolean isLoose) {
+    private void shootTest(String coordinates, String symbol0, String symbol, String symbol2, Boolean[] results) {
+        Iterator<Boolean> shootResult = Arrays.asList(results).iterator();
         String text = coordinates;
         byte[] buffer = text.getBytes();
         ByteArrayInputStream inputStream = new ByteArrayInputStream(buffer);
@@ -66,10 +69,10 @@ public class PlayerTest {
         UserInput input = new UserInput(inputStream, output);
         Player player = new Player(myPlayGround, enemyPlayGround, input, output, "player1");
         for (int i = 0; i < coordinates.split("\r\n").length; i++) {
-            player.shoot();
+            assertThat(player.shoot(), is(shootResult.next()));
         }
         enemyPlayGround.show(true);
-        assertEquals(enemyPlayGround.isLose(), isLoose);
+        assertEquals(enemyPlayGround.isLose(), shootResult.next());
         String expected = String.format((
                 "Введите координаты выстрела (Например А4)" + ln +
                         "Введите координаты выстрела (Например А4)" + ln +
@@ -259,7 +262,7 @@ public class PlayerTest {
         player.prepare();
         out.reset();
         player.display();
-        String expected = "#################################################################" + ln +
+        String expected = "#################################################################player1####################" + ln +
                 "\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК\t\t\t\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК" + ln +
                 "\t1\t█\t_\t█\t_\t█\t_\t█\t_\t█\t_\t\t\t\t1\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_" + ln +
                 "\t2\t█\t_\t█\t_\t█\t_\t█\t_\t█\t_\t\t\t\t2\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_" + ln +

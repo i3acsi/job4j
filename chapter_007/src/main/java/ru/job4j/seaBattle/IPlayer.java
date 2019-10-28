@@ -3,7 +3,7 @@ package ru.job4j.seaBattle;
 public interface IPlayer {
     void prepare();
 
-    void shoot();
+    boolean shoot();
 
     void display();
 

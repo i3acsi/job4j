@@ -101,4 +101,24 @@ public class SimpleWarshipTest {
         }
         assertThat(result, is(true));
     }
+
+    @Test
+    public void whenAcceptDamageAndHitThanGetTrue() {
+        SimpleWarship ship = new SimpleWarship("Б2-Б3");
+        assertTrue(ship.acceptDamage(new SimpleCell(1,1, 1)));
+    }
+
+    @Test
+    public void whenAcceptDamageAndMissThanGetFalse() {
+        SimpleWarship ship = new SimpleWarship("Б2-Б3");
+        assertFalse(ship.acceptDamage(new SimpleCell(2,2, 1)));
+    }
+
+    @Test
+    public void whenAcceptDamageAndKillThanGetTrueAndThanWhenShootAgainGetFalse() {
+        SimpleWarship ship = new SimpleWarship("Б2-Б2");
+        assertTrue(ship.acceptDamage(new SimpleCell(1,1, 1)));
+        assertTrue(ship.isKilled());
+        assertFalse(ship.acceptDamage(new SimpleCell(1,1, 1)));
+    }
 }

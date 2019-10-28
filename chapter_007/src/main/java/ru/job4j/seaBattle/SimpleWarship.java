@@ -71,10 +71,12 @@ public class SimpleWarship implements IWarship {
         return result;
     }
 
-    public void acceptDamage(SimpleCell cell) {
+    public boolean acceptDamage(SimpleCell cell) {
+        boolean result = false;
         for (SimpleCell c : this.cells) {
             if (c.equals(cell)) {
                 if (c.getState() == 2) {
+                    result = true;
                     c.setState(3);
                     damagedCells++;
                 }
@@ -85,6 +87,7 @@ public class SimpleWarship implements IWarship {
             this.cells.forEach(c -> c.setState(4));
             this.isKilled = true;
         }
+        return result;
     }
 
     @Override

@@ -2,7 +2,7 @@ package ru.job4j.seaBattle;
 
 import java.util.function.Consumer;
 
-public class Player implements IPlayer{
+public class Player implements IPlayer {
     private String ln = System.lineSeparator();
     private String name;
     private IPlayGround myPlayGround;
@@ -35,14 +35,14 @@ public class Player implements IPlayer{
     }
 
     @Override
-    public void shoot() {
+    public boolean shoot() {
         String coordinates = input.ask("Введите координаты выстрела (Например А4)", str -> str.matches("([А-Е]|[Ж-К])([1-9]|10)"));
-        otherPlayGround.shoot(coordinates);
+        return otherPlayGround.shoot(coordinates);
     }
 
     @Override
     public void display() {
-        StringBuilder result = new StringBuilder("#################################################################").append(this.name).append("####################") .append(ln);
+        StringBuilder result = new StringBuilder("#################################################################").append(this.name).append("####################").append(ln);
         String[] my = this.myPlayGround.toString().split(ln);
         String[] other = this.otherPlayGround.toHiddenString().split(ln);
         for (int i = 0; i < my.length; i++) {
@@ -58,6 +58,6 @@ public class Player implements IPlayer{
 
     @Override
     public void congratulations() {
-        output.accept(String.format("Player '%s', won"));
+        output.accept(String.format(("Player %s, won"), this.name));
     }
 }

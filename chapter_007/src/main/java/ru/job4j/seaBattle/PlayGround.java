@@ -9,7 +9,7 @@ import java.util.function.Consumer;
  * Playground for sea battle game. Contains 2-d array of Cells and list of Warships.
  * Contains public methods for:
  * locating ships on playground;
- * shot at ships;
+ * shoot at ships;
  * display playground in console.
  */
 
@@ -137,9 +137,8 @@ public class PlayGround implements IPlayGround {
         int[] xy = SimpleCell.coordinatesConvert(coordinate);
         SimpleWarship temp = this.cells[xy[1]][xy[0]].getMyShip();
         if (temp != null) {
-            temp.acceptDamage(new SimpleCell(xy[0], xy[1], 1)); // параметр state в данном случае не важен. можно было бы пердавать координаты
+            result = temp.acceptDamage(new SimpleCell(xy[0], xy[1], 1)); // параметр state в данном случае не важен. можно было бы пердавать координаты
             updateShip(temp, false);
-            result = true;
         } else {
             this.cells[xy[1]][xy[0]].setState(5);
         }
