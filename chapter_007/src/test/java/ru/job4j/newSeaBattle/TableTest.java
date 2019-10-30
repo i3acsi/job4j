@@ -7,7 +7,6 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -54,8 +53,8 @@ public class TableTest {
         states.put(2, '▓');
         states.put(3, '░');
         states.put(4, '●');
-        ICellDisplayStrategy cellDisplayStrategy = new CellDisplayStrategyConsole(states);
-        IDisplayStrategy displayStrategy = new ConsoleDisplay(mapCharToInt, cellDisplayStrategy, System.out::println);
+        CellDisplayConsole cellDisplay = new CellDisplayConsole(states);
+        IDisplayStrategy displayStrategy = new ConsoleDisplay(mapCharToInt, cellDisplay, System.out::println);
         this.table = new Table(10, displayStrategy);
     }
 
@@ -258,5 +257,131 @@ public class TableTest {
                 .toString();
         table.show(false);
         assertThat(this.out.toString(), is(missedShotPlayGround));
+    }
+
+    /**
+     * When one player shoot and hits the ship then method return true.
+     */
+    @Test
+    public void whenShotAndHitThenGetTrue() {
+        assertTrue(table.placeShip(0, 0, 0, 3));//4
+        assertTrue(table.shoot(0,0));
+        String damagedShipPlayGround = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
+                .append("\t1\t▓\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t4\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t5\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t7\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t8\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .toString();
+        table.show(false);
+        assertThat(this.out.toString(), is(damagedShipPlayGround));
+    }
+
+    /**
+     * When ship is destroyed then its visualization changes.
+     * When all ships are killed then playground informs us about it.
+     */
+    @Test
+    public void whenShipsAreKilledThenGetTrue() {
+        assertTrue(table.placeShip(0, 0, 0, 3));//4
+        assertTrue(table.placeShip(6, 8, 8, 8));//4
+        assertTrue(table.shoot(0,0));
+        assertTrue(table.shoot(0,1));
+        assertTrue(table.shoot(0,2));
+        assertTrue(table.shoot(0, 3));
+        assertTrue(table.shoot(6,8));
+        assertTrue(table.shoot(8,8));
+        assertFalse(table.isLose());
+        assertTrue(table.shoot(7,8));
+        assertTrue(table.isLose());
+        String destroyedShipPlayGround = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
+                .append("\t1\t░\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t░\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t░\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t4\t░\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t5\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t7\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t8\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t░\t░\t░\t_").append(ln)
+                .append("\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .toString();
+        table.show(false);
+        assertThat(this.out.toString(), is(destroyedShipPlayGround));
+    }
+
+    /**
+     * OtherPlayground test. When player shot at enemy`s playground, it show only cells that was fired.
+     * Cells, that was`nt fired are shown like empty cell;
+     */
+
+    @Test
+    public void whenShotAtEnemyPlaygroundAndMissThanOnlyFiredCellChangeView() {
+        assertTrue(table.placeShip(0, 0, 0, 3));//4
+        assertFalse(table.shoot(1,1));
+        table.show(true);
+        String expected = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
+                .append("\t1\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t_\t●\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t4\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t5\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t7\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t8\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .toString();
+        assertThat(this.out.toString(), is(expected));
+    }
+
+    @Test
+    public void whenShotAtEnemyPlaygroundAndHitThanOnlyFiredCellChangeView() {
+        assertTrue(table.placeShip(0, 0, 0, 3));//4
+        assertTrue(table.shoot(0,0));
+        assertTrue(table.shoot(0,1));
+        assertTrue(table.shoot(0,2));
+        table.show(true);
+        String expected = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
+                .append("\t1\t▓\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t▓\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t▓\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t4\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t5\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t7\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t8\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .toString();
+        assertThat(this.out.toString(), is(expected));
+    }
+
+    @Test
+    public void whenShotAtEnemyPlaygroundAndKillShipThanShipChangeView() {
+        assertTrue(table.placeShip(0, 0, 0, 3));//4
+        assertTrue(table.shoot(0,0));
+        assertTrue(table.shoot(0,1));
+        assertTrue(table.shoot(0,2));
+        assertTrue(table.shoot(0,3));
+        table.show(true);
+        String expected = new StringBuilder("\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК").append(ln)
+                .append("\t1\t░\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t2\t░\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t3\t░\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t4\t░\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t5\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t7\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t8\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .append("\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_").append(ln)
+                .toString();
+        assertThat(this.out.toString(), is(expected));
     }
 }

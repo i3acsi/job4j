@@ -8,6 +8,7 @@ public class Table {
     private int size;
     private IDisplayStrategy displayStrategy;
     private List<Integer> shipSizes;
+    private List<Ship> ships;
 
     public Table(int size, IDisplayStrategy displayStrategy) {
         this.size = size;
@@ -15,6 +16,14 @@ public class Table {
         this.displayStrategy = displayStrategy;
         initEmpty();
         initShipSizes();
+    }
+
+    public List<Ship> getShips() {
+        return ships;
+    }
+
+    public int getSize() {
+        return size;
     }
 
     private void initEmpty() {
@@ -27,6 +36,7 @@ public class Table {
 
     private void initShipSizes() {
         this.shipSizes = new ArrayList<>(size * size / 10);
+        this.ships = new ArrayList<>(size * size / 10);
         for (int i = 0; i < size * size / 100; i++) {
             shipSizes.add(4);
             for (int j = 0; j < 2; j++) shipSizes.add(3);
@@ -51,6 +61,7 @@ public class Table {
         else {
             if (checkSquare(x1, y1, x2, y2)) {
                 updateShipDisplay(ship, 1, true);
+                this.ships.add(ship);
             } else {
                 shipSizes.add(length);
                 return false;
@@ -91,7 +102,7 @@ public class Table {
         boolean oXDirection = x1 - x2 != 0;
         for (int i = 0; i < ship.getSize(); i++) {
             cells[x1][y1].setState(state);
-            if (firstInit)cells[x1][y1].setShip(ship);
+            if (firstInit) cells[x1][y1].setShip(ship);
             if (oXDirection) x1++;
             else y1++;
         }
@@ -104,11 +115,20 @@ public class Table {
             cells[x][y].setState(4);
         } else {
             result = ship.acceptDamage();
-            if (ship.getHealth()==0) updateShipDisplay(ship,3, false);
+            if (result) cells[x][y].setState(2);
+            if (ship.getHealth() == 0) updateShipDisplay(ship, 3, false);
         }
         return result;
     }
 
-
-
+    public boolean isLose() {
+        boolean result = true;
+        for (Ship ship:this.ships) {
+            if (ship.getHealth()!=0) {
+                result = false;
+                break;
+            }
+        }
+        return result;
+    }
 }

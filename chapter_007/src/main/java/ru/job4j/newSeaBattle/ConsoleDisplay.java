@@ -6,10 +6,10 @@ import java.util.function.Consumer;
 public class ConsoleDisplay implements IDisplayStrategy {
     private String ln = System.lineSeparator();
     private Map<Character, Integer> map;
-    private ICellDisplayStrategy cellDisplay;
+    private CellDisplayConsole cellDisplay;
     private Consumer<String> out;
 
-    public ConsoleDisplay(Map<Character, Integer> map, ICellDisplayStrategy cellDisplay, Consumer<String> out) {
+    public ConsoleDisplay(Map<Character, Integer> map, CellDisplayConsole cellDisplay, Consumer<String> out) {
         this.map = map;
         this.cellDisplay = cellDisplay;
         this.out = out;
