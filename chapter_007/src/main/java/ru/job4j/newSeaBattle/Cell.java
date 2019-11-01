@@ -1,7 +1,5 @@
 package ru.job4j.newSeaBattle;
 
-import java.util.Map;
-
 public class Cell {
     private Ship ship;
     private int state;

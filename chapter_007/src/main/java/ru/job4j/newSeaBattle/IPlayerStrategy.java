@@ -10,4 +10,8 @@ public interface IPlayerStrategy {
     boolean win();
 
     void congratulations();
+
+    void setOtherTable(Table otherTable);
+
+    Table getMyTable();
 }

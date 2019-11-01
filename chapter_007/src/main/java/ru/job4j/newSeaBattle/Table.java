@@ -26,6 +26,10 @@ public class Table {
         return size;
     }
 
+    public Cell[][] getCells() {
+        return cells;
+    }
+
     private void initEmpty() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -49,12 +53,11 @@ public class Table {
         displayStrategy.show(this.cells, hide);
     }
 
+    public String getString(boolean hide) {
+        return (displayStrategy.getString(this.cells, hide));
+    }
+
     public boolean placeShip(int x1, int y1, int x2, int y2) {
-        int[] xoy = getNoseAndTail(x1, y1, x2, y2);
-        x1 = xoy[0];
-        y1 = xoy[1];
-        x2 = xoy[2];
-        y2 = xoy[3];
         Ship ship = new Ship(x1, y1, x2, y2);
         int length = ship.getSize();
         if (!shipSizes.remove(Integer.valueOf(length))) return false;
@@ -85,16 +88,6 @@ public class Table {
         return true;
     }
 
-    private int[] getNoseAndTail(int x1, int y1, int x2, int y2) {
-        int[] result = new int[4];
-        result[0] = Math.min(x1, x2);
-        result[1] = Math.min(y1, y2);
-        result[2] = Math.max(x1, x2);
-        result[3] = Math.max(y1, y2);
-        return result;
-    }
-
-
     private void updateShipDisplay(Ship ship, int state, boolean firstInit) {
         int x1 = ship.getX1();
         int x2 = ship.getX2();
@@ -109,22 +102,29 @@ public class Table {
     }
 
     public boolean shoot(int x, int y) {
-        Ship ship = cells[x][y].getShip();
+        Ship ship = null;
         boolean result = false;
-        if (ship == null) {
-            cells[x][y].setState(4);
-        } else {
-            result = ship.acceptDamage();
-            if (result) cells[x][y].setState(2);
-            if (ship.getHealth() == 0) updateShipDisplay(ship, 3, false);
+        int state = cells[x][y].getState();
+        switch (state) {
+            case 0:
+                cells[x][y].setState(4);
+                break;
+            case 1:
+                ship = cells[x][y].getShip();
+                result = ship.acceptDamage();
+                if (result) cells[x][y].setState(2);
+                if (ship.getHealth() == 0) updateShipDisplay(ship, 3, false);
+                break;
+            default:
+                break;
         }
         return result;
     }
 
     public boolean isLose() {
         boolean result = true;
-        for (Ship ship:this.ships) {
-            if (ship.getHealth()!=0) {
+        for (Ship ship : this.ships) {
+            if (ship.getHealth() != 0) {
                 result = false;
                 break;
             }

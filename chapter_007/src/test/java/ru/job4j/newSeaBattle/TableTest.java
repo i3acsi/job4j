@@ -36,25 +36,24 @@ public class TableTest {
     @Before
     public void initTable() {
         System.setOut(new PrintStream(this.out));
-        Map<Character, Integer> mapCharToInt = new HashMap<>(17);
-        mapCharToInt.put('А', 0);
-        mapCharToInt.put('Б', 1);
-        mapCharToInt.put('В', 2);
-        mapCharToInt.put('Г', 3);
-        mapCharToInt.put('Д', 4);
-        mapCharToInt.put('Е', 5);
-        mapCharToInt.put('Ж', 6);
-        mapCharToInt.put('З', 7);
-        mapCharToInt.put('И', 8);
-        mapCharToInt.put('К', 9);
+        Map<String, Integer> mapCharToInt = new HashMap<>(17);
+        mapCharToInt.put("А", 0);
+        mapCharToInt.put("Б", 1);
+        mapCharToInt.put("В", 2);
+        mapCharToInt.put("Г", 3);
+        mapCharToInt.put("Д", 4);
+        mapCharToInt.put("Е", 5);
+        mapCharToInt.put("Ж", 6);
+        mapCharToInt.put("З", 7);
+        mapCharToInt.put("И", 8);
+        mapCharToInt.put("К", 9);
         Map<Integer, Character> states = new HashMap<>(17);
         states.put(0, '_');
         states.put(1, '█');
         states.put(2, '▓');
         states.put(3, '░');
         states.put(4, '●');
-        CellDisplayConsole cellDisplay = new CellDisplayConsole(states);
-        IDisplayStrategy displayStrategy = new ConsoleDisplay(mapCharToInt, cellDisplay, System.out::println);
+        IDisplayStrategy displayStrategy = new ConsoleDisplay(mapCharToInt, states, output, new ConsoleInput(System.in, output));
         this.table = new Table(10, displayStrategy);
     }
 
