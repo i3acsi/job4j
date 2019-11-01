@@ -21,7 +21,6 @@ public class HumanPlayerTest {
     private String ln = System.lineSeparator();
     private final PrintStream stdout = System.out;
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
-
     private final Consumer<String> output = new Consumer<>() {
         private final PrintStream stdout = new PrintStream(out);
 
@@ -30,6 +29,7 @@ public class HumanPlayerTest {
             stdout.println(s);
         }
     };
+    //private Consumer<String> output = System.out::println;
 
 
     @Before
@@ -63,6 +63,31 @@ public class HumanPlayerTest {
         states.put(2, '▓');
         states.put(3, '░');
         states.put(4, '●');
+    }
+
+    @Test
+    public void whenPCPLayerPrepare() {
+        String text = "some text";
+        byte[] buffer = text.getBytes();
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(buffer);
+        IInput input = new ConsoleInput(inputStream, output);
+        this.displayStrategy = new ConsoleDisplay(mapCharToInt, states, output, input);
+        Table table = new Table(10, displayStrategy);
+        this.player = new PCPlayer(10, "pcPlayer", displayStrategy, table);//HumanPlayer(10, "player1", displayStrategy, new Table(10, displayStrategy));
+        player.prepare();
+        player.getMyTable().show(false);
+        String expected = "\t\tА\tБ\tВ\tГ\tД\tЕ\tЖ\tЗ\tИ\tК" + ln +
+                "\t1\t█\t█\t█\t█\t_\t█\t█\t█\t_\t_" + ln +
+                "\t2\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_" + ln +
+                "\t3\t█\t█\t█\t_\t█\t█\t_\t█\t█\t_" + ln +
+                "\t4\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_" + ln +
+                "\t5\t█\t█\t_\t█\t_\t█\t_\t█\t_\t_" + ln +
+                "\t6\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_" + ln +
+                "\t7\t█\t_\t_\t_\t_\t_\t_\t_\t_\t_" + ln +
+                "\t8\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_" + ln +
+                "\t9\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_" + ln +
+                "\t10\t_\t_\t_\t_\t_\t_\t_\t_\t_\t_" +ln;
+        assertThat(this.out.toString(), is(expected));
     }
 
     @Test

@@ -19,4 +19,6 @@ public interface IDisplayStrategy {
     String askCoordinate();
 
     void congratulations(String name);
+
+    int[] getCoordinate(String c);
 }

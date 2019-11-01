@@ -40,6 +40,19 @@ public class ConsoleDisplay implements IDisplayStrategy {
         this.out.accept(String.format("Congratulations, %s", name));
     }
 
+    @Override
+    public int[] getCoordinate(String c) {
+        int[] result = new int[2];
+        int tableSize = map.size();
+        String[] data = c.split("\\.");//?
+        if (data.length != 2 || !data[0].matches("\\w+|([А-Я]+)") || !data[1].matches("\\d+")) return null;
+        int y = Integer.valueOf(data[1]);
+        if (0 >= y && y > tableSize) return null;
+        result[1] = --y;
+        result[0] = map.getOrDefault(data[0], -1);
+        return result[0] == -1 ? null : result;
+    }
+
     private String getCoordinate(String question, String regEx) {
         return iInput.ask(question, answr -> answr.matches(regEx));
     }
