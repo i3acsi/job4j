@@ -3,15 +3,11 @@ package ru.job4j.newSeaBattle;
 public interface IPlayerStrategy {
     void prepare();
 
-    boolean shoot();
+    int[] shoot();
 
-    void display();
+    boolean acceptDamage(int x, int y);
 
-    boolean win();
+    boolean isLose();
 
     void congratulations();
-
-    void setOtherTable(Table otherTable);
-
-    Table getMyTable();
 }

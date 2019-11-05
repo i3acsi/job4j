@@ -17,8 +17,9 @@ public class ConsoleDisplay implements IDisplayStrategy {
         this.stateMap = stateMap;
     }
 
-    public Map<String, Integer> getMap() {
-        return map;
+    @Override
+    public void congratulations(String name) {
+        this.out.accept(String.format("Congratulations, %s", name));
     }
 
     @Override
@@ -30,14 +31,9 @@ public class ConsoleDisplay implements IDisplayStrategy {
 
     @Override
     public String askCoordinate() {
-        String question = "Введите координаты выстрела (Например А4)";
+        String question = "Введите координаты выстрела (Например А.4)";
         String regEx = "([А-Я]|[A-Z])+\\.\\d+";
         return getCoordinate(question, regEx);
-    }
-
-    @Override
-    public void congratulations(String name) {
-        this.out.accept(String.format("Congratulations, %s", name));
     }
 
     @Override
@@ -47,7 +43,7 @@ public class ConsoleDisplay implements IDisplayStrategy {
         String[] data = c.split("\\.");//?
         if (data.length != 2 || !data[0].matches("\\w+|([А-Я]+)") || !data[1].matches("\\d+")) return null;
         int y = Integer.valueOf(data[1]);
-        if (0 >= y && y > tableSize) return null;
+        if (0 >= y || y > tableSize) return null;
         result[1] = --y;
         result[0] = map.getOrDefault(data[0], -1);
         return result[0] == -1 ? null : result;
@@ -67,15 +63,15 @@ public class ConsoleDisplay implements IDisplayStrategy {
     }
 
     @Override
-    public void display(Table myTable, Table otherTable, String name) {
+    public void display(SimplePlayer me, SimplePlayer other) {
         StringBuilder result = new StringBuilder("#################################################################")
-                .append(name)
+                .append(me.name)
                 .append("####################")
                 .append(ln);
-        String[] my = getString(myTable.getCells(), false).split(ln);
-        String[] other = getString(otherTable.getCells(), true).split(ln);
+        String[] my = getString(me.myTable.getCells(), false).split(ln);
+        String[] enemy = getString(other.myTable.getCells(), true).split(ln);
         for (int i = 0; i < my.length; i++) {
-            result.append(my[i]).append("\t\t\t").append(other[i]).append(ln);
+            result.append(my[i]).append("\t\t\t").append(enemy[i]).append(ln);
         }
         this.out.accept(result.toString());
     }
@@ -93,13 +89,10 @@ public class ConsoleDisplay implements IDisplayStrategy {
                 if (cell != null) {
                     int state = cell.getState();
                     if (hide && state == 1) state = 0;
-                    result.append(stateMap.getOrDefault(state,'X'));//cellDisplay.view(state));
-                } else result.append(stateMap.getOrDefault(0,'X'));
+                    result.append(stateMap.getOrDefault(state, 'X'));//cellDisplay.view(state));
+                } else result.append(stateMap.getOrDefault(0, 'X'));
             }
         }
         return result.toString();
     }
-
-
 }
-

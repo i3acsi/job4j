@@ -53,9 +53,9 @@ public class Table {
         displayStrategy.show(this.cells, hide);
     }
 
-    public String getString(boolean hide) {
-        return (displayStrategy.getString(this.cells, hide));
-    }
+//    public String getString(boolean hide) {
+//        return (displayStrategy.getString(this.cells, hide));
+//    }
 
     public boolean placeShip(int x1, int y1, int x2, int y2) {
         Ship ship = new Ship(x1, y1, x2, y2);
@@ -119,6 +119,10 @@ public class Table {
                 break;
         }
         return result;
+    }
+
+    public boolean checkCoordinate(int x, int y) {
+        return !(x < 0 || y < 0 || x >= size || y >= size);
     }
 
     public boolean isLose() {

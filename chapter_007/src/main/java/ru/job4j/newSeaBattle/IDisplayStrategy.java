@@ -1,6 +1,5 @@
 package ru.job4j.newSeaBattle;
 
-import java.util.Map;
 import java.util.function.Consumer;
 
 public interface IDisplayStrategy {
@@ -8,11 +7,10 @@ public interface IDisplayStrategy {
 
     String getString(Cell[][] cells, boolean hide);
 
-    void display(Table myTable, Table otherTable, String name);
+    void display(SimplePlayer me, SimplePlayer other);
 
     Consumer<String> getOut();
 
-    Map<String, Integer> getMap();
 
     String askCoordinates();
 
@@ -21,4 +19,5 @@ public interface IDisplayStrategy {
     void congratulations(String name);
 
     int[] getCoordinate(String c);
+
 }

@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class SingleGame {
-    private IPlayerStrategy player1;
-    private IPlayerStrategy player2;
+    private SimplePlayer player1;
+    private SimplePlayer player2;
     private IDisplayStrategy displayStrategy;
     private IInput iInput;
     private Map<String, Integer> map;
@@ -21,28 +21,29 @@ public class SingleGame {
     }
 
     public void startGame() {
-        while (!player2.win() && !player1.win()) {
-            playersTurn(player1);
-            if (player1.win()) break;
-            playersTurn(player2);
+        while (!player2.isLose() && !player1.isLose()) {
+            playersTurn(player1, player2);
+            if (player2.isLose()) break;
+            playersTurn(player2, player1);
         }
-        if (player1.win()) player1.congratulations();
-        else player2.congratulations();
+        if (player1.isLose()) player2.congratulations();
+        else player1.congratulations();
     }
 
-    private void playersTurn(IPlayerStrategy player) {
+    private void playersTurn(SimplePlayer me, SimplePlayer other) {
         boolean result = true;
-        while (result || !player.win()) {
-            player.display();
-            result = player.shoot();
-            player.display();
+        while (result || other.isLose()) {
+            displayStrategy.display(me, other);
+            int[] coordinates = me.shoot();
+            result = other.acceptDamage(coordinates[0], coordinates[1]);
+            displayStrategy.display(me, other);
             sleep();
         }
     }
 
     private void sleep() {
         try {
-            Thread.sleep(3000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -53,9 +54,8 @@ public class SingleGame {
         displayStrategy = new ConsoleDisplay(map, states, out, iInput);
         player1 = new HumanPlayer(10, "player1", displayStrategy);
         player1.prepare();
-        player2 = new HumanPlayer(10, "player2", displayStrategy, player1.getMyTable());
+        player2 = new HumanPlayer(10, "player2", displayStrategy);
         player2.prepare();
-        player1.setOtherTable(player2.getMyTable());
     }
 
     private void initMaps() {
