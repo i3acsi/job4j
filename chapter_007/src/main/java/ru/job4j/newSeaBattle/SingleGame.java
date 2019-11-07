@@ -31,19 +31,22 @@ public class SingleGame {
     }
 
     private void playersTurn(SimplePlayer me, SimplePlayer other) {
-        boolean result = true;
-        while (result || other.isLose()) {
+        boolean hit = true;
+        displayStrategy.display(me, other);
+        while (hit && !other.isLose()) {
+            int[] coordinate = me.shoot();
+            displayStrategy.accept(coordinate);
+            int result = other.acceptDamage(coordinate[0], coordinate[1]);
+            me.shootResultAction(result);
             displayStrategy.display(me, other);
-            int[] coordinates = me.shoot();
-            result = other.acceptDamage(coordinates[0], coordinates[1]);
-            displayStrategy.display(me, other);
+            hit = result < 4;
             sleep();
         }
     }
 
     private void sleep() {
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -52,9 +55,18 @@ public class SingleGame {
     private void initPlayers() {
         iInput = new ConsoleInput(in, out);
         displayStrategy = new ConsoleDisplay(map, states, out, iInput);
+        int mode = displayStrategy.askMode();
         player1 = new HumanPlayer(10, "player1", displayStrategy);
         player1.prepare();
-        player2 = new HumanPlayer(10, "player2", displayStrategy);
+        switch (mode) {
+            case 2:
+                player2 = new PCPlayer(10, "player2_PC", displayStrategy);
+                break;
+            default:
+                player2 = new HumanPlayer(10, "player2_Man", displayStrategy);
+                break;
+        }
+
         player2.prepare();
     }
 

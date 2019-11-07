@@ -1,11 +1,13 @@
 package ru.job4j.newSeaBattle;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
 public class ConsoleDisplay implements IDisplayStrategy {
     private String ln = System.lineSeparator();
     private Map<String, Integer> map;
+    private Map<Integer, String> reverse;
     private Consumer<String> out;
     private IInput iInput;
     private Map<Integer, Character> stateMap;
@@ -15,29 +17,67 @@ public class ConsoleDisplay implements IDisplayStrategy {
         this.out = out;
         this.iInput = iInput;
         this.stateMap = stateMap;
+        reverse();
     }
 
     @Override
-    public void congratulations(String name) {
-        this.out.accept(String.format("Congratulations, %s", name));
+    public void accept(int[] coordinate) {
+        StringBuilder result = new StringBuilder("\t\t\t\t");
+        result.append(reverse.get(coordinate[0]));
+        result.append(" ").append(coordinate[1] + 1);
+        result.append(ln);
+        out.accept(result.toString());
     }
 
     @Override
-    public String askCoordinates() {
+    public void accept(String msg) {
+        out.accept(msg);
+    }
+
+    @Override
+    public void congratulations(SimplePlayer player) {
+        out.accept(String.format("Congratulations, %s", player.getName()));
+    }
+
+
+    @Override
+    public int askMode() {
+        String question = "Выберете режим игры:\r\n\t1 - Human vs Human (на одной машине)\r\n\t2 - Human vs PC(на одной машине)";
+        String regEx = "([1-2])";
+        return Integer.valueOf(iInput.ask(question, answr -> answr.matches(regEx)));
+    }
+
+    /**
+     * Метод для получения координат кормы и носа корабля. Формат ввода А.1-А.2;
+     * @return int[][] - {x1, y1}{x2, y2};
+     */
+    @Override
+    public int[][] askCoordinates() {
         String question = "Введите координаты носа и кормы корабля (Например А.1-А.4)";
         String regEx = "([А-Я]|[A-Z])+\\.\\d+-([А-Я]|[A-Z])+\\.\\d+";
-        return getCoordinate(question, regEx);
+        int[][] result = new int[2][2];
+        String[] data =  iInput.ask(question, answr -> answr.matches(regEx)).split("-");
+        result[0] = getCoordinate(data[0]);
+        result[1] = getCoordinate(data[1]);
+        return result;
     }
 
+    /**
+     * Метод для получения координаты точки.
+     * @return
+     */
     @Override
-    public String askCoordinate() {
+    public int[] askCoordinate() {
         String question = "Введите координаты выстрела (Например А.4)";
         String regEx = "([А-Я]|[A-Z])+\\.\\d+";
-        return getCoordinate(question, regEx);
+        String coordinate = iInput.ask(question, answr -> answr.matches(regEx));
+        return getCoordinate(coordinate);
     }
 
-    @Override
-    public int[] getCoordinate(String c) {
+    /*
+    Преобразует строку в координаты.
+     */
+    private int[] getCoordinate(String c) {
         int[] result = new int[2];
         int tableSize = map.size();
         String[] data = c.split("\\.");//?
@@ -49,17 +89,9 @@ public class ConsoleDisplay implements IDisplayStrategy {
         return result[0] == -1 ? null : result;
     }
 
-    private String getCoordinate(String question, String regEx) {
-        return iInput.ask(question, answr -> answr.matches(regEx));
-    }
-
-    public Consumer<String> getOut() {
-        return out;
-    }
-
     @Override
-    public void show(Cell[][] cells, boolean hide) {
-        out.accept(getString(cells, hide));
+    public void show(SimplePlayer player, boolean hide) {
+        out.accept(getString(player.myTable.getCells(), hide));
     }
 
     @Override
@@ -76,8 +108,7 @@ public class ConsoleDisplay implements IDisplayStrategy {
         this.out.accept(result.toString());
     }
 
-    @Override
-    public String getString(Cell[][] cells, boolean hide) {
+    private String getString(Cell[][] cells, boolean hide) {
         int size = cells.length;
         StringBuilder result = new StringBuilder("\t");
         map.keySet().forEach(ch -> result.append("\t").append(ch));
@@ -94,5 +125,12 @@ public class ConsoleDisplay implements IDisplayStrategy {
             }
         }
         return result.toString();
+    }
+
+    private void reverse() {
+        reverse = new HashMap<>();
+        for(Map.Entry<String,Integer> entry : map.entrySet()){
+            reverse.put(entry.getValue(), entry.getKey());
+        }
     }
 }

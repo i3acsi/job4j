@@ -6,29 +6,36 @@ import java.util.List;
 public class Table {
     private Cell[][] cells;
     private int size;
-    private IDisplayStrategy displayStrategy;
     private List<Integer> shipSizes;
     private List<Ship> ships;
 
-    public Table(int size, IDisplayStrategy displayStrategy) {
+    public Table(int size) {
         this.size = size;
         this.cells = new Cell[size][size];
-        this.displayStrategy = displayStrategy;
         initEmpty();
         initShipSizes();
     }
 
-    public List<Ship> getShips() {
-        return ships;
+    /**
+     * Проверяет укомплектованность кораблями.
+     * @return
+     */
+    public boolean equipped() {
+        return shipSizes.isEmpty();
     }
 
     public int getSize() {
         return size;
     }
 
+    /**
+     * Возращает игровое поле в текущем состоянии.
+     * @return
+     */
     public Cell[][] getCells() {
         return cells;
     }
+
 
     private void initEmpty() {
         for (int i = 0; i < size; i++) {
@@ -38,6 +45,11 @@ public class Table {
         }
     }
 
+
+    /**
+     * Метод инициализирует Список длин кораблей в зависимости от размеров игрового поля
+     * - чем больше размер, тем больше кораблей поле содержит.
+     */
     private void initShipSizes() {
         this.shipSizes = new ArrayList<>(size * size / 10);
         this.ships = new ArrayList<>(size * size / 10);
@@ -49,14 +61,15 @@ public class Table {
         }
     }
 
-    public void show(boolean hide) {
-        displayStrategy.show(this.cells, hide);
-    }
 
-//    public String getString(boolean hide) {
-//        return (displayStrategy.getString(this.cells, hide));
-//    }
-
+    /**
+     * Метод размещает корабль на карте, принимает координаты кормы и носа корабля.
+     * @param x1 корма - координата по горизонтали.
+     * @param y1 корма - координата по вертикали.
+     * @param x2 нос - координата по горизонтали.
+     * @param y2 нос - координата по вертикали.
+     * @return true - если получилось.
+     */
     public boolean placeShip(int x1, int y1, int x2, int y2) {
         Ship ship = new Ship(x1, y1, x2, y2);
         int length = ship.getSize();
@@ -88,6 +101,15 @@ public class Table {
         return true;
     }
 
+    /**
+     * Метод инициализирует отображение корабля на карте, а так же, опционально,
+     * присваивает ссылку на корабль в соответствующее поле ячейки.
+     * Таким образом ячейки "знают" ссылку на свой корабль и содержат текущее состояние.
+     *
+     * @param ship
+     * @param state
+     * @param firstInit
+     */
     private void updateShipDisplay(Ship ship, int state, boolean firstInit) {
         int x1 = ship.getX1();
         int x2 = ship.getX2();
@@ -101,19 +123,29 @@ public class Table {
         }
     }
 
-    public boolean shoot(int x, int y) {
-        Ship ship = null;
-        boolean result = false;
+    /**
+     * Метод возвращает целое число - результат выстрела.
+     * @param x координата по горизонтали.
+     * @param y координата по вертикали
+     * @return  4 - если мимо
+     *          5 - если высрелил по разбитому кораблю
+     *          2 - если попал и ранил
+     *          3 - если попал и убил
+     */
+    public int shoot(int x, int y) {
+        int result = 5;
         int state = cells[x][y].getState();
         switch (state) {
             case 0:
                 cells[x][y].setState(4);
+                result = 4;
                 break;
             case 1:
-                ship = cells[x][y].getShip();
-                result = ship.acceptDamage();
-                if (result) cells[x][y].setState(2);
+                Ship ship = cells[x][y].getShip();
+                ship.acceptDamage();
+                cells[x][y].setState(2);
                 if (ship.getHealth() == 0) updateShipDisplay(ship, 3, false);
+                result = cells[x][y].getState();
                 break;
             default:
                 break;
@@ -121,10 +153,24 @@ public class Table {
         return result;
     }
 
-    public boolean checkCoordinate(int x, int y) {
-        return !(x < 0 || y < 0 || x >= size || y >= size);
+    /**
+     * Метод кидает исключение, если переданные коодинаты двух точек за пределами поля или не на одной линии.
+     * @param x1 корма - координата по горизонтали
+     * @param y1 корма - координата по вертикали
+     * @param x2 нос - координата по горизонтали
+     * @param y2 нос - координата по вертикали
+     */
+    public void checkCoordinates(int x1, int y1, int x2, int y2) {
+        if (x1 < 0 || x2 < 0 || y1 < 0 || y2 < 0 || x1 > size || x2 > size || y1 > size || y2 > size)
+            throw new InitException("wrong coordinates");
+        if (x1 != x2 & y1 != y2)
+            throw new InitException("wrong coordinates");
     }
 
+    /**
+     * Возвращает true, если все корабли, находящиеся на карте уничтожены.
+     * @return
+     */
     public boolean isLose() {
         boolean result = true;
         for (Ship ship : this.ships) {

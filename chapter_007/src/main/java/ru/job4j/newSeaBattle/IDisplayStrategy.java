@@ -1,23 +1,20 @@
 package ru.job4j.newSeaBattle;
 
-import java.util.function.Consumer;
-
 public interface IDisplayStrategy {
-    void show(Cell[][] cells, boolean hide);
 
-    String getString(Cell[][] cells, boolean hide);
+    void show(SimplePlayer player, boolean hide);
 
     void display(SimplePlayer me, SimplePlayer other);
 
-    Consumer<String> getOut();
+    int[][] askCoordinates();
 
+    int[] askCoordinate();
 
-    String askCoordinates();
+    int askMode();
 
-    String askCoordinate();
+    void congratulations(SimplePlayer me);
 
-    void congratulations(String name);
+    void accept(int[] coordinate);
 
-    int[] getCoordinate(String c);
-
+    void accept(String message);
 }

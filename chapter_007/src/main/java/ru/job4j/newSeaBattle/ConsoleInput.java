@@ -18,10 +18,10 @@ public class ConsoleInput implements IInput {
         String result = null;
         try {
             out.accept(question);
-            result = reader.readLine().toUpperCase().trim();
+            result = reader.readLine().toUpperCase().replaceAll("\\s","");
             while (!predicate.test(result)) {
                 out.accept(question);
-                result = reader.readLine().toUpperCase().trim();
+                result = reader.readLine().toUpperCase().replaceAll("\\s","");
             }
         } catch (IOException e) {
             out.accept(e.getMessage());
