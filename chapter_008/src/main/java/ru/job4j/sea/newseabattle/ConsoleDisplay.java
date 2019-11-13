@@ -1,8 +1,12 @@
 package ru.job4j.sea.newseabattle;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ConsoleDisplay implements IDisplayStrategy {
     private String ln = System.lineSeparator();
@@ -10,9 +14,9 @@ public class ConsoleDisplay implements IDisplayStrategy {
     private Map<Integer, String> reverse;
     private Consumer<String> out;
     private IInput iInput;
-    private Map<Integer, Character> stateMap;
+    private Map<Integer, String> stateMap;
 
-    public ConsoleDisplay(Map<String, Integer> map, Map<Integer, Character> stateMap, Consumer<String> out, IInput iInput) {
+    public ConsoleDisplay(Map<String, Integer> map, Map<Integer, String> stateMap, Consumer<String> out, IInput iInput) {
         this.map = map;
         this.out = out;
         this.iInput = iInput;
@@ -101,7 +105,11 @@ public class ConsoleDisplay implements IDisplayStrategy {
 
     @Override
     public void show(SimplePlayer player, boolean hide) {
-        out.accept(getString(player.myTable.getCells(), hide));
+        try {
+            out.accept(getString(player.myTable.getCells(), hide));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -110,15 +118,25 @@ public class ConsoleDisplay implements IDisplayStrategy {
                 .append(me.name)
                 .append("####################")
                 .append(ln);
-        String[] my = getString(me.myTable.getCells(), false).split(ln);
-        String[] enemy = getString(other.myTable.getCells(), true).split(ln);
+        String[] my = new String[0];
+        try {
+            my = getString(me.myTable.getCells(), false).split(ln);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String[] enemy = new String[0];
+        try {
+            enemy = getString(other.myTable.getCells(), true).split(ln);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         for (int i = 0; i < my.length; i++) {
             result.append(my[i]).append("\t\t\t").append(enemy[i]).append(ln);
         }
         this.out.accept(result.toString());
     }
 
-    private String getString(Cell[][] cells, boolean hide) {
+    private String getString(Cell[][] cells, boolean hide) throws UnsupportedEncodingException {
         int size = cells.length;
         StringBuilder result = new StringBuilder("\t");
         map.keySet().forEach(ch -> result.append("\t").append(ch));
@@ -130,10 +148,15 @@ public class ConsoleDisplay implements IDisplayStrategy {
                 if (cell != null) {
                     int state = cell.getState();
                     if (hide && state == 1) state = 0;
-                    result.append(stateMap.getOrDefault(state, 'X'));
-                } else result.append(stateMap.getOrDefault(0, 'X'));
+                    String toAppend = parse(stateMap.getOrDefault(state, "X"));
+                    result.append(toAppend);
+                } else {
+                    String toAppend = parse(stateMap.getOrDefault(0, "X"));
+                    result.append(toAppend);
+                }
             }
         }
+        //String rslt = new String(result.toString().getBytes("Cp1251"), "Cp1251");
         return result.toString();
     }
 
@@ -142,5 +165,26 @@ public class ConsoleDisplay implements IDisplayStrategy {
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
             reverse.put(entry.getValue(), entry.getKey());
         }
+    }
+
+    static String parse(String s) {
+
+        StringBuilder sb = new StringBuilder();
+
+        Pattern p = Pattern.compile("\\\\u([0-9a-fA-F]{4})");
+        Matcher m = p.matcher(s);
+
+        int lastIndex = 0;
+        while (m.find()) {
+
+            sb.append(s.substring(lastIndex, m.start()));
+            lastIndex = m.end();
+
+            sb.append((char) Integer.parseInt(m.group(1), 16));
+        }
+
+        if (lastIndex < s.length()) sb.append(s.substring(lastIndex));
+
+        return sb.toString();
     }
 }

@@ -18,17 +18,29 @@ public class SingleGame {
     private IDisplayStrategy displayStrategy;
     private IInput iInput;
     private Map<String, Integer> map;
-    private Map<Integer, Character> states;
+    private Map<Integer, String> states;
     private Consumer<String> out = System.out::println;
     private InputStream in = (System.in);
 
     public SingleGame(int size) {
         //System.setProperty("console.encoding", "Cp866");
-        initMaps();
+        try {
+            initMaps();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         initPlayers();
     }
 
     public void startGame() {
+//        while (true) {
+//            int[] c = player1.shoot();
+//            player1.displayStrategy.accept(c);
+//            int res = player2.acceptDamage(c[0], c[1]);
+//            player1.shootResultAction(res);
+//            c = player2.shoot();
+//            player1.acceptDamage(c[0], c[1]);
+//        }
         while (!player2.isLose() && !player1.isLose()) {
             playersTurn(player1, player2);
             if (player2.isLose()) break;
@@ -63,6 +75,7 @@ public class SingleGame {
     private void initPlayers() {
         iInput = new ConsoleInput(in, out);
         displayStrategy = new ConsoleDisplay(map, states, out, iInput);
+        boolean reverse = false;
         String ip = null;
         int mode = displayStrategy.askMode();
         if (mode == 3) ip = displayStrategy.askIp();
@@ -74,6 +87,7 @@ public class SingleGame {
                 Server server = new Server(port);
                 server.startServer();
             } else {
+                reverse = true;
                 Client client = new Client(port, ip);
                 client.connect();
             }
@@ -86,10 +100,17 @@ public class SingleGame {
 
         if (mode == 1) player2 = new HumanPlayer(10, "player2_Man", displayStrategy);
         player2.prepare();
+
+        if (reverse) {
+            SimplePlayer tmp = player2;
+            player2 = player1;
+            player1 = tmp;
+            tmp = null;
+        }
     }
 
 
-    private void initMaps() {
+    private void initMaps() throws UnsupportedEncodingException {
         map = new HashMap<>(17);
         map.put("А", 0);
         map.put("Б", 1);
@@ -102,11 +123,11 @@ public class SingleGame {
         map.put("И", 8);
         map.put("К", 9);
         states = new HashMap<>(17);
-        states.put(0, '_');
-        states.put(1, '█');
-        states.put(2, '▓');
-        states.put(3, '░');
-        states.put(4, '●');
+        states.put(0, "_"); //new String("_".getBytes("Cp1251"))
+        states.put(1, "К"); //new String("█".getBytes("Cp1251"))
+        states.put(2, "Р");
+        states.put(3, "У");
+        states.put(4, "М");
     }
 
     public static void main(String[] args) {

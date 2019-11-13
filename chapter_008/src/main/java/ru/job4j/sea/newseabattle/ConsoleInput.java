@@ -9,11 +9,11 @@ public class ConsoleInput implements IInput {
     private Consumer<String> out;
 
     public ConsoleInput(InputStream inputStream, Consumer<String> out) {
-        try {
-            this.reader = new BufferedReader(new InputStreamReader(inputStream, "Cp1251"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+//        try {
+            this.reader = new BufferedReader(new InputStreamReader(inputStream));
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
         this.out = out;
     }
 
@@ -25,7 +25,7 @@ public class ConsoleInput implements IInput {
             result = reader.readLine();
             //result = new String(str.getBytes(), StandardCharsets.UTF_8);
             out.accept(result);
-            result.toUpperCase().replaceAll("\\s", "").replaceAll("\r\n", "");
+            result = result.toUpperCase().replaceAll("\\s", "");
             while (!predicate.test(result)) {
                 out.accept(question);
                 result = reader.readLine(); //.toUpperCase().replaceAll("\\s", "").replaceAll("\r\n", "");
