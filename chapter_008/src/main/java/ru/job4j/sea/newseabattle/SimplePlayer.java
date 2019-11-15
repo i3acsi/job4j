@@ -5,7 +5,7 @@ public abstract class SimplePlayer implements IPlayerStrategy {
     protected Table myTable;
     protected int tableSize;
     protected IDisplayStrategy displayStrategy;
-    protected Table otherTable = null;
+
 
     public SimplePlayer(int size, String name, IDisplayStrategy display) {
         this.myTable = new Table(size);
@@ -31,11 +31,18 @@ public abstract class SimplePlayer implements IPlayerStrategy {
 
     @Override
     public void congratulations() {
+
         this.displayStrategy.congratulations(this);
     }
 
     @Override
+    public Table getTable() {
+        return myTable;
+    }
+
+    @Override
     public void shootResultAction(int result) {
+
         String msg;
         switch (result) {
             case 2:
@@ -52,5 +59,26 @@ public abstract class SimplePlayer implements IPlayerStrategy {
                 break;
         }
         displayStrategy.accept(msg);
+
+    }
+
+    @Override
+    public void display(SimplePlayer other) {
+        displayStrategy.display(this, other);
+    }
+
+    @Override
+    public void display() {
+        displayStrategy.show(this, false);
+    }
+
+    @Override
+    public void accept(String msg) {
+        displayStrategy.accept(msg);
+    }
+
+    @Override
+    public void accept(int[] coordinate) {
+        displayStrategy.accept(coordinate);
     }
 }

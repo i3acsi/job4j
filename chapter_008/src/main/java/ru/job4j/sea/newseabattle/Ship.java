@@ -1,6 +1,8 @@
 package ru.job4j.sea.newseabattle;
 
-public class Ship {
+import java.io.Serializable;
+
+public class Ship implements Serializable {
     private int size;
     private int health;
     private int x1, x2, y1, y2;

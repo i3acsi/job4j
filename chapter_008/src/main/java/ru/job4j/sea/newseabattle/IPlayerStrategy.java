@@ -15,4 +15,14 @@ public interface IPlayerStrategy {
     void congratulations();
 
     String getName();
+
+    Table getTable();
+
+    void display(SimplePlayer other);
+
+    void display();
+
+    void accept(String msg);
+
+    void accept(int[] coordinate);
 }

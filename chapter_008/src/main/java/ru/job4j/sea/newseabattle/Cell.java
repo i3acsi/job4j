@@ -1,6 +1,8 @@
 package ru.job4j.sea.newseabattle;
 
-public class Cell {
+import java.io.Serializable;
+
+public class Cell implements Serializable {
     private Ship ship;
     private int state;
 

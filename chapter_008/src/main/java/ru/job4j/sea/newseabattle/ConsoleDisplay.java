@@ -46,7 +46,8 @@ public class ConsoleDisplay implements IDisplayStrategy {
 
     @Override
     public int askMode() {
-        String question = "Выберете режим игры:\r\n\t1 - Human vs Human (на одной машине)\r\n\t2 - Human vs PC(на одной машине)";
+        String question = "Выберете режим игры:\r\n\t1 - Human vs Human (на одной машине)"
+                + "\r\n\t2 - Human vs PC(на одной машине)\r\n\t3 - Human vs Human (по сети)";
         String regEx = "([1-3])";
         return Integer.valueOf(iInput.ask(question, answr -> answr.matches(regEx)));
     }
@@ -148,10 +149,10 @@ public class ConsoleDisplay implements IDisplayStrategy {
                 if (cell != null) {
                     int state = cell.getState();
                     if (hide && state == 1) state = 0;
-                    String toAppend = parse(stateMap.getOrDefault(state, "X"));
+                    String toAppend = (stateMap.getOrDefault(state, "X")); // parse
                     result.append(toAppend);
                 } else {
-                    String toAppend = parse(stateMap.getOrDefault(0, "X"));
+                    String toAppend = (stateMap.getOrDefault(0, "X")); // parse
                     result.append(toAppend);
                 }
             }
@@ -167,24 +168,24 @@ public class ConsoleDisplay implements IDisplayStrategy {
         }
     }
 
-    static String parse(String s) {
-
-        StringBuilder sb = new StringBuilder();
-
-        Pattern p = Pattern.compile("\\\\u([0-9a-fA-F]{4})");
-        Matcher m = p.matcher(s);
-
-        int lastIndex = 0;
-        while (m.find()) {
-
-            sb.append(s.substring(lastIndex, m.start()));
-            lastIndex = m.end();
-
-            sb.append((char) Integer.parseInt(m.group(1), 16));
-        }
-
-        if (lastIndex < s.length()) sb.append(s.substring(lastIndex));
-
-        return sb.toString();
-    }
+//    static String parse(String s) {
+//
+//        StringBuilder sb = new StringBuilder();
+//
+//        Pattern p = Pattern.compile("\\\\u([0-9a-fA-F]{4})");
+//        Matcher m = p.matcher(s);
+//
+//        int lastIndex = 0;
+//        while (m.find()) {
+//
+//            sb.append(s.substring(lastIndex, m.start()));
+//            lastIndex = m.end();
+//
+//            sb.append((char) Integer.parseInt(m.group(1), 16));
+//        }
+//
+//        if (lastIndex < s.length()) sb.append(s.substring(lastIndex));
+//
+//        return sb.toString();
+//    }
 }

@@ -1,9 +1,10 @@
 package ru.job4j.sea.newseabattle;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Table {
+public class Table implements Serializable {
     private Cell[][] cells;
     private int size;
     private List<Integer> shipSizes;

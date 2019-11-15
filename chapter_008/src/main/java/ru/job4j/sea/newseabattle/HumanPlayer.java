@@ -9,6 +9,16 @@ public class HumanPlayer extends SimplePlayer {
 
     @Override
     public void prepare() {
+//        myTable.placeShip(0, 0, 0, 3);
+//        myTable.placeShip(0, 5, 0, 7);
+//        myTable.placeShip(0, 9, 2, 9);
+//        myTable.placeShip(2, 0, 2, 1);
+//        myTable.placeShip(2, 3, 2, 4);
+//        myTable.placeShip(2, 6, 2, 7);
+//        myTable.placeShip(4, 0, 4, 0);
+//        myTable.placeShip(5, 2, 5, 2);
+//        myTable.placeShip(6, 4, 6, 4);
+//        myTable.placeShip(7, 6, 7, 6);
         displayStrategy.show(this, false);
         while (!myTable.equipped()) {
             try {
@@ -20,7 +30,6 @@ public class HumanPlayer extends SimplePlayer {
                 int y1 = Math.min(tail[1], nose[1]);
                 int x2 = Math.max(tail[0], nose[0]);
                 int y2 = Math.max(tail[1], nose[1]);
-                displayStrategy.accept(x1 + " " + y1 + " " + x2 + " " + y2);
                 myTable.checkCoordinates(x1, y1, x2, y2);
                 myTable.placeShip(x1, y1, x2, y2);
                 displayStrategy.show(this, false);
