@@ -6,6 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.List;
+import java.util.function.Consumer;
 
 
 public class TrackerSQL implements ITracker, AutoCloseable {
@@ -237,5 +238,27 @@ public class TrackerSQL implements ITracker, AutoCloseable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+}
+
+class Main extends StartUI {
+    /**
+     * Конструктор с инициалицацией полей.
+     *
+     * @param input   ввод данных.
+     * @param tracker хранилище заявок.
+     * @param output
+     */
+    public Main(Input input, ITracker tracker, Consumer<String> output) {
+        super(input, tracker, output);
+    }
+
+    public static void main(String[] args) {
+        TrackerSQL trackerSQL = new TrackerSQL();
+        new Main(new ValidateInput(
+                new ConsoleInput()),
+                trackerSQL,
+                System.out::println).
+                init();
     }
 }

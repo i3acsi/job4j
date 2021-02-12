@@ -20,7 +20,7 @@ public class Edit extends BaseAction {
             String task = input.ask("Введите новое название заявки ");
             String desc = input.ask("Введите новое описание заявки ");
             String newComment = null;
-            if (!temp.getComments().equals("")) {
+            if (temp.getComments()!=null&&!temp.getComments().equals("")) {
                 newComment = input.ask("Введите новый коииентарий к заявке ");
             }
             System.out.println("------------------------------------------");
